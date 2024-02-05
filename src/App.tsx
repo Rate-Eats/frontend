@@ -1,7 +1,10 @@
-import "./styles/global.css";
-
 function App() {
-  return <div>Init</div>;
+  return (
+    <div className="flex">
+      <div>he</div>
+      <div>llo</div>
+    </div>
+  );
 }
 
 export default App;
