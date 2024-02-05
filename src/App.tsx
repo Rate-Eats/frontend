@@ -1,7 +1,9 @@
+import { Button } from '@/shared/ui/button.tsx';
+
 function App() {
   return (
     <div className="flex">
-      <div>he</div>
+      <Button>he</Button>
       <div>llo</div>
     </div>
   );
