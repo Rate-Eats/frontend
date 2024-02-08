@@ -1,12 +1,27 @@
-import { Button } from '@/shared/ui/button.tsx';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ProtectedRoute } from '@/routes/protectedRoute.tsx';
+import { AuthProvider } from '@/auth/authProvider.tsx';
+import PrivateRoutes from '@/routes/private.tsx';
+import PublicRoutes from '@/routes/public.tsx';
+import { Suspense } from 'react';
 
-function App() {
+const App = () => {
   return (
-    <div className="flex">
-      <Button>he</Button>
-      <div>llo</div>
-    </div>
+    <Router>
+      <AuthProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            {PrivateRoutes.map((route, index) => (
+              <Route key={index} path={route.path} element={<ProtectedRoute>{route.element}</ProtectedRoute>} />
+            ))}
+            {PublicRoutes.map((route, index) => (
+              <Route key={index} {...route} />
+            ))}
+          </Routes>
+        </Suspense>
+      </AuthProvider>
+    </Router>
   );
-}
+};
 
 export default App;
