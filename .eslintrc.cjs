@@ -14,7 +14,9 @@ module.exports = {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     '@tanstack/query/exhaustive-deps': 'error',
     '@tanstack/query/no-rest-destructuring': 'warn',
+    "@typescript-eslint/no-unused-vars": 'warn',
     '@tanstack/query/stable-query-client': 'error',
+
     quotes: ['warn', 'single'],
   },
 };
