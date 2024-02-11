@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import TemplatePage from '@pages/templatePage/templatePage.tsx';
 
+const Login = lazy(() => import('@components/signOn/login/Login'));
 const Register = lazy(() => import('@components/signOn/register/Register'));
 
 const PublicRoutes = [
@@ -9,8 +10,8 @@ const PublicRoutes = [
     element: <Register />,
   },
   {
-    path: '/',
-    element: <TemplatePage />,
+    path: '/login',
+    element: <Login />,
   },
   {
     path: '*',

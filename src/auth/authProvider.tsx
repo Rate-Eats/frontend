@@ -4,13 +4,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 interface AuthContext {
-  token: string | null;
-  onLogin: (token: string) => void;
+  userData: string | null;
+  onLogin: (userData: string) => void;
   onLogout: () => void;
 }
 
 export const AuthContext = createContext<AuthContext>({
-  token: null,
+  userData: null,
   onLogin: () => {},
   onLogout: () => {},
 });
@@ -23,10 +23,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [token, setToken] = useLocalStorage('jwtToken', null);
+  const [userData, setUser] = useLocalStorage('user', null);
 
-  const handleLogin = async (token: string) => {
-    setToken(token);
+  const handleLogin = async (userData: string) => {
+    setUser(userData);
     navigate('/');
   };
 
@@ -35,12 +35,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const response = await axios.get(
       `https://1c21-37-128-40-211.ngrok-free.app/api/auth/google/callback?access_token=${idToken}`,
     );
-    setToken(response.data.jwt);
+    setUser(response.data.jwt);
     navigate('/');
   };
 
   const handleLogout = () => {
-    setToken(null);
+    setUser(null);
   };
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, [location]);
 
   const value = {
-    token,
+    userData,
     onLogin: handleLogin,
     onLogout: handleLogout,
   };
