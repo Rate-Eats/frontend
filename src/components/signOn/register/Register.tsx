@@ -25,7 +25,6 @@ const Register = () => {
     show: false,
     message: '',
   });
-  const { onLogin } = useAuth();
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -66,6 +65,20 @@ const Register = () => {
       message: '',
     });
     registerMutation.mutate(credentials);
+  }
+
+  if (success) {
+    return (
+      <div className="m-auto flex flex-col justify-center gap-6">
+        <div className="flex flex-col gap-1 text-center ">
+          <span className="text-2xl font-semibold">Thank you for your registration!</span>
+          <span>Your account is already activated. You can now log in. </span>
+        </div>
+        <Link to="/login" className="flex justify-center">
+          <Button className="w-1/2">Log in</Button>
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -127,7 +140,7 @@ const Register = () => {
                     type="password"
                   />
                 </FormControl>
-                <FormMessage className="mt-0  h-0" />
+                <FormMessage className="mt-0 h-0" />
               </FormItem>
             )}
           />
@@ -140,6 +153,7 @@ const Register = () => {
               </label>
             </div>
           </div>
+          <FormMessage className="mt-0 h-1">{error && <div className="text-center text-sm">{error.message}</div>}</FormMessage>
           <Button type="submit" className="bg-blue-500 hover:bg-blue-600">
             Create an account
           </Button>
