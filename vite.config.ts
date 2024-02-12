@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
-import * as path from 'path'
+import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr'
+import * as path from 'path'
 
 
 export default defineConfig({
@@ -14,7 +14,7 @@ export default defineConfig({
     port: 8080,
     strictPort: true,
     host: true,
-    origin: 'http://0.0.0.0:8080',
+    origin: 'http://127.0.0.1:8080',
   },
   resolve: {
     alias: {

@@ -73,7 +73,7 @@
 
   body {
     @apply bg-background text-foreground;
-    background: rgb(249 250 251);
+    background: rgb(246 246 249);
   }
   html,body,#root{
     width: 100%;

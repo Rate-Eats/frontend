@@ -3,9 +3,24 @@ import { useLocalStorage } from '@/hooks/useLocalStorage.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+interface UserDataInterface {
+  jwt: string;
+  user: {
+    id: number;
+    username: string;
+    email: string;
+    provider: string;
+    confirmed: boolean;
+    blocked: boolean;
+    createdAt: string;
+    updatedAt: string;
+    avatar: string;
+  };
+}
+
 interface AuthContext {
-  userData: string | null;
-  onLogin: (userData: string) => void;
+  userData: UserDataInterface | null;
+  onLogin: (userData: UserDataInterface) => void;
   onLogout: () => void;
 }
 
@@ -25,7 +40,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const [userData, setUser] = useLocalStorage('user', null);
 
-  const handleLogin = async (userData: string) => {
+  const handleLogin = async (userData: UserDataInterface) => {
     setUser(userData);
     navigate('/');
   };
@@ -41,6 +56,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const handleLogout = () => {
     setUser(null);
+    navigate('/');
   };
 
   useEffect(() => {

@@ -92,16 +92,16 @@ const Login = () => {
                 Remember me
               </label>
             </div>
-            <Link to="/forgot" className="text-sm font-medium text-blue-500">
+            <Link to="/forgot" className="text-sm font-medium text-primary">
               Forgot password?
             </Link>
           </div>
-          <Button type="submit" className="bg-blue-500 hover:bg-blue-600">
+          <Button type="submit" className="bg-primary hover:bg-blue-600">
             Sign in
           </Button>
           <span className="text-sm font-light text-gray-500">
             Don’t have an account yet?{' '}
-            <Link to="/register" className="text-primary-600 font-medium text-blue-500 hover:underline">
+            <Link to="/register" className="text-primary-600 font-medium text-primary hover:underline">
               Sign up here
             </Link>
           </span>

@@ -3,15 +3,14 @@ import { registerSchema } from '@components/signOn/register/registerSchema.ts';
 import Socials from '@components/signOn/socials/Socials.tsx';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { Checkbox } from '@shared/ui/checkbox.tsx';
 import { Button } from '@/shared/ui/button.tsx';
-import { useAuth } from '@/auth/useAuth.ts';
+import axios, { AxiosError } from 'axios';
 import { Input } from '@/shared/ui/input';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import axios, { AxiosError } from 'axios';
-import { z } from 'zod';
 import React, { useState } from 'react';
-import { Checkbox } from '@shared/ui/checkbox.tsx';
+import { Link } from 'react-router-dom';
+import { z } from 'zod';
 
 interface ErrorResponse {
   error: {
@@ -153,13 +152,14 @@ const Register = () => {
               </label>
             </div>
           </div>
-          <FormMessage className="mt-0 h-1">{error && <div className="text-center text-sm">{error.message}</div>}</FormMessage>
-          <Button type="submit" className="bg-blue-500 hover:bg-blue-600">
+
+          {error && <div className="text-center text-sm font-semibold text-red-500">{error.message}</div>}
+          <Button type="submit" className="bg-primary hover:bg-blue-600">
             Create an account
           </Button>
           <span className="text-sm font-light text-gray-500">
             Already have an account?{' '}
-            <Link to="/login" className="text-primary-600 font-medium text-blue-500 hover:underline">
+            <Link to="/login" className="text-primary-600 font-medium text-primary hover:underline">
               Sign in here
             </Link>
           </span>
