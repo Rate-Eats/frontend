@@ -1,27 +1,23 @@
-import React, { createContext, ReactNode, useEffect } from 'react';
+import React, { createContext, ReactNode, useEffect, useState } from 'react';
+import { UserDataInterface } from '@shared/interfaces/user.ts';
 import { useLocalStorage } from '@/hooks/useLocalStorage.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
-interface UserDataInterface {
+interface LoginResponse {
+  user: UserDataInterface;
   jwt: string;
-  user: {
-    id: number;
-    username: string;
-    email: string;
-    provider: string;
-    confirmed: boolean;
-    blocked: boolean;
-    createdAt: string;
-    updatedAt: string;
-    avatar: string;
-  };
 }
 
 interface AuthContext {
+  onLogin: (userData: LoginResponse) => void;
   userData: UserDataInterface | null;
-  onLogin: (userData: UserDataInterface) => void;
   onLogout: () => void;
+}
+
+interface AuthProviderProps {
+  children: ReactNode;
 }
 
 export const AuthContext = createContext<AuthContext>({
@@ -30,34 +26,50 @@ export const AuthContext = createContext<AuthContext>({
   onLogout: () => {},
 });
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [userData, setUser] = useLocalStorage('user', null);
+  const [jwtToken, setJwtToken] = useLocalStorage('jwtToken', null);
+  const [userData, setUserData] = useState<UserDataInterface | null>(null);
 
-  const handleLogin = async (userData: UserDataInterface) => {
-    setUser(userData);
+  const handleLogin = async (loginData: LoginResponse) => {
+    setJwtToken(loginData.jwt);
+    setUserData(loginData.user);
     navigate('/');
   };
 
   const handleGoogleLogin = async () => {
     const idToken = location.search.slice(10);
-    const response = await axios.get(
-      `https://1c21-37-128-40-211.ngrok-free.app/api/auth/google/callback?access_token=${idToken}`,
-    );
-    setUser(response.data.jwt);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/google/callback?access_token=${idToken}`);
+    setUserData(response.data.jwt);
     navigate('/');
   };
 
   const handleLogout = () => {
-    setUser(null);
+    setUserData(null);
+    setJwtToken(null);
     navigate('/');
   };
+
+  const getUserData = useMutation({
+    mutationFn: () => {
+      return axios.get(`${import.meta.env.VITE_API_URL}/users/me?`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+    },
+    onSuccess: (data) => setUserData(data.data),
+    onError: () => {
+      setUserData(null);
+      setJwtToken(null);
+    },
+  });
+
+  useEffect(() => {
+    if (jwtToken) getUserData.mutate();
+  }, []);
 
   useEffect(() => {
     if (location.pathname === '/auth/google/callback') {

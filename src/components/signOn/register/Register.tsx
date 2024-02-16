@@ -3,27 +3,17 @@ import { registerSchema } from '@components/signOn/register/registerSchema.ts';
 import Socials from '@components/signOn/socials/Socials.tsx';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { Checkbox } from '@shared/ui/checkbox.tsx';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/shared/ui/button.tsx';
-import axios, { AxiosError } from 'axios';
 import { Input } from '@/shared/ui/input';
 import { useForm } from 'react-hook-form';
-import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { z } from 'zod';
-
-interface ErrorResponse {
-  error: {
-    message: string;
-  };
-}
 
 const Register = () => {
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState({
-    show: false,
-    message: '',
-  });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -36,35 +26,32 @@ const Register = () => {
 
   const registerMutation = useMutation({
     mutationFn: (credentials: { username: string; password: string }) => {
-      return axios.post('http://localhost:1337/api/auth/local/register', credentials);
+      return axios.post(`${import.meta.env.VITE_API_URL}/auth/local/register`, credentials);
     },
     onSuccess: () => setSuccess(true),
-    onError: (error: AxiosError<ErrorResponse>) => {
-      if (error.response) {
-        const errorMessage = error.response.data;
-
-        if (errorMessage.error) {
-          setError({
-            show: true,
-            message: errorMessage.error.message,
-          });
-        } else {
-          setError({
-            show: true,
-            message: 'An unknown error occurred.',
-          });
-        }
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response) {
+        setErrorMessage(error.response.data.error.message);
+      } else {
+        setErrorMessage('An error occurred:' + error.message);
       }
     },
   });
 
   function onSubmit(credentials: z.infer<typeof registerSchema>) {
-    setError({
-      show: false,
-      message: '',
-    });
+    setErrorMessage('');
     registerMutation.mutate(credentials);
   }
+
+  const clearErrorMessage = () => {
+    setErrorMessage('');
+  };
+
+  const { email, username, password } = form.watch();
+
+  useEffect(() => {
+    clearErrorMessage();
+  }, [email, username, password]);
 
   if (success) {
     return (
@@ -143,17 +130,7 @@ const Register = () => {
               </FormItem>
             )}
           />
-          <div className="flex justify-between">
-            <div className="flex  space-x-3">
-              <Checkbox id="terms" className="border-gray-400" />
-              <label htmlFor="terms" className="text-sm font-light text-gray-500  peer-disabled:cursor-not-allowed">
-                By signing up, you are creating a Rate Eats account, and you agree to Rate Eats’s Terms of Use and
-                Privacy Policy.
-              </label>
-            </div>
-          </div>
-
-          {error && <div className="text-center text-sm font-semibold text-red-500">{error.message}</div>}
+          {errorMessage && <div className="text-center text-sm font-semibold text-red-500">{errorMessage}</div>}
           <Button type="submit" className="bg-primary hover:bg-blue-600">
             Create an account
           </Button>

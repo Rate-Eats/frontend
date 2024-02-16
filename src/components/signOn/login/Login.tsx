@@ -4,17 +4,18 @@ import Socials from '@components/signOn/socials/Socials.tsx';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { Checkbox } from '@shared/ui/checkbox.tsx';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/shared/ui/button.tsx';
 import { useAuth } from '@/auth/useAuth.ts';
 import { Input } from '@/shared/ui/input';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import React from 'react';
 import axios from 'axios';
 import { z } from 'zod';
 
 const Login = () => {
   const { onLogin } = useAuth();
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -26,15 +27,31 @@ const Login = () => {
 
   const loginMutation = useMutation({
     mutationFn: (credentials: { identifier: string; password: string }) => {
-      return axios.post('http://localhost:1337/api/auth/local', credentials);
+      return axios.post(`${import.meta.env.VITE_API_URL}/auth/local`, credentials);
     },
     onSuccess: (data) => onLogin(data.data),
-    onError: (error) => console.log('error'),
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response) {
+        setErrorMessage(error.response.data.error.message);
+      } else {
+        setErrorMessage('An error occurred:' + error.message);
+      }
+    },
   });
 
   function onSubmit(credentials: z.infer<typeof loginSchema>) {
     loginMutation.mutate(credentials);
   }
+
+  const clearErrorMessage = () => {
+    setErrorMessage('');
+  };
+
+  const { identifier, password } = form.watch();
+
+  useEffect(() => {
+    clearErrorMessage();
+  }, [identifier, password]);
 
   return (
     <div className="m-auto flex w-full flex-col gap-6 rounded-lg bg-white p-8 shadow sm:max-w-lg">
@@ -84,7 +101,7 @@ const Login = () => {
           />
           <div className="flex justify-between">
             <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-gray-400" />
+              <Checkbox id="terms" className="border-gray-400" aria-label="Remember me"/>
               <label
                 htmlFor="terms"
                 className="mt-0.5 text-sm leading-none text-gray-500 peer-disabled:cursor-not-allowed"
@@ -96,6 +113,7 @@ const Login = () => {
               Forgot password?
             </Link>
           </div>
+          {errorMessage && <span className="w-full text-center text-red-500">{errorMessage}</span>}
           <Button type="submit" className="bg-primary hover:bg-blue-600">
             Sign in
           </Button>

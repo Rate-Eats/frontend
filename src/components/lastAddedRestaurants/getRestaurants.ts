@@ -1,13 +1,12 @@
 import axios from 'axios';
 
-
 interface ImageData {
   id: number;
   path: string;
   name: string;
   hash: string;
   extension: string;
-  main:boolean;
+  main: boolean;
 }
 
 interface GalleryItem {
@@ -23,7 +22,7 @@ interface GalleryItem {
 
 export const fetchLastAddedRestaurants = async (): Promise<GalleryItem> => {
   const { data } = await axios.get(
-    'http://localhost:1337/api/restaurants?populate=*&pagination[page]=1&pagination[pageSize]=1',
+    `${import.meta.env.VITE_API_URL}/restaurants?populate=*&pagination[page]=1&pagination[pageSize]=1`,
     {
       headers: {
         Authorization:
