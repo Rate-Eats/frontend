@@ -1,6 +1,6 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, Form } from '@/shared/ui/form.tsx';
-import { loginSchema } from '@components/signOn/login/LoginSchema.ts';
 import Socials from '@components/signOn/socials/Socials.tsx';
+import { loginSchema } from '@/schemas/LoginSchema.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { Checkbox } from '@shared/ui/checkbox.tsx';
@@ -14,7 +14,10 @@ import axios from 'axios';
 import { z } from 'zod';
 
 const Login = () => {
-  const { onLogin } = useAuth();
+  const { onLogin, userData } = useAuth();
+  if (userData) {
+    window.location.replace('/');
+  }
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -101,7 +104,7 @@ const Login = () => {
           />
           <div className="flex justify-between">
             <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-gray-400" aria-label="Remember me"/>
+              <Checkbox id="terms" className="border-gray-400" aria-label="Remember me" />
               <label
                 htmlFor="terms"
                 className="mt-0.5 text-sm leading-none text-gray-500 peer-disabled:cursor-not-allowed"

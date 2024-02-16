@@ -23,7 +23,7 @@ const LastAddedRestaurants = () => {
         <div className="mt-auto grid grid-cols-2 gap-4">
           {thumbnailImages.map((imageUrl, index) => (
             <img
-              src={`${import.meta.env.VITE_WEBSITE_URL}uploads/${imageUrl}`}
+              src={`${import.meta.env.VITE_WEBSITE_URL}/uploads/${imageUrl}`}
               className="h-[150px] w-[250px]"
               alt="thumbnail"
               key={index}

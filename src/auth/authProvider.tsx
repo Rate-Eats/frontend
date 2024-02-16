@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useEffect, useState } from 'react';
+import React, { createContext, ReactNode, useEffect, useLayoutEffect, useState } from 'react';
 import { UserDataInterface } from '@shared/interfaces/user.ts';
 import { useLocalStorage } from '@/hooks/useLocalStorage.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     if (jwtToken) getUserData.mutate();
-  }, []);
+  }, [jwtToken]);
 
   useEffect(() => {
     if (location.pathname === '/auth/google/callback') {

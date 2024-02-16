@@ -1,10 +1,11 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, Form } from '@/shared/ui/form.tsx';
-import { registerSchema } from '@components/signOn/register/registerSchema.ts';
+import { registerSchema } from '@/schemas/registerSchema.ts';
 import Socials from '@components/signOn/socials/Socials.tsx';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/shared/ui/button.tsx';
+import { useAuth } from '@auth/useAuth.ts';
 import { Input } from '@/shared/ui/input';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -12,6 +13,10 @@ import axios from 'axios';
 import { z } from 'zod';
 
 const Register = () => {
+  const { userData } = useAuth();
+  if (userData) {
+    window.location.replace('/');
+  }
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 

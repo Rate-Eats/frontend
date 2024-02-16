@@ -15,15 +15,20 @@ const Navigation = ({ openDropdown }: NavigationProps) => {
       }`}
     >
       <ul className="order-2 mr-auto mt-4 flex flex-col gap-5 lg:order-none lg:mt-0 lg:flex-row">
-        <li className="group flex cursor-pointer items-center gap-2 text-sm text-gray-600 hover:text-primary">
-          <Link to={'/restaurants'}>
-            <Utensils size={16} strokeWidth={1.5} color="black" className="group-hover:stroke-primary" />
+        <li className="group cursor-pointer items-center gap-2 text-sm text-gray-600 transition hover:text-primary">
+          <Link to={'/restaurants'} className="flex items-center gap-2">
+            <Utensils size={16} strokeWidth={1.5} color="black" className="transition group-hover:stroke-primary" />
             Restaurants
           </Link>
         </li>
-        <li className="group flex cursor-pointer items-center gap-2 text-sm text-gray-600 hover:text-primary">
-          <Link to={'/reviews'}>
-            <GanttChartSquare size={16} strokeWidth={1.5} color="black" className="group-hover:stroke-primary" />
+        <li className="group flex cursor-pointer items-center gap-2 text-sm text-gray-600 transition hover:text-primary">
+          <Link to={'/reviews'} className="flex items-center gap-2">
+            <GanttChartSquare
+              size={16}
+              strokeWidth={1.5}
+              color="black"
+              className="transition group-hover:stroke-primary"
+            />
             Reviews
           </Link>
         </li>

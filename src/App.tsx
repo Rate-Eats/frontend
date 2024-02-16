@@ -12,7 +12,7 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         {!headerExcludedRoutes.includes(pathname) && <Navbar />}
         <Routes>
           {PrivateRoutes.map((route, index) => (

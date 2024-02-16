@@ -1,10 +1,15 @@
 import { lazy } from 'react';
-import TemplatePage from '@pages/templatePage/templatePage.tsx';
 
-const Login = lazy(() => import('@components/signOn/login/Login'));
-const Register = lazy(() => import('@components/signOn/register/Register'));
+const NotFound = lazy(() => import('@components/notFound/NotFound.tsx'));
+const Dashboard = lazy(() => import('@pages/dashboard/Dashboard.tsx'));
+const Register = lazy(() => import('@pages/register/Register.tsx'));
+const Login = lazy(() => import('@pages/login/Login.tsx'));
 
 const PublicRoutes = [
+  {
+    path: '/',
+    element: <Dashboard />,
+  },
   {
     path: '/register',
     element: <Register />,
@@ -15,7 +20,7 @@ const PublicRoutes = [
   },
   {
     path: '*',
-    element: <TemplatePage />,
+    element: <NotFound />,
   },
 ];
 

@@ -32,13 +32,13 @@ const User = () => {
     return (
       <div className="flex gap-2">
         <button
-          className="w-[90px] rounded-sm border border-primary py-1 text-primary md:w-[130px] md:py-1.5"
+          className="w-[90px] rounded-sm border border-primary py-1 text-primary transition hover:border-blue-600 hover:text-blue-600 md:w-[130px] md:py-1.5"
           onClick={() => navigateTo('login')}
         >
           Log in
         </button>
         <button
-          className="w-[90px] rounded-md bg-primary py-1 text-white md:w-[130px] md:py-1.5"
+          className="w-[90px] rounded-md bg-primary py-1 text-white transition hover:bg-blue-600 md:w-[130px] md:py-1.5"
           onClick={() => navigateTo('register')}
         >
           Register
@@ -55,7 +55,7 @@ const User = () => {
       <div className="relative flex items-center gap-3">
         {userData.avatar ? (
           <img
-            src={`${import.meta.env.VITE_WEBSITE_URL}/uploads/${userData.avatar}`}
+            src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${userData.avatar}`}
             className="h-10 w-10 cursor-pointer rounded-full"
             alt={'avatar'}
           />
