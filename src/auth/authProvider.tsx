@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useEffect, useLayoutEffect, useState } from 'react';
+import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { UserDataInterface } from '@shared/interfaces/user.ts';
 import { useLocalStorage } from '@/hooks/useLocalStorage.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -26,12 +26,24 @@ export const AuthContext = createContext<AuthContext>({
   onLogout: () => {},
 });
 
+const templateData = {
+  id: 0,
+  username: '',
+  email: '',
+  provider: '',
+  confirmed: true,
+  blocked: true,
+  createdAt: '',
+  updatedAt: '',
+  avatar: '',
+};
+
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [jwtToken, setJwtToken] = useLocalStorage('jwtToken', null);
-  const [userData, setUserData] = useState<UserDataInterface | null>(null);
+  const [userData, setUserData] = useState<UserDataInterface | null>(jwtToken ? templateData : null);
 
   const handleLogin = async (loginData: LoginResponse) => {
     setJwtToken(loginData.jwt);

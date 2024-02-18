@@ -1,9 +1,10 @@
 import TemplatePage from '@pages/templatePage/templatePage.tsx';
+import AddRestaurant from '@pages/addRestaurant/AddRestaurant.tsx';
 
 const PrivateRoutes = [
   {
     path: '/addRestaurant',
-    element: <TemplatePage />,
+    element: <AddRestaurant />,
   },
   {
     path: '/profile',

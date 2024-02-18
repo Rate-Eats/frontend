@@ -75,6 +75,7 @@ const User = () => {
             e.stopPropagation();
             setOpen(!open);
           }}
+          aria-label="expand user menu"
         >
           <ArrowDownIcon />
         </button>
