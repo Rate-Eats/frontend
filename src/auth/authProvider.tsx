@@ -4,6 +4,7 @@ import { useLocalStorage } from '@/hooks/useLocalStorage.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import { string } from 'zod';
 
 interface LoginResponse {
   user: UserDataInterface;
@@ -12,6 +13,7 @@ interface LoginResponse {
 
 interface AuthContext {
   onLogin: (userData: LoginResponse) => void;
+  jwtToken: string;
   userData: UserDataInterface | null;
   onLogout: () => void;
 }
@@ -22,6 +24,7 @@ interface AuthProviderProps {
 
 export const AuthContext = createContext<AuthContext>({
   userData: null,
+  jwtToken: '',
   onLogin: () => {},
   onLogout: () => {},
 });
@@ -91,6 +94,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const value = {
     userData,
+    jwtToken,
     onLogin: handleLogin,
     onLogout: handleLogout,
   };

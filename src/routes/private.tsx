@@ -3,7 +3,7 @@ import AddRestaurant from '@pages/addRestaurant/AddRestaurant.tsx';
 
 const PrivateRoutes = [
   {
-    path: '/addRestaurant',
+    path: '/addrestaurant',
     element: <AddRestaurant />,
   },
   {

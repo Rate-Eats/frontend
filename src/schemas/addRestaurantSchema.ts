@@ -11,14 +11,7 @@ export const addRestaurantSchema = z.object({
   address: z.string().min(1, {
     message: 'Address cannot be empty.',
   }),
-  image: z
-    .array(
-      z.object({
-        name: z.string(),
-        blobUrl: z.string(),
-      }),
-    )
-    .min(1, {
-      message: 'Please select at least one image',
-    }),
+  image: z.array(z.instanceof(File)).min(1, {
+    message: 'Please select at least one image',
+  }),
 });
