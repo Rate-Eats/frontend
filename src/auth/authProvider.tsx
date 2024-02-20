@@ -4,7 +4,6 @@ import { useLocalStorage } from '@/hooks/useLocalStorage.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { string } from 'zod';
 
 interface LoginResponse {
   user: UserDataInterface;

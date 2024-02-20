@@ -11,18 +11,43 @@ import { Form } from '@shared/ui/form.tsx';
 import { useAuth } from '@auth/useAuth.ts';
 import { useForm } from 'react-hook-form';
 import React from 'react';
-import { z } from 'zod';
 import axios from 'axios';
+import { z } from 'zod';
+
+interface ImageInterface {
+  ext: string;
+  hash: string;
+  name: string;
+}
+
+interface RestaurantData {
+  name: string;
+  description: string;
+  address: string;
+  images: {
+    main: boolean;
+    path: string;
+    hash: string;
+    name: string;
+    extension: string;
+    __temp_key__: number;
+  }[];
+  ratings: {
+    disconnect: [];
+    connect: [];
+  };
+}
 
 const AddRestaurant = () => {
   const { jwtToken } = useAuth();
+
   const form = useForm<z.infer<typeof addRestaurantSchema>>({
     resolver: zodResolver(addRestaurantSchema),
     defaultValues: {
-      name: '',
-      description: '',
-      category: [],
-      address: '',
+      name: 'dsa',
+      description: 'dsa',
+      category: ['dsa'],
+      address: 'dsa',
       image: [],
     },
   });
@@ -35,24 +60,67 @@ const AddRestaurant = () => {
         },
       });
     },
-    onSuccess: (data) => console.log(data.data),
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
-        console.log(error.response.data.error.message);
+        console.log(error);
       } else {
         console.log('An error occurred:' + error.message);
       }
     },
   });
 
-  function onSubmit(data: z.infer<typeof addRestaurantSchema>) {
+  const uploadRestaurant = useMutation({
+    mutationFn: (data: RestaurantData) => {
+      return axios.post(
+        `${import.meta.env.VITE_API_URL}/restaurants`,
+        { data },
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        },
+      );
+    },
+    onSuccess: (data) => console.log(data),
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response) {
+        console.log(error);
+      } else {
+        console.log('An error occurred:' + error.message);
+      }
+    },
+  });
+
+  const onSubmit = async (restaurantData: z.infer<typeof addRestaurantSchema>) => {
     const formData = new FormData();
-    Array.from(data.image).forEach((file) => {
+    Array.from(restaurantData.image).forEach((file) => {
       formData.append('files', file);
     });
 
-    uploadImages.mutate(formData);
-  }
+    await uploadImages.mutateAsync(formData, {
+      onSuccess: ({ data }) => {
+        const imagesArray = data.map((image: ImageInterface, index: number) => ({
+          main: false,
+          path: image.hash + image.ext,
+          hash: image.hash,
+          name: image.name,
+          extension: image.ext,
+          __temp_key__: index,
+        }));
+        const addRestaurantObject: RestaurantData = {
+          name: restaurantData.name,
+          description: restaurantData.description,
+          address: restaurantData.address,
+          images: imagesArray,
+          ratings: {
+            disconnect: [],
+            connect: [],
+          },
+        };
+        uploadRestaurant.mutate(addRestaurantObject);
+      },
+    });
+  };
 
   return (
     <div className="flex w-full justify-center px-5">
