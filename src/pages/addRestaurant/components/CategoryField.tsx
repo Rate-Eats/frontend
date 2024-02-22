@@ -18,7 +18,7 @@ const CategoryField = ({ form }: FormProps) => {
           category && (
             <div
               key={category.label}
-              className="rounded-sm bg-[#F0F0F0] p-1.5 text-[#6E7072]"
+              className="rounded-sm bg-[#F0F0F0] p-1.5 text-[#6E7072] transition hover:bg-gray-200"
               onClick={(e) => {
                 e.preventDefault();
                 handleCategoryChange(category);

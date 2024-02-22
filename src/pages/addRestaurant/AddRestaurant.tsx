@@ -7,6 +7,7 @@ import NameField from '@pages/addRestaurant/components/NameField.tsx';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@shared/ui/button.tsx';
+import { useNavigate } from 'react-router-dom';
 import { Form } from '@shared/ui/form.tsx';
 import { useAuth } from '@auth/useAuth.ts';
 import { useForm } from 'react-hook-form';
@@ -38,7 +39,14 @@ interface RestaurantData {
   };
 }
 
+interface ErrorsProps {
+  path: string[];
+  message: 'This attribute must be unique';
+  name: 'ValidationError';
+}
+
 const AddRestaurant = () => {
+  const navigate = useNavigate();
   const { jwtToken } = useAuth();
 
   const form = useForm<z.infer<typeof addRestaurantSchema>>({
@@ -51,6 +59,14 @@ const AddRestaurant = () => {
       image: [],
     },
   });
+
+  const setErrors = (errors: ErrorsProps[]) => {
+    errors.map((error: ErrorsProps) => {
+      if (error.path[0] === 'name') {
+        form.setError('name', { type: 'custom', message: error.message });
+      }
+    });
+  };
 
   const uploadImages = useMutation({
     mutationFn: (files: FormData) => {
@@ -81,10 +97,11 @@ const AddRestaurant = () => {
         },
       );
     },
-    onSuccess: (data) => console.log(data),
+    onSuccess: (data) => navigate(`/restaurant/${data.data.data.id}`),
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
-        console.log(error);
+        const errors = error?.response?.data?.error?.details?.errors;
+        if (errors) setErrors(errors);
       } else {
         console.log('An error occurred:' + error.message);
       }
