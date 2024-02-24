@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     if (location.pathname === '/auth/google/callback') {
-      handleGoogleLogin();
+      handleGoogleLogin().then();
     }
   }, [location]);
 
