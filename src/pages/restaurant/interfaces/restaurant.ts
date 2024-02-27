@@ -14,8 +14,17 @@ export interface RestaurantData {
     address: string;
     images: RestaurantImages[];
     ratings: {
-      disconnect: [];
-      connect: [];
+      data: {
+        attributes: {
+          rating_food: number;
+          rating_service: number;
+          rating_ambience: number;
+          rating_price: number;
+          createdAt: string;
+          updatedAt: string;
+          publishedAt: null;
+        };
+      }[];
     };
   };
 }

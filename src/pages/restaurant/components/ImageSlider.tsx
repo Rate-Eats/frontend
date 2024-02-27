@@ -8,7 +8,7 @@ interface ImageSliderProps {
 const ImageSlider = ({ images }: ImageSliderProps) => {
   console.log(images);
   return (
-    <Carousel className="w-full">
+    <Carousel className="h-[400px] w-full">
       <CarouselContent>
         {images.map((image, index) => (
           <CarouselItem key={index}>
