@@ -26,7 +26,7 @@ const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
   return (
     <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8">
       <div className="flex items-center justify-between">
-        <span className="text-3xl font-medium text-primary">{name}</span>
+        <span className="text-2xl font-medium text-primary">{name}</span>
         <div className="flex gap-2 font-medium">
           {averageRating} Stars | <span className="text-primary underline">{ratings.data.length} Reviews</span>
         </div>

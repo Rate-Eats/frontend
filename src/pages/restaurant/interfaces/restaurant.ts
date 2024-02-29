@@ -4,6 +4,7 @@ export interface RestaurantImages {
   hash: string;
   name: string;
   extension: string;
+  menu:boolean;
 }
 
 export interface RestaurantData {
