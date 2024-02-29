@@ -1,6 +1,7 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@shared/ui/form.tsx';
 import { FormProps } from '@pages/addRestaurant/interfaces/formProps.ts';
 import UploadIcon from '@assets/svgs/icons/upload.svg?react';
+import TrashIcon from '@assets/svgs/icons/trash.svg?react';
 import { Input } from '@shared/ui/input.tsx';
 import React from 'react';
 
@@ -35,14 +36,7 @@ const ImageField = ({ form }: FormProps) => {
               Upload images
             </FormLabel>
             <FormControl>
-              <Input
-                className="hidden"
-                type="file"
-                placeholder={'siema'}
-                multiple
-                accept="image/*"
-                onChange={handleFileChange}
-              />
+              <Input className="hidden" type="file" multiple accept="image/*" onChange={handleFileChange} />
             </FormControl>
             <FormMessage className="" />
           </FormItem>
@@ -51,13 +45,21 @@ const ImageField = ({ form }: FormProps) => {
       {imagesToDisplay.map((item) => {
         const imageUrl = URL.createObjectURL(item);
         return (
-          <img
-            key={item.name}
-            src={imageUrl}
+          <div
+            className="group relative mt-auto flex h-[130px] w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-gray-300 bg-white text-gray-400 transition"
             onClick={() => removeImage(item.name)}
-            className="mt-auto flex h-[130px] w-full cursor-pointer flex-col items-center justify-center gap-2 space-y-1 rounded-lg border border-gray-300 bg-white text-gray-400"
-            alt={'restaurant image'}
-          />
+          >
+            <img
+              key={item.name}
+              src={imageUrl}
+              className="h-full w-full object-cover transition group-hover:blur-[2px]"
+              alt={'restaurant image'}
+            />
+            <div className="absolute z-10 h-full w-full bg-black opacity-0 transition group-hover:opacity-50" />
+            <div className="absolute z-10 flex h-full w-full items-center justify-center opacity-0 transition group-hover:opacity-100">
+              <TrashIcon />
+            </div>
+          </div>
         );
       })}
     </div>

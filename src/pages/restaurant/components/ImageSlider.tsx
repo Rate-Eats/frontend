@@ -8,13 +8,13 @@ interface ImageSliderProps {
 const ImageSlider = ({ images }: ImageSliderProps) => {
   console.log(images);
   return (
-    <Carousel className="h-[400px] w-full">
+    <Carousel className="h-[350px] w-full">
       <CarouselContent>
         {images.map((image, index) => (
           <CarouselItem key={index}>
             <img
               src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${image.path}`}
-              className="h-[400px] w-full rounded-xl object-cover text-4xl font-semibold"
+              className="h-[350px] w-full rounded-xl object-cover text-4xl font-semibold"
               alt={image.name}
             />
           </CarouselItem>

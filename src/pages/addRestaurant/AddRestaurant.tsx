@@ -52,10 +52,10 @@ const AddRestaurant = () => {
   const form = useForm<z.infer<typeof addRestaurantSchema>>({
     resolver: zodResolver(addRestaurantSchema),
     defaultValues: {
-      name: 'dsa',
-      description: 'dsa',
-      category: ['dsa'],
-      address: 'dsa',
+      name: '',
+      description: '',
+      category: [],
+      address: '',
       image: [],
     },
   });
