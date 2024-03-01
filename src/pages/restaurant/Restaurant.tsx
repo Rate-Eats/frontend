@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import RestaurantMenus from '@pages/restaurant/components/RestaurantMenus.tsx';
+import ReviewRatings from '@pages/restaurant/components/ReviewRatings.tsx';
 
 const Restaurant = () => {
   const [restaurantData, setRestaurantData] = useState<RestaurantData | null>(null);
@@ -30,9 +31,10 @@ const Restaurant = () => {
   if (getRestaurant.isPending || !restaurantData) return <RestaurantSkeleton />;
   return (
     <div className="mx-auto mt-5 flex w-full max-w-screen-xl flex-col justify-center gap-5">
-      <ImageSlider images={restaurantData.attributes.images.filter((image) => image.menu)} />
+      <ImageSlider images={restaurantData.attributes.images.filter((image) => !image.menu)} />
       <RestaurantDetails restaurantData={restaurantData} />
       <RestaurantMenus images={restaurantData.attributes.images.filter((image) => image.menu)} />
+      <ReviewRatings restaurantData={restaurantData}/>
     </div>
   );
 };

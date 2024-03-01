@@ -13,13 +13,14 @@ const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
     attributes: { name, description, address, ratings },
   } = restaurantData;
 
-  const averageRating = (
+  const calculation =
     ratings.data.reduce((sum, { attributes }) => {
       const { rating_ambience, rating_food, rating_service, rating_price } = attributes;
       const ratingSum = rating_ambience + rating_food + rating_service + rating_price;
       return sum + ratingSum / 4;
-    }, 0) / ratings.data.length
-  ).toFixed(1);
+    }, 0) / ratings.data.length;
+
+  const averageRating = !isNaN(calculation) ? calculation.toFixed(2) : 0;
 
   const price = '₹ 2,000 for 2 | North Indian';
 
