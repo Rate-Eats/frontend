@@ -1,25 +1,17 @@
-import React from 'react';
-import Stars from '@components/rating/Stars.tsx';
 import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
+import { calculateRating } from '@pages/restaurant/utils/rating.ts';
+import Stars from '@components/rating/Stars.tsx';
+import React from 'react';
 
 interface ReviewRatingsProps {
   restaurantData: RestaurantData;
 }
 const ReviewRatings = ({ restaurantData }: ReviewRatingsProps) => {
-
   const {
     attributes: { ratings },
   } = restaurantData;
 
-  const calculation =
-    ratings.data.reduce((sum, { attributes }) => {
-      const { rating_ambience, rating_food, rating_service, rating_price } = attributes;
-      const ratingSum = rating_ambience + rating_food + rating_service + rating_price;
-      return sum + ratingSum / 4;
-    }, 0) / ratings.data.length;
-
-  const averageRating = !isNaN(calculation) ? calculation : 0;
-
+  const averageRating = calculateRating(ratings);
   const ratingsCount = ratings.data.length;
 
   return (

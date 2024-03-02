@@ -1,13 +1,13 @@
 import RestaurantDetails from '@pages/restaurant/components/RestaurantDetails.tsx';
+import RestaurantMenus from '@pages/restaurant/components/RestaurantMenus.tsx';
 import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
+import ReviewRatings from '@pages/restaurant/components/ReviewRatings.tsx';
 import RestaurantSkeleton from '@pages/restaurant/RestaurantSkeleton.tsx';
 import ImageSlider from '@pages/restaurant/components/ImageSlider.tsx';
 import { useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import RestaurantMenus from '@pages/restaurant/components/RestaurantMenus.tsx';
-import ReviewRatings from '@pages/restaurant/components/ReviewRatings.tsx';
 
 const Restaurant = () => {
   const [restaurantData, setRestaurantData] = useState<RestaurantData | null>(null);

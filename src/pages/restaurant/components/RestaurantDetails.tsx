@@ -1,6 +1,7 @@
-import PriceIcon from '@assets/svgs/icons/dollar.svg?react';
-import LocationIcon from '@assets/svgs/icons/location.svg?react';
 import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
+import { calculateRating } from '@pages/restaurant/utils/rating.ts';
+import LocationIcon from '@assets/svgs/icons/location.svg?react';
+import PriceIcon from '@assets/svgs/icons/dollar.svg?react';
 import { useState } from 'react';
 
 interface RestaurantDetailsProps {
@@ -13,15 +14,7 @@ const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
     attributes: { name, description, address, ratings },
   } = restaurantData;
 
-  const calculation =
-    ratings.data.reduce((sum, { attributes }) => {
-      const { rating_ambience, rating_food, rating_service, rating_price } = attributes;
-      const ratingSum = rating_ambience + rating_food + rating_service + rating_price;
-      return sum + ratingSum / 4;
-    }, 0) / ratings.data.length;
-
-  const averageRating = !isNaN(calculation) ? calculation.toFixed(2) : 0;
-
+  const averageRating = calculateRating(ratings).toFixed(2);
   const price = '₹ 2,000 for 2 | North Indian';
 
   return (

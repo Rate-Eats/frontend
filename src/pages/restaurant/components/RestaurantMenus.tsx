@@ -16,7 +16,7 @@ const RestaurantMenus = ({ images }: RestaurantMenusProps) => {
       <div className="my-5 h-px w-full bg-gray-200" />
       <div className="flex gap-4">
         {images.map((image) => (
-          <Dialog>
+          <Dialog key={image.name}>
             <DialogTrigger className="group relative mt-auto flex size-[140px] cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-gray-300 bg-white text-gray-400 transition">
               <img src={`${baseUploadsUrl}${image.path}`} alt={image.name} className="size-full object-cover" />
               <div className="absolute z-10 size-full bg-black opacity-0 transition group-hover:opacity-50" />
