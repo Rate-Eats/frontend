@@ -1,12 +1,54 @@
 import { Ratings } from '@pages/restaurant/interfaces/restaurant.ts';
 
-export const calculateRating = (ratings: Ratings) => {
-  const calculation =
-    ratings.data.reduce((sum, { attributes }) => {
-      const { rating_ambience, rating_food, rating_service, rating_price } = attributes;
-      const ratingSum = rating_ambience + rating_food + rating_service + rating_price;
-      return sum + ratingSum / 4;
-    }, 0) / ratings.data.length;
+type RatingCategory = 'rating_ambience' | 'rating_food' | 'rating_service' | 'rating_price';
 
-  return !isNaN(calculation) ? calculation : 0;
+const calculateSingleRating = (ratings: Ratings, category: RatingCategory) => {
+  const validRatings = ratings.data.filter((rating) => rating.attributes[category] !== 0);
+  const ratingSum = validRatings.reduce((sum, { attributes }) => sum + attributes[category], 0);
+  const averageRating = validRatings.length ? ratingSum / validRatings.length : 0;
+
+  return {
+    rating: averageRating,
+    count: validRatings.length,
+  };
+};
+
+function calculatePercentage(part: number, whole: number): number {
+  return (part / whole) * 100;
+}
+
+export const calculateRating = (ratings: Ratings) => {
+  const ambience = calculateSingleRating(ratings, 'rating_ambience');
+  const food = calculateSingleRating(ratings, 'rating_food');
+  const service = calculateSingleRating(ratings, 'rating_service');
+  const price = calculateSingleRating(ratings, 'rating_price');
+  const totalRating = (ambience.rating + food.rating + service.rating + price.rating) / 4;
+
+  return {
+    rating_ambience: {
+      rating: ambience.rating,
+      percentage: calculatePercentage(ambience.rating, 5),
+      count: ambience.count,
+    },
+    rating_food: {
+      rating: food.rating,
+      percentage: calculatePercentage(food.rating, 5),
+      count: food.count,
+    },
+    rating_service: {
+      rating: service.rating,
+      percentage: calculatePercentage(service.rating, 5),
+      count: service.count,
+    },
+    rating_price: {
+      rating: price.rating,
+      percentage: calculatePercentage(price.rating, 5),
+      count: price.count,
+    },
+    rating: {
+      rating: totalRating,
+      percentage: calculatePercentage(totalRating, 5),
+      count: ratings.data.length,
+    },
+  };
 };

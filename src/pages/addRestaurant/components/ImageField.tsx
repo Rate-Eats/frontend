@@ -31,7 +31,7 @@ const ImageField = ({ form }: FormProps) => {
         render={() => (
           <FormItem className="space-y-1">
             <span className={`text-base font-medium ${form.formState.errors.image && 'text-destructive'}`}>Images</span>
-            <FormLabel className="flex  h-[130px] w-full cursor-pointer flex-col items-center justify-center gap-2 space-y-1 rounded-lg border border-gray-300 bg-white text-base font-medium text-gray-400">
+            <FormLabel className="flex h-[130px] w-full cursor-pointer flex-col items-center justify-center gap-2 space-y-1 rounded-lg border border-gray-300 bg-white text-base font-medium text-gray-400">
               <UploadIcon />
               Upload images
             </FormLabel>
@@ -46,6 +46,7 @@ const ImageField = ({ form }: FormProps) => {
         const imageUrl = URL.createObjectURL(item);
         return (
           <div
+            key={item.name}
             className="group relative mt-auto flex h-[130px] w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-gray-300 bg-white text-gray-400 transition"
             onClick={() => removeImage(item.name)}
           >

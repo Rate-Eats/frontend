@@ -14,7 +14,7 @@ const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
     attributes: { name, description, address, ratings },
   } = restaurantData;
 
-  const averageRating = calculateRating(ratings).toFixed(2);
+  const rating = calculateRating(ratings);
   const price = '₹ 2,000 for 2 | North Indian';
 
   return (
@@ -22,7 +22,8 @@ const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
       <div className="flex items-center justify-between">
         <span className="text-2xl font-medium text-primary">{name}</span>
         <div className="flex gap-2 font-medium">
-          {averageRating} Stars | <span className="text-primary underline">{ratings.data.length} Reviews</span>
+          {rating.rating.rating.toFixed(1)} Stars |{' '}
+          <span className="text-primary underline">{ratings.data.length} Reviews</span>
         </div>
       </div>
       <div
