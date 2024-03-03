@@ -1,19 +1,19 @@
+import AddReviewModal from '@pages/restaurant/components/AddReviewModal.tsx';
 import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
 import { calculateRating } from '@pages/restaurant/utils/rating.ts';
 import { Progress } from '@shared/ui/progress.tsx';
 import Stars from '@components/rating/Stars.tsx';
 import React from 'react';
-import AddReviewModal from '@pages/restaurant/components/AddReviewModal.tsx';
 
 interface ReviewRatingsProps {
   restaurantData: RestaurantData;
 }
 const ReviewRatings = ({ restaurantData }: ReviewRatingsProps) => {
   const {
-    attributes: { ratings },
+    attributes: { reviews },
   } = restaurantData;
 
-  const rating = calculateRating(ratings);
+  const rating = calculateRating(reviews);
 
   return (
     <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8">

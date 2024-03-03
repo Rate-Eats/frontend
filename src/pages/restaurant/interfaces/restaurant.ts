@@ -7,7 +7,7 @@ export interface RestaurantImages {
   menu: boolean;
 }
 
-export interface Ratings {
+export interface Reviews {
   data: {
     attributes: {
       rating_food: number;
@@ -28,6 +28,6 @@ export interface RestaurantData {
     description: string;
     address: string;
     images: RestaurantImages[];
-    ratings: Ratings;
+    reviews: Reviews;
   };
 }

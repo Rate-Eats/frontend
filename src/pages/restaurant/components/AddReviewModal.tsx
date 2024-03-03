@@ -1,20 +1,20 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@shared/ui/dialog.tsx';
 import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx';
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
+import ImageField from '@pages/restaurant/components/ImageField.tsx';
 import { addReviewSchema } from '@/schemas/addReviewSchema.ts';
+import { ImageInterface } from '@shared/interfaces/forms.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
+import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
 import { Form } from '@shared/ui/form.tsx';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 import React from 'react';
 import { z } from 'zod';
-import ImageField from '@pages/restaurant/components/ImageField.tsx';
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
-import { useAuth } from '@auth/useAuth.ts';
 
 const AddReviewModal = () => {
-  const { jwtToken } = useAuth();
+  const { uploadImages, addReview } = useDatabase();
 
   const form = useForm<z.infer<typeof addReviewSchema>>({
     resolver: zodResolver(addReviewSchema),
@@ -28,31 +28,48 @@ const AddReviewModal = () => {
     },
   });
 
-  const uploadImages = useMutation({
-    mutationFn: (files: FormData) => {
-      return axios.post(`${import.meta.env.VITE_API_URL}/upload`, files, {
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      });
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error) && error.response) {
-        console.log(error);
-      } else {
-        console.log('An error occurred:' + error.message);
-      }
-    },
-  });
+  const onSubmit = async (reviewData: z.infer<typeof addReviewSchema>) => {
+    const formData = new FormData();
+    Array.from(reviewData.image).forEach((file) => {
+      formData.append('files', file);
+    });
 
-  const onSubmit = async (restaurantData: z.infer<typeof addReviewSchema>) => {
-    console.log(restaurantData);
+    await uploadImages.mutateAsync(formData, {
+      onSuccess: ({ data }) => {
+        const imagesArray = data.map((image: ImageInterface, index: number) => ({
+          main: false,
+          path: image.hash + image.ext,
+          hash: image.hash,
+          name: image.name,
+          extension: image.ext,
+          __temp_key__: index,
+        }));
+        const addReviewObject = {
+          rating_food: reviewData.food,
+          rating_service: reviewData.service,
+          rating_ambience: reviewData.ambience,
+          rating_price: reviewData.price,
+          description: reviewData.description,
+          images: imagesArray,
+        };
+        addReview.mutate(addReviewObject, {
+          onSuccess: (data) => console.log(data),
+          onError: (error) => {
+            if (axios.isAxiosError(error) && error.response) {
+              const errors = error?.response?.data?.error?.details?.errors;
+              if (errors) console.log(errors);
+            } else {
+              console.log('An error occurred:' + error.message);
+            }
+          },
+        });
+      },
+    });
   };
 
   return (
     <Dialog>
       <DialogTrigger className="text-primary underline">Rate now</DialogTrigger>
-
       <DialogContent className="shadow-no w-full max-w-3xl border-none bg-transparent bg-white   ">
         <DialogHeader>
           <DialogTitle className="w-[400px] text-[22px]">Rating & Feedback form</DialogTitle>
