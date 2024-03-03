@@ -36,6 +36,7 @@ const SelectRating = ({ form, ratingType }: SelectRatingProps) => {
       {starArray.map((value) => {
         return (
           <button
+            type="button"
             key={value}
             className={`${value % 1 === 0 && '-scale-x-100'} group h-5`}
             onMouseEnter={() => handleStarHover(value)}

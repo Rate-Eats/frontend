@@ -7,7 +7,7 @@ import { addReviewSchema } from '@/schemas/addReviewSchema.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@auth/useAuth.ts';
 import { Form } from '@shared/ui/form.tsx';
 import { useForm } from 'react-hook-form';
@@ -17,6 +17,7 @@ import React from 'react';
 import { z } from 'zod';
 
 const AddReviewModal = () => {
+  const { id } = useParams();
   const { uploadImages, addReview } = useDatabase();
   const navigate = useNavigate();
   const { userData } = useAuth();
@@ -56,6 +57,17 @@ const AddReviewModal = () => {
           rating_price: reviewData.price,
           description: reviewData.description,
           images: imagesArray,
+          restaurant: {
+            disconnect: [],
+            connect: [
+              {
+                id: Number(id),
+                position: {
+                  end: true,
+                },
+              },
+            ],
+          },
         };
         addReview.mutate(addReviewObject, {
           onSuccess: (data) => console.log(data),
