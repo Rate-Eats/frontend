@@ -22,11 +22,20 @@ export interface ReviewData {
   rating_ambience: number;
   rating_price: number;
   description: string;
-  images: any;
+  images: PayloadImageInterface;
 }
 
 export interface ImageInterface {
   ext: string;
   hash: string;
   name: string;
+}
+
+export interface PayloadImageInterface{
+  main: boolean,
+  path: string,
+  hash: string,
+  name: string,
+  extension: string,
+  __temp_key__: number,
 }

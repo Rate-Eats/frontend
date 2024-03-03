@@ -3,7 +3,7 @@ import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx'
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
 import ImageField from '@pages/restaurant/components/ImageField.tsx';
 import { addReviewSchema } from '@/schemas/addReviewSchema.ts';
-import { ImageInterface } from '@shared/interfaces/forms.ts';
+import { ImageInterface, PayloadImageInterface } from '@shared/interfaces/forms.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
@@ -36,7 +36,7 @@ const AddReviewModal = () => {
 
     await uploadImages.mutateAsync(formData, {
       onSuccess: ({ data }) => {
-        const imagesArray = data.map((image: ImageInterface, index: number) => ({
+        const imagesArray:PayloadImageInterface = data.map((image: ImageInterface, index: number) => ({
           main: false,
           path: image.hash + image.ext,
           hash: image.hash,

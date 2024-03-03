@@ -1,5 +1,6 @@
 import DescriptionField from '@pages/addRestaurant/components/DescriptionField.tsx';
 import CategoryField from '@pages/addRestaurant/components/CategoryField.tsx';
+import { ImageInterface, RestaurantData } from '@shared/interfaces/forms.ts';
 import AddressField from '@pages/addRestaurant/components/AddressField.tsx';
 import ImageField from '@pages/addRestaurant/components/ImageField.tsx';
 import { addRestaurantSchema } from '@/schemas/addRestaurantSchema.ts';
@@ -13,7 +14,6 @@ import { useForm } from 'react-hook-form';
 import React from 'react';
 import axios from 'axios';
 import { z } from 'zod';
-import { ImageInterface, RestaurantData } from '@shared/interfaces/forms.ts';
 
 interface ErrorsProps {
   path: string[];
