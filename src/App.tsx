@@ -5,7 +5,9 @@ import { AuthProvider } from '@/auth/authProvider.tsx';
 import Navbar from '@components/navbar/Navbar.tsx';
 import PrivateRoutes from '@/routes/private.tsx';
 import PublicRoutes from '@/routes/public.tsx';
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
+
+const Toaster = lazy(() => import('@shared/ui/sonner.tsx'));
 
 const App = () => {
   const { pathname } = useLocation();
@@ -22,6 +24,7 @@ const App = () => {
             <Route key={index} {...route} />
           ))}
         </Routes>
+        <Toaster />
       </Suspense>
     </AuthProvider>
   );

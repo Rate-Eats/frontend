@@ -1,20 +1,25 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@shared/ui/dialog.tsx';
+import { ImageInterface, PayloadImageInterface } from '@shared/interfaces/forms.ts';
 import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx';
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
 import ImageField from '@pages/restaurant/components/ImageField.tsx';
 import { addReviewSchema } from '@/schemas/addReviewSchema.ts';
-import { ImageInterface, PayloadImageInterface } from '@shared/interfaces/forms.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@auth/useAuth.ts';
 import { Form } from '@shared/ui/form.tsx';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import axios from 'axios';
 import React from 'react';
 import { z } from 'zod';
 
 const AddReviewModal = () => {
   const { uploadImages, addReview } = useDatabase();
+  const navigate = useNavigate();
+  const { userData } = useAuth();
 
   const form = useForm<z.infer<typeof addReviewSchema>>({
     resolver: zodResolver(addReviewSchema),
@@ -36,7 +41,7 @@ const AddReviewModal = () => {
 
     await uploadImages.mutateAsync(formData, {
       onSuccess: ({ data }) => {
-        const imagesArray:PayloadImageInterface = data.map((image: ImageInterface, index: number) => ({
+        const imagesArray: PayloadImageInterface = data.map((image: ImageInterface, index: number) => ({
           main: false,
           path: image.hash + image.ext,
           hash: image.hash,
@@ -69,8 +74,24 @@ const AddReviewModal = () => {
 
   return (
     <Dialog>
-      <DialogTrigger className="text-primary underline">Rate now</DialogTrigger>
-      <DialogContent className="shadow-no w-full max-w-3xl border-none bg-transparent bg-white   ">
+      <DialogTrigger
+        className="text-primary underline"
+        onClick={(e) => {
+          if (!userData) {
+            e.preventDefault();
+            toast('Account Required', {
+              description: 'Please log in to add a review.',
+              action: {
+                label: 'Login',
+                onClick: () => navigate('/login'),
+              },
+            });
+          }
+        }}
+      >
+        Rate now
+      </DialogTrigger>
+      <DialogContent className="shadow-no w-full max-w-3xl border-none bg-transparent bg-white">
         <DialogHeader>
           <DialogTitle className="w-[400px] text-[22px]">Rating & Feedback form</DialogTitle>
         </DialogHeader>
