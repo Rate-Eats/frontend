@@ -3,6 +3,7 @@ import { calculateRating } from '@pages/restaurant/utils/rating.ts';
 import { Progress } from '@shared/ui/progress.tsx';
 import Stars from '@components/rating/Stars.tsx';
 import React from 'react';
+import AddReviewModal from '@pages/restaurant/components/AddReviewModal.tsx';
 
 interface ReviewRatingsProps {
   restaurantData: RestaurantData;
@@ -25,7 +26,9 @@ const ReviewRatings = ({ restaurantData }: ReviewRatingsProps) => {
           <Stars rating={rating.rating.rating} />
           <div className="flex gap-1 whitespace-nowrap text-gray-500">
             Based on {rating.rating.count} reviews
-            <span className="cursor-pointer whitespace-nowrap text-primary underline">Rate now</span>
+            <span className="cursor-pointer whitespace-nowrap text-primary underline">
+              <AddReviewModal />
+            </span>
           </div>
         </div>
         <div className="flex w-full flex-col gap-8">
