@@ -1,5 +1,7 @@
-import TemplatePage from '@pages/templatePage/templatePage.tsx';
-import AddRestaurant from '@pages/addRestaurant/AddRestaurant.tsx';
+import { lazy } from 'react';
+
+const TemplatePage = lazy(() => import('@pages/templatePage/templatePage.tsx'));
+const AddRestaurant = lazy(() => import('@pages/addRestaurant/AddRestaurant.tsx'));
 
 const PrivateRoutes = [
   {
