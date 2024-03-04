@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 const Restaurant = () => {
   const { id } = useParams();
 
-  const { error, data, isFetching } = useQuery({
+  const { error, data, isFetching} = useQuery({
     queryKey: ['restaurant', id],
     queryFn: () => getRestaurant(id),
   });
