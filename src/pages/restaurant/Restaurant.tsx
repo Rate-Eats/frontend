@@ -13,6 +13,7 @@ const Restaurant = () => {
   const { error, data, isFetching} = useQuery({
     queryKey: ['restaurant', id],
     queryFn: () => getRestaurant(id),
+    refetchOnWindowFocus:false
   });
 
   if (isFetching) return <RestaurantSkeleton />;
