@@ -26,6 +26,7 @@ const AddReviewModal = () => {
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const { uploadImages, addReview } = useDatabase();
+  const [errorMessage, setErrorMessage] = useState('');
 
   const form = useForm<z.infer<typeof addReviewSchema>>({
     resolver: zodResolver(addReviewSchema),
@@ -42,14 +43,7 @@ const AddReviewModal = () => {
   const addReviewAndInvalidate = (addReviewObject: ReviewData) => {
     addReview.mutate(addReviewObject, {
       onSuccess: () => queryClient.invalidateQueries({ queryKey: ['restaurant'] }),
-      onError: (error) => {
-        if (axios.isAxiosError(error) && error.response) {
-          const errors = error?.response?.data?.error?.details?.errors;
-          if (errors) console.log(errors);
-        } else {
-          console.log('An error occurred:' + error.message);
-        }
-      },
+      onError: () => setErrorMessage('An error occurred while uploading your review'),
     });
     setLoading(false);
   };
@@ -62,6 +56,10 @@ const AddReviewModal = () => {
         );
         const addReviewObject = createReviewObject(reviewData, imagesArray, id);
         addReviewAndInvalidate(addReviewObject);
+      },
+      onError: () => {
+        setErrorMessage('An error occurred while uploading images');
+        setLoading(false);
       },
     });
   };
@@ -121,6 +119,7 @@ const AddReviewModal = () => {
             </div>
             <DescriptionField form={form} />
             <ImageField form={form} />
+            {errorMessage && <span className="mx-auto font-medium text-red-500">{errorMessage}</span>}
             <Button type="submit" disabled={loading}>
               {loading ? <Loader /> : 'Add review'}
             </Button>
