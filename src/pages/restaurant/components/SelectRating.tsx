@@ -1,6 +1,6 @@
 import HalfStarIcon from '@assets/svgs/icons/halfStar.svg?react';
 import { UseFormReturn } from 'react-hook-form';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface SelectRatingProps {
   form: UseFormReturn<{
@@ -30,6 +30,10 @@ const SelectRating = ({ form, ratingType }: SelectRatingProps) => {
   };
 
   const starArray = Array.from({ length: 10 }, (_, index) => (index + 1) / 2);
+
+  useEffect(() => {
+    handleStarLeave()
+  }, []);
 
   return (
     <div className="flex cursor-pointer">

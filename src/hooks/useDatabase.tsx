@@ -3,6 +3,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '@auth/useAuth.ts';
 import axios from 'axios';
 
+interface UpdateReviewProps {
+  data: ReviewData;
+  id: string;
+}
+
 const useDatabase = () => {
   const { jwtToken } = useAuth();
 
@@ -44,7 +49,21 @@ const useDatabase = () => {
     },
   });
 
-  return { uploadImages, addRestaurant, addReview };
+  const updateReview = useMutation({
+    mutationFn: ({ data, id }: UpdateReviewProps) => {
+      return axios.put(
+        `${import.meta.env.VITE_API_URL}/reviews/${id}`,
+        { data },
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        },
+      );
+    },
+  });
+
+  return { uploadImages, addRestaurant, addReview, updateReview };
 };
 
 export default useDatabase;

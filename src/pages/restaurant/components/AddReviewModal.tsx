@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@shared/ui/dialog.tsx';
 import { createImageObject, createReviewObject } from '@pages/restaurant/utils/createObjects.ts';
 import { ImageInterface, PayloadImageInterface, ReviewData } from '@shared/interfaces/forms.ts';
+import { ReviewAttributesData, Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx';
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
 import ImageField from '@pages/restaurant/components/ImageField.tsx';
@@ -8,25 +9,30 @@ import { addReviewSchema } from '@/schemas/addReviewSchema.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useEffect, useState } from 'react';
 import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
 import { useAuth } from '@auth/useAuth.ts';
 import { Form } from '@shared/ui/form.tsx';
 import Loader from '@shared/ui/loader.tsx';
 import { useForm } from 'react-hook-form';
-import React, { useState } from 'react';
 import { toast } from 'sonner';
-import axios from 'axios';
 import { z } from 'zod';
 
-const AddReviewModal = () => {
-  const navigate = useNavigate();
-  const { id } = useParams();
+interface AddReviewModalProps {
+  reviews: Reviews;
+}
+
+const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
+  const { uploadImages, addReview, updateReview } = useDatabase();
   const { userData } = useAuth();
   const queryClient = useQueryClient();
-  const [loading, setLoading] = useState(false);
-  const { uploadImages, addReview } = useDatabase();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const [existingReviewId, setExistingReview] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof addReviewSchema>>({
     resolver: zodResolver(addReviewSchema),
@@ -40,11 +46,45 @@ const AddReviewModal = () => {
     },
   });
 
+  useEffect(() => {
+    getReviews().then();
+  }, []);
+
+  const getReviews = async () => {
+    const reviewsData = reviews.data;
+    const existingReview = reviewsData.find((review: ReviewAttributesData) => review.attributes.users.data.id === 10);
+    if (existingReview) {
+      form.setValue('food', existingReview.attributes.rating_food);
+      form.setValue('service', existingReview.attributes.rating_service);
+      form.setValue('price', existingReview.attributes.rating_price);
+      form.setValue('ambience', existingReview.attributes.rating_ambience);
+      form.setValue('description', existingReview.attributes.description);
+      setExistingReview(existingReview.id);
+    }
+  };
+
   const addReviewAndInvalidate = (addReviewObject: ReviewData) => {
     addReview.mutate(addReviewObject, {
       onSuccess: () => queryClient.invalidateQueries({ queryKey: ['restaurant'] }),
       onError: () => setErrorMessage('An error occurred while uploading your review'),
     });
+
+    setLoading(false);
+  };
+
+  const updateReviewAndInvalidate = (addReviewObject: ReviewData) => {
+    const data = addReviewObject;
+    updateReview.mutate(
+      {
+        data,
+        id: existingReviewId,
+      },
+      {
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['restaurant'] }),
+        onError: () => setErrorMessage('An error occurred while uploading your review'),
+      },
+    );
+
     setLoading(false);
   };
 
@@ -55,7 +95,7 @@ const AddReviewModal = () => {
           createImageObject(image, index),
         );
         const addReviewObject = createReviewObject(reviewData, imagesArray, id);
-        addReviewAndInvalidate(addReviewObject);
+        existingReviewId ? updateReviewAndInvalidate(addReviewObject) : addReviewAndInvalidate(addReviewObject);
       },
       onError: () => {
         setErrorMessage('An error occurred while uploading images');
