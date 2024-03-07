@@ -1,7 +1,7 @@
+import { RestaurantImages, ReviewAttributesData, Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@shared/ui/dialog.tsx';
 import { createImageObject, createReviewObject } from '@pages/restaurant/utils/createObjects.ts';
 import { ImageInterface, PayloadImageInterface, ReviewData } from '@shared/interfaces/forms.ts';
-import { ReviewAttributesData, Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx';
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
 import ImageField from '@pages/restaurant/components/ImageField.tsx';
@@ -25,6 +25,7 @@ interface AddReviewModalProps {
 
 const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
   const { uploadImages, addReview, updateReview } = useDatabase();
+  const [currentImages, setCurrentImages] = useState<RestaurantImages[]>([]);
   const { userData } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -47,18 +48,22 @@ const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
   });
 
   useEffect(() => {
-    getReviews().then();
+    getReviews().then(() => console.log(currentImages));
   }, []);
 
   const getReviews = async () => {
     const reviewsData = reviews.data;
-    const existingReview = reviewsData.find((review: ReviewAttributesData) => review.attributes.users.data.id === 10);
+
+    const existingReview = reviewsData.find(
+      (review: ReviewAttributesData) => review.attributes.users.data.id === userData?.id,
+    );
     if (existingReview) {
       form.setValue('food', existingReview.attributes.rating_food);
       form.setValue('service', existingReview.attributes.rating_service);
       form.setValue('price', existingReview.attributes.rating_price);
       form.setValue('ambience', existingReview.attributes.rating_ambience);
       form.setValue('description', existingReview.attributes.description);
+      setCurrentImages(existingReview.attributes.images);
       setExistingReview(existingReview.id);
     }
   };
@@ -91,11 +96,11 @@ const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
   const uploadImagesAndGetReview = async (formData: FormData, reviewData: z.infer<typeof addReviewSchema>) => {
     await uploadImages.mutateAsync(formData, {
       onSuccess: ({ data }) => {
-        const imagesArray: PayloadImageInterface = data.map((image: ImageInterface, index: number) =>
-          createImageObject(image, index),
-        );
-        const addReviewObject = createReviewObject(reviewData, imagesArray, id);
-        existingReviewId ? updateReviewAndInvalidate(addReviewObject) : addReviewAndInvalidate(addReviewObject);
+        const imagesArray: PayloadImageInterface[] = data.map((image: ImageInterface) => createImageObject(image));
+        if (userData && id) {
+          const addReviewObject = createReviewObject(reviewData, [...imagesArray, ...currentImages], id, userData.id);
+          existingReviewId ? updateReviewAndInvalidate(addReviewObject) : addReviewAndInvalidate(addReviewObject);
+        }
       },
       onError: () => {
         setErrorMessage('An error occurred while uploading images');
@@ -105,6 +110,11 @@ const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
   };
 
   const onSubmit = async (reviewData: z.infer<typeof addReviewSchema>) => {
+    if (reviewData.image.length < 1 && userData && id) {
+      const addReviewObject = createReviewObject(reviewData, [], id, userData.id);
+      existingReviewId ? updateReviewAndInvalidate(addReviewObject) : addReviewAndInvalidate(addReviewObject);
+      return
+    }
     setLoading(true);
     const formData = new FormData();
     Array.from(reviewData.image).forEach((file) => {
@@ -112,6 +122,11 @@ const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
     });
 
     await uploadImagesAndGetReview(formData, reviewData);
+  };
+
+  const removeAdditionalItems = (id: string) => {
+    const images = currentImages.filter((image) => image.hash !== id);
+    setCurrentImages(images);
   };
 
   return (
@@ -158,7 +173,7 @@ const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
               </div>
             </div>
             <DescriptionField form={form} />
-            <ImageField form={form} />
+            <ImageField form={form} additionalImages={currentImages} removeAdditionalItems={removeAdditionalItems} />
             {errorMessage && <span className="mx-auto font-medium text-red-500">{errorMessage}</span>}
             <Button type="submit" disabled={loading}>
               {loading ? <Loader /> : 'Add review'}

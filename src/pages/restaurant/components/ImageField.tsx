@@ -4,8 +4,22 @@ import UploadIcon from '@assets/svgs/icons/upload.svg?react';
 import TrashIcon from '@assets/svgs/icons/trash.svg?react';
 import { Input } from '@shared/ui/input.tsx';
 import React from 'react';
+import { UseFormReturn } from 'react-hook-form';
+import { RestaurantImages } from '@pages/restaurant/interfaces/restaurant.ts';
 
-const ImageField = ({ form }: FormProps) => {
+interface ImageFieldProps {
+  form: UseFormReturn<{
+    food: number;
+    service: number;
+    price: number;
+    ambience: number;
+    image: File[];
+    description: string;
+  }>;
+  additionalImages: RestaurantImages[];
+  removeAdditionalItems: (id: string) => void;
+}
+const ImageField = ({ form, additionalImages, removeAdditionalItems }: ImageFieldProps) => {
   const imagesToDisplay = form.watch('image');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +67,26 @@ const ImageField = ({ form }: FormProps) => {
             <img
               key={item.name}
               src={imageUrl}
+              className="h-full w-full object-cover transition group-hover:blur-[2px]"
+              alt={'restaurant image'}
+            />
+            <div className="absolute z-10 h-full w-full bg-black opacity-0 transition group-hover:opacity-50" />
+            <div className="absolute z-10 flex h-full w-full items-center justify-center opacity-0 transition group-hover:opacity-100">
+              <TrashIcon />
+            </div>
+          </div>
+        );
+      })}
+      {additionalImages.map((item) => {
+        return (
+          <div
+            key={item.name}
+            className="group relative mt-auto flex h-[130px] w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-gray-300 bg-white text-gray-400 transition"
+            onClick={() => removeAdditionalItems(item.hash)}
+          >
+            <img
+              key={item.name}
+              src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${item.hash + item.extension}`}
               className="h-full w-full object-cover transition group-hover:blur-[2px]"
               alt={'restaurant image'}
             />

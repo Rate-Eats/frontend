@@ -27,7 +27,7 @@ const ReviewRatings = ({ restaurantData }: ReviewRatingsProps) => {
           <div className="flex gap-1 whitespace-nowrap text-gray-500">
             Based on {rating.rating.count} reviews
             <span className="cursor-pointer whitespace-nowrap text-primary underline">
-              <AddReviewModal reviews={reviews}/>
+              <AddReviewModal reviews={reviews} />
             </span>
           </div>
         </div>
