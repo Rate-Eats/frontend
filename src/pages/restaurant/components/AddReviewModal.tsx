@@ -48,7 +48,9 @@ const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
   });
 
   useEffect(() => {
-    getReviews().then(() => console.log(currentImages));
+    getReviews().then(() => {
+      return;
+    });
   }, []);
 
   const getReviews = async () => {
@@ -111,9 +113,9 @@ const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
 
   const onSubmit = async (reviewData: z.infer<typeof addReviewSchema>) => {
     if (reviewData.image.length < 1 && userData && id) {
-      const addReviewObject = createReviewObject(reviewData, [], id, userData.id);
+      const addReviewObject = createReviewObject(reviewData, currentImages, id, userData.id);
       existingReviewId ? updateReviewAndInvalidate(addReviewObject) : addReviewAndInvalidate(addReviewObject);
-      return
+      return;
     }
     setLoading(true);
     const formData = new FormData();

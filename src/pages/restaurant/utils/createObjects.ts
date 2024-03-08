@@ -12,7 +12,7 @@ export const createImageObject = (image: ImageInterface) => ({
 
 export const createReviewObject = (
   reviewData: z.infer<typeof addReviewSchema>,
-  imagesArray: any,
+  imagesArray: PayloadImageInterface[],
   restaurantId: string,
   userId: number,
 ) => ({

@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchLastAddedRestaurants } from '@components/lastAddedRestaurants/getRestaurants.ts';
 import SkeletonLastAddedRestaurants from '@components/lastAddedRestaurants/SkeletonLastAddedRestaurants.tsx';
+import { fetchLastAddedRestaurants } from '@components/lastAddedRestaurants/getRestaurants.ts';
+import { useQuery } from '@tanstack/react-query';
 
 const LastAddedRestaurants = () => {
   const { error, data, isFetching } = useQuery({

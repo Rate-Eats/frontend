@@ -5,7 +5,7 @@ export interface RestaurantImages {
   name: string;
   extension: string;
   menu: boolean;
-  id:number
+  id: number;
 }
 
 export interface ReviewAttributesUserRelation {

@@ -1,6 +1,6 @@
 import HalfStarIcon from '@assets/svgs/icons/halfStar.svg?react';
-import { UseFormReturn } from 'react-hook-form';
 import React, { useEffect, useState } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 
 interface SelectRatingProps {
   form: UseFormReturn<{

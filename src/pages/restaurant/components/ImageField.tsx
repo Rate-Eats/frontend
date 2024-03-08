@@ -1,11 +1,10 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@shared/ui/form.tsx';
-import { FormProps } from '@pages/restaurant/interfaces/formProps.ts';
+import { RestaurantImages } from '@pages/restaurant/interfaces/restaurant.ts';
 import UploadIcon from '@assets/svgs/icons/upload.svg?react';
 import TrashIcon from '@assets/svgs/icons/trash.svg?react';
+import { UseFormReturn } from 'react-hook-form';
 import { Input } from '@shared/ui/input.tsx';
 import React from 'react';
-import { UseFormReturn } from 'react-hook-form';
-import { RestaurantImages } from '@pages/restaurant/interfaces/restaurant.ts';
 
 interface ImageFieldProps {
   form: UseFormReturn<{
