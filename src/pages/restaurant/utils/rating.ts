@@ -22,7 +22,8 @@ export const calculateRating = (reviews: Reviews) => {
   const food = calculateSingleRating(reviews, 'rating_food');
   const service = calculateSingleRating(reviews, 'rating_service');
   const price = calculateSingleRating(reviews, 'rating_price');
-  const totalRating = (ambience.rating + food.rating + service.rating + price.rating) / 4;
+  const ratingLength = [ambience, food, service, price].filter((rating) => rating.count !== 0).length;
+  const totalRating = (ambience.rating + food.rating + service.rating + price.rating) / ratingLength;
 
   return {
     rating_ambience: {
