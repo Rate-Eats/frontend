@@ -1,4 +1,5 @@
 import NotificationIcon from '@/assets/svgs/icons/notification.svg?react';
+import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar';
 import ArrowDownIcon from '@/assets/svgs/icons/arrowDown.svg?react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -53,18 +54,10 @@ const User = () => {
         <NotificationIcon />
       </div>
       <div className="relative flex items-center gap-3">
-        {userData.avatar ? (
-          <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${userData.avatar}`}
-            className="h-10 w-10 cursor-pointer rounded-full"
-            alt={'avatar'}
-          />
-        ) : (
-          <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-primary capitalize text-white">
-            {userData.username.slice(0, 1)}
-          </div>
-        )}
-
+        <Avatar>
+          <AvatarImage src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${userData.avatar}`} />
+          <AvatarFallback>{userData.username.slice(0, 1)}</AvatarFallback>
+        </Avatar>
         <div className=" hidden flex-col lg:flex">
           <span className="text-sm">{userData.username}</span>
           <span className="text-xs text-gray-700">{userData.email}</span>
