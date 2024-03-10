@@ -16,14 +16,16 @@ const App = () => {
     <AuthProvider>
       <Suspense>
         {!headerExcludedRoutes.includes(pathname) && <Navbar />}
-        <Routes>
-          {PrivateRoutes.map((route, index) => (
-            <Route key={index} path={route.path} element={<ProtectedRoute>{route.element}</ProtectedRoute>} />
-          ))}
-          {PublicRoutes.map((route, index) => (
-            <Route key={index} {...route} />
-          ))}
-        </Routes>
+        <div className="overflow-y-scroll">
+          <Routes>
+            {PrivateRoutes.map((route, index) => (
+              <Route key={index} path={route.path} element={<ProtectedRoute>{route.element}</ProtectedRoute>} />
+            ))}
+            {PublicRoutes.map((route, index) => (
+              <Route key={index} {...route} />
+            ))}
+          </Routes>
+        </div>
         <Toaster />
       </Suspense>
     </AuthProvider>
