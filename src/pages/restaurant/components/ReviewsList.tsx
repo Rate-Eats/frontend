@@ -23,7 +23,7 @@ const ReviewsList = ({ reviews }: ReviewsListProps) => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-2 sm:grid-cols-1">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {reviews.data.map((review) => {
         const rating = calculateRating(review.attributes);
         const userData = review.attributes.users.data.attributes;

@@ -27,13 +27,13 @@ const RestaurantSkeleton = () => {
           <Skeleton className="h-[32px] w-[205px]" />
         </div>
         <div className="my-5 h-px w-full divide-x  bg-gray-200"></div>
-        <div className="flex gap-4 h-[140px]">
+        <div className="flex h-[140px] gap-4">
           <Skeleton className="size-[138px]" />
           <Skeleton className="size-[138px]" />
           <Skeleton className="size-[138px]" />
         </div>
       </div>
-      <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8 h-[329px]">
+      <div className="flex h-[329px] w-full flex-col rounded-xl bg-white px-6 py-8">
         <div className="flex items-center justify-between">
           <Skeleton className="h-[32px] w-[235px]" />
         </div>
@@ -53,24 +53,46 @@ const RestaurantSkeleton = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-4 rounded-lg bg-white p-5">
-        <div className="flex justify-between">
-          <div className="flex items-center gap-3">
-            <Skeleton className="size-10 rounded-full" />
-            <div className="flex flex-col gap-2">
-              <Skeleton className="h-4 w-32" />
-              <Skeleton className="h-4 w-20" />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="flex flex-col gap-4 rounded-lg bg-white p-5">
+          <div className="flex justify-between">
+            <div className="flex items-center gap-3">
+              <Skeleton className="size-10 rounded-full" />
+              <div className="flex flex-col gap-2">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-4 w-20" />
+              </div>
             </div>
+            <Skeleton className="h-[16px] w-[85px]" />
           </div>
-          <Skeleton className="h-[16px] w-[85px]" />
+          <div className="h-[24px] w-full">
+            <Skeleton className="h-[14px] w-full" />
+          </div>
+          <div className="flex gap-3">
+            <Skeleton className="size-[70px] rounded-md" />
+            <Skeleton className="size-[70px] rounded-md" />
+            <Skeleton className="size-[70px] rounded-md" />
+          </div>
         </div>
-        <div className="h-[24px] w-full">
-          <Skeleton className="h-[14px] w-full" />
-        </div>
-        <div className="flex gap-3">
-          <Skeleton className="size-[70px] rounded-md" />
-          <Skeleton className="size-[70px] rounded-md" />
-          <Skeleton className="size-[70px] rounded-md" />
+        <div className="flex flex-col gap-4 rounded-lg bg-white p-5">
+          <div className="flex justify-between">
+            <div className="flex items-center gap-3">
+              <Skeleton className="size-10 rounded-full" />
+              <div className="flex flex-col gap-2">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-4 w-20" />
+              </div>
+            </div>
+            <Skeleton className="h-[16px] w-[85px]" />
+          </div>
+          <div className="h-[24px] w-full">
+            <Skeleton className="h-[14px] w-full" />
+          </div>
+          <div className="flex gap-3">
+            <Skeleton className="size-[70px] rounded-md" />
+            <Skeleton className="size-[70px] rounded-md" />
+            <Skeleton className="size-[70px] rounded-md" />
+          </div>
         </div>
       </div>
     </div>
