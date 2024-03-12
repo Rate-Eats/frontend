@@ -54,46 +54,36 @@ const RestaurantSkeleton = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="flex flex-col gap-4 rounded-lg bg-white p-5">
-          <div className="flex justify-between">
-            <div className="flex items-center gap-3">
-              <Skeleton className="size-10 rounded-full" />
-              <div className="flex flex-col gap-2">
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-4 w-20" />
+        {new Array(2).fill(0).map(() => (
+          <div className="flex flex-col gap-4 rounded-lg bg-white p-5">
+            <div className="flex justify-between">
+              <div className="flex items-center gap-3">
+                <Skeleton className="size-10 rounded-full" />
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-4 w-20" />
+                </div>
               </div>
+              <Skeleton className="h-[16px] w-[85px]" />
             </div>
-            <Skeleton className="h-[16px] w-[85px]" />
-          </div>
-          <div className="h-[24px] w-full">
-            <Skeleton className="h-[14px] w-full" />
-          </div>
-          <div className="flex gap-3">
-            <Skeleton className="size-[70px] rounded-md" />
-            <Skeleton className="size-[70px] rounded-md" />
-            <Skeleton className="size-[70px] rounded-md" />
-          </div>
-        </div>
-        <div className="flex flex-col gap-4 rounded-lg bg-white p-5">
-          <div className="flex justify-between">
-            <div className="flex items-center gap-3">
-              <Skeleton className="size-10 rounded-full" />
-              <div className="flex flex-col gap-2">
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-4 w-20" />
+            <div className="h-[24px] w-full">
+              <Skeleton className="h-[14px] w-full" />
+            </div>
+            <div className="flex gap-3">
+              <Skeleton className="size-[70px] rounded-md" />
+              <Skeleton className="size-[70px] rounded-md" />
+              <Skeleton className="size-[70px] rounded-md" />
+            </div>
+            <div className="flex justify-between">
+              <div className="flex gap-3">
+                <Skeleton className="h-5 w-8 rounded-md" />
+                <Skeleton className="h-5 w-8 rounded-md" />
+                <Skeleton className="h-5 w-8 rounded-md" />
               </div>
+              <Skeleton className="h-4 w-20 rounded-md" />
             </div>
-            <Skeleton className="h-[16px] w-[85px]" />
           </div>
-          <div className="h-[24px] w-full">
-            <Skeleton className="h-[14px] w-full" />
-          </div>
-          <div className="flex gap-3">
-            <Skeleton className="size-[70px] rounded-md" />
-            <Skeleton className="size-[70px] rounded-md" />
-            <Skeleton className="size-[70px] rounded-md" />
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
