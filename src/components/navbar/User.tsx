@@ -70,7 +70,7 @@ const User = () => {
           }}
           aria-label="expand user menu"
         >
-          <ArrowDownIcon />
+          <ArrowDownIcon className="text-[#444750]" />
         </button>
 
         <ul
