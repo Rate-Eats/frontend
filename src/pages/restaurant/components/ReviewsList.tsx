@@ -11,9 +11,10 @@ interface ReviewsListProps {
   reviews: Reviews;
 }
 
+const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
+
 const ReviewsList = ({ reviews }: ReviewsListProps) => {
   const navigate = useNavigate();
-  const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
   const calculateRating = (review: ReviewAttributes) => {
     const ratings = [review.rating_price, review.rating_ambience, review.rating_food, review.rating_service].filter(
@@ -32,24 +33,34 @@ const ReviewsList = ({ reviews }: ReviewsListProps) => {
     navigate(`/review/${id}`);
   };
 
+  const redirectToUserProfile = (id: number) => {
+    navigate(`/user/${id}`);
+  };
+
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {reviews.data.map((review) => {
         const rating = calculateRating(review.attributes);
-        const userData = review.attributes.users.data.attributes;
+        const userData = review.attributes.users.data;
+        const userDataAttributes = userData.attributes;
         const reviewImages = review.attributes.images.slice(0, 3);
 
         return (
           <div className="flex flex-col gap-4 rounded-lg bg-white p-5">
             <div className="flex justify-between">
               <div className="flex items-center gap-3">
-                <Avatar className="cursor-pointer">
-                  <AvatarImage src={`${baseUploadsUrl}${userData.avatar}`} />
-                  <AvatarFallback>{userData.username.slice(0, 1)}</AvatarFallback>
+                <Avatar className="cursor-pointer" onClick={() => redirectToUserProfile(userData.id)}>
+                  <AvatarImage src={`${baseUploadsUrl}${userDataAttributes.avatar}`} />
+                  <AvatarFallback>{userDataAttributes.username.slice(0, 1)}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <span className="text-md cursor-pointer font-medium">{userData.username}</span>
-                  <span className="text-sm text-gray-500">{formatDate(userData.createdAt)}</span>
+                  <span
+                    className="text-md cursor-pointer font-medium"
+                    onClick={() => redirectToUserProfile(userData.id)}
+                  >
+                    {userDataAttributes.username}
+                  </span>
+                  <span className="text-sm text-gray-500">{formatDate(userDataAttributes.createdAt)}</span>
                 </div>
               </div>
               <Stars rating={rating} />

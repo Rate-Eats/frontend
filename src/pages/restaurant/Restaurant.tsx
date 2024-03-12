@@ -21,12 +21,12 @@ const Restaurant = () => {
   if (isFetching) return <RestaurantSkeleton />;
   if (error || !data) return <ErrorFetching />;
   return (
-    <div className="mx-auto py-6 flex w-full max-w-screen-xl flex-col justify-center gap-5">
+    <div className="mx-auto flex w-full max-w-screen-xl flex-col justify-center gap-5 py-6">
       <ImageSlider images={data.attributes.images.filter((image) => !image.menu)} />
       <RestaurantDetails restaurantData={data} />
       <RestaurantMenus images={data.attributes.images.filter((image) => image.menu)} />
       <ReviewRatings restaurantData={data} />
-      <ReviewsList reviews={data.attributes.reviews}/>
+      <ReviewsList reviews={data.attributes.reviews} />
     </div>
   );
 };
