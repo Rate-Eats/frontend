@@ -19,7 +19,8 @@ const Restaurant = () => {
   });
 
   if (isFetching) return <RestaurantSkeleton />;
-  if (error || !data) return <ErrorFetching />;
+  if (error || !data) return <ErrorFetching errorText={'There was an error loading this restaurant'} />;
+
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col justify-center gap-5 py-6">
       <ImageSlider images={data.attributes.images.filter((image) => !image.menu)} />
