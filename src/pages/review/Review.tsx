@@ -21,10 +21,10 @@ const Review = () => {
 
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col justify-center gap-5 py-6">
-      <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8 text-2xl font-medium text-primary">
-        {data.attributes.restaurant.data.attributes.name}
-      </div>
-      <ReviewDescription reviewDescription={data.attributes.description} />
+      <ReviewDescription
+        reviewDescription={data.attributes.description}
+        restaurantName={data.attributes.restaurant.data.attributes.name}
+      />
       <ReviewImages reviewImages={data.attributes.images} />
       <Ratings reviewData={data} />
     </div>

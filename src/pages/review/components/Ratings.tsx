@@ -12,7 +12,7 @@ const Ratings = ({ reviewData }: RatingsProps) => {
 
   return (
     <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8">
-      <span className="text-2xl font-medium text-primary">Reviews and Ratings</span>
+      <span className="text-2xl font-medium text-primary">Rating</span>
       <div className="my-5 h-px w-full bg-gray-200" />
       <div className="flex gap-8 md:gap-12 lg:gap-20">
         <div className="flex flex-col items-center justify-center gap-5 px-2 md:px-6 lg:px-10">
