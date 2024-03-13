@@ -1,4 +1,4 @@
-interface ReviewImageData {
+export interface ReviewImageData {
   id: number;
   path: string;
   name: string;
