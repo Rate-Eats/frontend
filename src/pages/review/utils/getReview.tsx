@@ -1,7 +1,7 @@
-import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
+import { ReviewData } from '@pages/review/interfaces/review.ts';
 import axios from 'axios';
 
-export const getReview = async (id: string = 'x'): Promise<RestaurantData> => {
+export const getReview = async (id: string = 'x'): Promise<ReviewData> => {
   const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/reviews/${id}?populate=*`, {
     headers: {
       Authorization: `Bearer ${import.meta.env.VITE_GET_RESTAURANT_TOKEN}`,
