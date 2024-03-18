@@ -4,6 +4,7 @@ import ReviewImages from '@pages/review/components/ReviewImages.tsx';
 import { getReview } from '@pages/review/utils/getReview.tsx';
 import ReviewSkeleton from '@pages/review/ReviewSkeleton.tsx';
 import Ratings from '@pages/review/components/Ratings.tsx';
+import Comments from '@pages/comments/Comments.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
@@ -27,6 +28,7 @@ const Review = () => {
       />
       <ReviewImages reviewImages={data.attributes.images} />
       <Ratings reviewData={data} />
+      <Comments />
     </div>
   );
 };
