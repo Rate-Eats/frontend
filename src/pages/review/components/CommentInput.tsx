@@ -1,10 +1,11 @@
+import { createCommentObject } from '@pages/review/utils/createCommentObject.ts';
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
 import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
 import { Input } from '@shared/ui/input.tsx';
+import { useParams } from 'react-router-dom';
 import { useAuth } from '@auth/useAuth.ts';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
@@ -15,31 +16,8 @@ const CommentInput = () => {
   const { id } = useParams();
 
   const addCommentFunc = () => {
-    const data = {
-      text: comment,
-      review: {
-        disconnect: [],
-        connect: [
-          {
-            id: Number(id),
-            position: {
-              end: true,
-            },
-          },
-        ],
-      },
-      users: {
-        disconnect: [],
-        connect: [
-          {
-            id: userData?.id,
-            position: {
-              end: true,
-            },
-          },
-        ],
-      },
-    };
+    if (!id || !userData) return;
+    const data = createCommentObject(comment, id, userData.id);
     addComment.mutate(data);
   };
 
