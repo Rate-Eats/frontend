@@ -1,4 +1,4 @@
-import CommentInput from '@pages/comments/components/CommentInput.tsx';
+import CommentInput from '@pages/review/components/CommentInput.tsx';
 
 const Comments = () => {
   return (

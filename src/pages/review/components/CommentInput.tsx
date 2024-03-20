@@ -4,6 +4,7 @@ import { Button } from '@shared/ui/button.tsx';
 import { Input } from '@shared/ui/input.tsx';
 import { useAuth } from '@auth/useAuth.ts';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
@@ -11,6 +12,7 @@ const CommentInput = () => {
   const [comment, setComment] = useState('');
   const { userData } = useAuth();
   const { addComment } = useDatabase();
+  const { id } = useParams();
 
   const addCommentFunc = () => {
     const data = {
@@ -19,7 +21,7 @@ const CommentInput = () => {
         disconnect: [],
         connect: [
           {
-            id: 55,
+            id: Number(id),
             position: {
               end: true,
             },
