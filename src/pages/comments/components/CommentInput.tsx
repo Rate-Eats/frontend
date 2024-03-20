@@ -2,10 +2,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
 import { Button } from '@shared/ui/button.tsx';
 import { Input } from '@shared/ui/input.tsx';
 import { useAuth } from '@auth/useAuth.ts';
+import { useState } from 'react';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
 const CommentInput = () => {
+  const [comment, setComment] = useState('');
   const { userData } = useAuth();
 
   if (!userData) return null;
@@ -20,6 +22,8 @@ const CommentInput = () => {
         {userData.username}
       </div>
       <Input
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
         className="mt-2 rounded-none border-0 border-b px-1 shadow-none outline-none focus-visible:ring-0"
         placeholder="write here..."
       />
