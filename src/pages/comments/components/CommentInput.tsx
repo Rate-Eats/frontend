@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
+import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
 import { Input } from '@shared/ui/input.tsx';
 import { useAuth } from '@auth/useAuth.ts';
@@ -9,6 +10,36 @@ const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 const CommentInput = () => {
   const [comment, setComment] = useState('');
   const { userData } = useAuth();
+  const { addComment } = useDatabase();
+
+  const addCommentFunc = () => {
+    const data = {
+      text: comment,
+      review: {
+        disconnect: [],
+        connect: [
+          {
+            id: 55,
+            position: {
+              end: true,
+            },
+          },
+        ],
+      },
+      users: {
+        disconnect: [],
+        connect: [
+          {
+            id: userData?.id,
+            position: {
+              end: true,
+            },
+          },
+        ],
+      },
+    };
+    addComment.mutate(data);
+  };
 
   if (!userData) return null;
 
@@ -27,7 +58,9 @@ const CommentInput = () => {
         className="mt-2 rounded-none border-0 border-b px-1 shadow-none outline-none focus-visible:ring-0"
         placeholder="write here..."
       />
-      <Button className="ml-auto mt-3 w-28">Comment</Button>
+      <Button className="ml-auto mt-3 w-28" onClick={() => addCommentFunc()}>
+        Comment
+      </Button>
     </div>
   );
 };
