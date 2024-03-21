@@ -5,6 +5,7 @@ import Arrow from '@assets/svgs/icons/arrowDown.svg?react';
 import Comment from '@assets/svgs/icons/comment.svg?react';
 import Dislike from '@assets/svgs/icons/dislike.svg?react';
 import Like from '@assets/svgs/icons/like.svg?react';
+import { formatDate } from '@/utils/formatDate.ts';
 import Stars from '@components/rating/Stars.tsx';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,10 +26,6 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
 
     const sum = ratings.reduce((total, rating) => total + rating, 0);
     return sum / ratings.length;
-  };
-
-  const formatDate = (date: string) => {
-    return new Intl.DateTimeFormat().format(new Date(date));
   };
 
   const redirectToReview = (id: string) => {
