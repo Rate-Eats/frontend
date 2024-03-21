@@ -37,6 +37,19 @@ interface ReviewRestaurantData {
     };
   };
 }
+
+export interface ReviewCommentsData {
+  data: {
+    id: number;
+    attributes: {
+      text: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+    };
+  }[];
+}
+
 export interface ReviewData {
   id: number;
   attributes: {
@@ -48,6 +61,7 @@ export interface ReviewData {
     updatedAt: string;
     publishedAt: string;
     rating_service: number;
+    comments: ReviewCommentsData;
     images: ReviewImageData[];
     users: ReviewUserData;
     restaurant: ReviewRestaurantData;
