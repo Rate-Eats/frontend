@@ -38,6 +38,22 @@ interface ReviewRestaurantData {
   };
 }
 
+interface CommentsData {
+  data: {
+    id: number;
+    attributes: {
+      username: string;
+      email: string;
+      provider: string;
+      confirmed: boolean;
+      blocked: boolean;
+      createdAt: string;
+      updatedAt: string;
+      avatar: string;
+    };
+  };
+}
+
 export interface ReviewCommentsData {
   data: {
     id: number;
@@ -46,6 +62,7 @@ export interface ReviewCommentsData {
       createdAt: string;
       updatedAt: string;
       publishedAt: string;
+      users: CommentsData;
     };
   }[];
 }
