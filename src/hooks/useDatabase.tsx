@@ -1,4 +1,4 @@
-import { RestaurantData, ReviewData } from '@shared/interfaces/forms.ts';
+import { CommentData, RestaurantData, ReviewData } from '@shared/interfaces/forms.ts';
 import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '@auth/useAuth.ts';
 import axios from 'axios';
@@ -49,6 +49,20 @@ const useDatabase = () => {
     },
   });
 
+  const addComment = useMutation({
+    mutationFn: (data: CommentData) => {
+      return axios.post(
+        `${import.meta.env.VITE_API_URL}/comments`,
+        { data },
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        },
+      );
+    },
+  });
+
   const updateReview = useMutation({
     mutationFn: ({ data, id }: UpdateReviewProps) => {
       return axios.put(
@@ -63,7 +77,7 @@ const useDatabase = () => {
     },
   });
 
-  return { uploadImages, addRestaurant, addReview, updateReview };
+  return { uploadImages, addRestaurant, addReview, updateReview, addComment };
 };
 
 export default useDatabase;

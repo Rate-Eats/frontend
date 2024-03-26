@@ -16,7 +16,7 @@ const App = () => {
     <AuthProvider>
       <Suspense>
         {!headerExcludedRoutes.includes(pathname) && <Navbar />}
-        <div className="overflow-y-scroll">
+        <div className="h-full w-full overflow-y-scroll">
           <Routes>
             {PrivateRoutes.map((route, index) => (
               <Route key={index} path={route.path} element={<ProtectedRoute>{route.element}</ProtectedRoute>} />

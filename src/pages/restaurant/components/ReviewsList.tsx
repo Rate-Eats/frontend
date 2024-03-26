@@ -1,19 +1,22 @@
 import { ReviewAttributes, Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
+import NoReviews from '@components/states/noReviews/noReviews.tsx';
 import Arrow from '@assets/svgs/icons/arrowDown.svg?react';
 import Comment from '@assets/svgs/icons/comment.svg?react';
 import Dislike from '@assets/svgs/icons/dislike.svg?react';
 import Like from '@assets/svgs/icons/like.svg?react';
+import { formatDate } from '@/utils/formatDate.ts';
 import Stars from '@components/rating/Stars.tsx';
 import { useNavigate } from 'react-router-dom';
 
 interface ReviewsListProps {
   reviews: Reviews;
+  handleModalVisibility: () => void;
 }
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
-const ReviewsList = ({ reviews }: ReviewsListProps) => {
+const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
   const navigate = useNavigate();
 
   const calculateRating = (review: ReviewAttributes) => {
@@ -25,10 +28,6 @@ const ReviewsList = ({ reviews }: ReviewsListProps) => {
     return sum / ratings.length;
   };
 
-  const formatDate = (date: string) => {
-    return new Intl.DateTimeFormat().format(new Date(date));
-  };
-
   const redirectToReview = (id: string) => {
     navigate(`/review/${id}`);
   };
@@ -37,16 +36,24 @@ const ReviewsList = ({ reviews }: ReviewsListProps) => {
     navigate(`/user/${id}`);
   };
 
+  if (reviews.data.length === 0)
+    return (
+      <div className="flex flex-col gap-4 rounded-lg bg-white px-5 pb-6 pt-8">
+        <NoReviews handleModalVisibility={handleModalVisibility} />
+      </div>
+    );
+
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {reviews.data.map((review) => {
         const rating = calculateRating(review.attributes);
         const userData = review.attributes.users.data;
+        if (!userData) return;
         const userDataAttributes = userData.attributes;
         const reviewImages = review.attributes.images.slice(0, 3);
 
         return (
-          <div className="flex flex-col gap-4 rounded-lg bg-white p-5">
+          <div className="flex flex-col gap-4 rounded-lg bg-white p-5" key={review.id}>
             <div className="flex justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="cursor-pointer" onClick={() => redirectToUserProfile(userData.id)}>
@@ -68,7 +75,12 @@ const ReviewsList = ({ reviews }: ReviewsListProps) => {
             <div className="line-clamp-2">{review.attributes.description}</div>
             <div className="flex gap-3">
               {reviewImages.map((image) => (
-                <img src={`${baseUploadsUrl}${image.path}`} alt={image.name} className="size-[70px] rounded-md" />
+                <img
+                  src={`${baseUploadsUrl}${image.path}`}
+                  alt={image.name}
+                  className="size-[70px] rounded-md"
+                  key={image.hash}
+                />
               ))}
             </div>
             <div className="flex w-full justify-between">

@@ -1,34 +1,34 @@
 import { RestaurantImages, ReviewAttributesData, Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@shared/ui/dialog.tsx';
 import { createImageObject, createReviewObject } from '@pages/restaurant/utils/createObjects.ts';
 import { ImageInterface, PayloadImageInterface, ReviewData } from '@shared/interfaces/forms.ts';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog.tsx';
 import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx';
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
 import ImageField from '@pages/restaurant/components/ImageField.tsx';
 import { addReviewSchema } from '@/schemas/addReviewSchema.ts';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react';
 import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
+import { useParams } from 'react-router-dom';
 import { useAuth } from '@auth/useAuth.ts';
 import { Form } from '@shared/ui/form.tsx';
 import Loader from '@shared/ui/loader.tsx';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 interface AddReviewModalProps {
   reviews: Reviews;
+  isModalOpen: boolean;
+  handleModalVisibility: (value?: boolean) => void;
 }
 
-const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
+const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddReviewModalProps) => {
   const { uploadImages, addReview, updateReview } = useDatabase();
   const [currentImages, setCurrentImages] = useState<RestaurantImages[]>([]);
   const { userData } = useAuth();
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const { id } = useParams();
 
   const [existingReviewId, setExistingReview] = useState('');
@@ -77,6 +77,7 @@ const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
     });
 
     setLoading(false);
+    handleModalVisibility(false);
   };
 
   const updateReviewAndInvalidate = (addReviewObject: ReviewData) => {
@@ -93,6 +94,7 @@ const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
     );
 
     setLoading(false);
+    handleModalVisibility(false);
   };
 
   const uploadImagesAndGetReview = async (formData: FormData, reviewData: z.infer<typeof addReviewSchema>) => {
@@ -124,6 +126,7 @@ const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
     });
 
     await uploadImagesAndGetReview(formData, reviewData);
+    handleModalVisibility(false);
   };
 
   const removeAdditionalItems = (id: string) => {
@@ -132,24 +135,7 @@ const AddReviewModal = ({ reviews }: AddReviewModalProps) => {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger
-        className="text-primary underline"
-        onClick={(e) => {
-          if (!userData) {
-            e.preventDefault();
-            toast('Account Required', {
-              description: 'Please log in to add a review.',
-              action: {
-                label: 'Login',
-                onClick: () => navigate('/login'),
-              },
-            });
-          }
-        }}
-      >
-        Rate now
-      </DialogTrigger>
+    <Dialog open={isModalOpen} onOpenChange={() => handleModalVisibility(false)}>
       <DialogContent className="shadow-no w-full max-w-3xl border-none bg-transparent bg-white">
         <DialogHeader>
           <DialogTitle className="w-[400px] text-[22px]">Rating & Feedback form</DialogTitle>

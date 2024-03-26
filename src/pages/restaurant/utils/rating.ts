@@ -13,9 +13,9 @@ const calculateSingleRating = (reviews: Reviews, category: RatingCategory) => {
   };
 };
 
-function calculatePercentage(part: number, whole: number): number {
+export const calculatePercentage = (part: number, whole: number): number => {
   return (part / whole) * 100;
-}
+};
 
 export const calculateRating = (reviews: Reviews) => {
   const ambience = calculateSingleRating(reviews, 'rating_ambience');

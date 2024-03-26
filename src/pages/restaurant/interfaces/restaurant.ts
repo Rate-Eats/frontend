@@ -10,16 +10,16 @@ export interface RestaurantImages {
 
 export interface ReviewAttributesUserRelation {
   data: {
-    id: 10;
+    id: number;
     attributes: {
-      username: 'Dashox';
-      email: 'abc@gmail.com';
-      provider: 'local';
-      confirmed: true;
-      blocked: false;
-      createdAt: '2024-02-11T17:45:04.072Z';
-      updatedAt: '2024-02-11T17:45:04.072Z';
-      avatar: null;
+      username: string;
+      email: string;
+      provider: string;
+      confirmed: boolean;
+      blocked: boolean;
+      createdAt: string;
+      updatedAt: string;
+      avatar: string;
     };
   };
 }
