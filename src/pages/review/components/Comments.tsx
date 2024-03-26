@@ -3,6 +3,8 @@ import { ReviewCommentsData } from '@pages/review/interfaces/review.ts';
 import CommentInput from '@pages/review/components/CommentInput.tsx';
 import { formatDate } from '@/utils/formatDate.ts';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@shared/ui/button.tsx';
+import { useState } from 'react';
 
 interface CommentsProps {
   commentList: ReviewCommentsData;
@@ -11,6 +13,7 @@ interface CommentsProps {
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
 const Comments = ({ commentList }: CommentsProps) => {
+  const [commentsLoad, setCommentsLoad] = useState(5);
   const navigate = useNavigate();
   const redirectToUserProfile = (id: number) => {
     navigate(`/user/${id}`);
@@ -21,7 +24,7 @@ const Comments = ({ commentList }: CommentsProps) => {
       <span className="text-2xl font-medium text-primary">Comments</span>
       <div className="my-5 h-px w-full bg-gray-200" />
       <CommentInput />
-      {commentList.data.map((comment) => {
+      {commentList.data.slice(0, commentsLoad).map((comment) => {
         const userData = comment.attributes.users.data;
         return (
           <div key={comment.id}>
@@ -40,6 +43,14 @@ const Comments = ({ commentList }: CommentsProps) => {
           </div>
         );
       })}
+      {commentList.data.length >= commentsLoad && (
+        <>
+          <div className="my-5 h-px w-full bg-gray-200" />
+          <Button className="mx-auto mt-4 w-40" onClick={() => setCommentsLoad(commentsLoad + 5)}>
+            Load more...
+          </Button>
+        </>
+      )}
     </div>
   );
 };
