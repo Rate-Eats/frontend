@@ -6,6 +6,10 @@ export const formatDate = (date: string): string => {
   const minutes = Math.floor(timeDifference / (1000 * 60));
   const hours = Math.floor(timeDifference / (1000 * 60 * 60));
 
+  if (minutes < 1) {
+    return '1 minute ago';
+  }
+
   if (minutes < 60) {
     return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
   }
