@@ -1,5 +1,6 @@
 import { createCommentObject } from '@pages/review/utils/createCommentObject.ts';
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
+import { useQueryClient } from '@tanstack/react-query';
 import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
 import { Input } from '@shared/ui/input.tsx';
@@ -12,13 +13,16 @@ const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 const CommentInput = () => {
   const [comment, setComment] = useState('');
   const { userData } = useAuth();
+  const queryClient = useQueryClient();
+
   const { addComment } = useDatabase();
   const { id } = useParams();
 
-  const addCommentFunc = () => {
+  const addCommentFunc = async() => {
     if (!id || !userData) return;
     const data = createCommentObject(comment, id, userData.id);
-    addComment.mutate(data);
+    await addComment.mutateAsync(data);
+    await queryClient.invalidateQueries({ queryKey: ['review'] })
   };
 
   if (!userData) return null;
