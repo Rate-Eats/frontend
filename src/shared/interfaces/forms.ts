@@ -25,6 +25,10 @@ export interface ReviewData {
   images: PayloadImageInterface[];
 }
 
+export interface CommentData {
+  text: string;
+}
+
 export interface ImageInterface {
   ext: string;
   hash: string;
