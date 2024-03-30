@@ -12,13 +12,13 @@ export interface ReviewAttributesUserRelation {
   data: {
     id: 10;
     attributes: {
-      username: 'Dashox';
-      email: 'abc@gmail.com';
-      provider: 'local';
-      confirmed: true;
-      blocked: false;
-      createdAt: '2024-02-11T17:45:04.072Z';
-      updatedAt: '2024-02-11T17:45:04.072Z';
+      username: string;
+      email: string;
+      provider: string;
+      confirmed: boolean;
+      blocked: boolean;
+      createdAt: string;
+      updatedAt: string;
       avatar: null;
     };
   };
