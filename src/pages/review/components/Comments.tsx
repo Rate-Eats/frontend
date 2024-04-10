@@ -19,6 +19,10 @@ const Comments = ({ commentList }: CommentsProps) => {
     navigate(`/user/${id}`);
   };
 
+  commentList.data.sort((a, b) => {
+    return new Date(b.attributes.createdAt).getTime() - new Date(a.attributes.createdAt).getTime();
+  });
+
   return (
     <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8">
       <span className="text-2xl font-medium text-primary">Comments</span>
