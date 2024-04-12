@@ -40,6 +40,18 @@ const ReviewSkeleton = () => {
           </div>
         </div>
       </div>
+      <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8">
+        <Skeleton className="h-[32px] w-[150px]" />
+        <div className="my-5 h-px w-full divide-x  bg-gray-200"></div>
+        <div className="flex items-center gap-5">
+          <Skeleton className="size-10 rounded-full " />
+          <Skeleton className="h-[24px] w-20" />
+        </div>
+        <div className="mt-3 flex flex-col gap-5">
+          <Skeleton className="h-[24px] w-60" />
+          <Skeleton className="h-[24px] w-16" />
+        </div>
+      </div>
     </div>
   );
 };
