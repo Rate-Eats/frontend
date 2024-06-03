@@ -3,11 +3,13 @@ import { useSearchParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@shared/ui/button.tsx';
 import Loader from '@shared/ui/loader.tsx';
+import { categories } from '@shared/data/categories.ts';
 
-type QueryParams = { [key: string]: string };
+type QueryParams = { [key: string]: string | string[] };
 
 const Filter = () => {
   const [searchValue, setSearchValue] = useState('');
+  const [activeCategories, setActiveCategories] = useState<string[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
 
@@ -33,12 +35,22 @@ const Filter = () => {
     e.preventDefault();
     const params = {
       search_query: searchValue,
+      category: activeCategories,
     };
     applyFilters(params);
   };
 
   const clearFilters = () => {
     setSearchValue('');
+    setActiveCategories([]);
+  };
+
+  const updateActiveCategories = (category: string) => {
+    const categoriesToUpdate = !activeCategories.includes(category)
+      ? [...activeCategories, category]
+      : activeCategories.filter((item) => item !== category);
+
+    setActiveCategories(categoriesToUpdate);
   };
 
   return (
@@ -56,6 +68,21 @@ const Filter = () => {
         </div>
       </div>
       <span className="text-base">Filter by Type</span>
+      <div className="flex items-center gap-5">
+        {categories.map((category) => (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              updateActiveCategories(category.value);
+            }}
+            className={`flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-gray-200 px-6 py-1 transition duration-200 hover:bg-gray-300 ${
+              activeCategories.includes(category.value) && 'bg-gray-300'
+            }`}
+          >
+            {category.label}
+          </button>
+        ))}
+      </div>
       <div className="ml-auto flex gap-4">
         <Button
           type="submit"
