@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '@shared/ui/button.tsx';
 import Loader from '@shared/ui/loader.tsx';
 
+type QueryParams = { [key: string]: string };
+
 const Filter = () => {
   const [searchValue, setSearchValue] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,9 +18,23 @@ const Filter = () => {
     }
   }, []);
 
-  const applyFilters = (e: React.FormEvent<HTMLFormElement>) => {
+  const applyFilters = (params: QueryParams) => {
+    const queryParams: QueryParams = {};
+    Object.keys(params).forEach((key) => {
+      if (params[key] !== '') {
+        queryParams[key] = params[key];
+      }
+    });
+
+    setSearchParams(queryParams);
+  };
+
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSearchParams({ search_query: searchValue });
+    const params = {
+      search_query: searchValue,
+    };
+    applyFilters(params);
   };
 
   const clearFilters = () => {
@@ -26,7 +42,7 @@ const Filter = () => {
   };
 
   return (
-    <form className="mx-auto flex w-full flex-col gap-5 bg-white px-6 py-5" onSubmit={(e) => applyFilters(e)}>
+    <form className="mx-auto flex w-full flex-col gap-5 bg-white px-6 py-5" onSubmit={(e) => handleOnSubmit(e)}>
       <span className="text-[24px]">Filter</span>
       <div className="relative order-first w-full rounded-md border bg-[#F5F6F7] px-4 py-2 lg:order-none lg:w-auto">
         <input
