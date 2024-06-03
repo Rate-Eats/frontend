@@ -1,15 +1,18 @@
+import SelectRating from '@pages/restaurants/components/SelectRating.tsx';
 import SearchIcon from '@/assets/svgs/icons/search.svg?react';
+import { categories } from '@shared/data/categories.ts';
 import { useSearchParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@shared/ui/button.tsx';
 import Loader from '@shared/ui/loader.tsx';
-import { categories } from '@shared/data/categories.ts';
 
 type QueryParams = { [key: string]: string | string[] };
 
 const Filter = () => {
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState<string>('');
   const [activeCategories, setActiveCategories] = useState<string[]>([]);
+  const [minimumRating, setMinimumRating] = useState<number>(0);
+  const [maximumRating, setMaximumRating] = useState<number>(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +26,7 @@ const Filter = () => {
   const applyFilters = (params: QueryParams) => {
     const queryParams: QueryParams = {};
     Object.keys(params).forEach((key) => {
-      if (params[key] !== '') {
+      if (params[key] !== '' && params[key] !== '0') {
         queryParams[key] = params[key];
       }
     });
@@ -36,6 +39,8 @@ const Filter = () => {
     const params = {
       search_query: searchValue,
       category: activeCategories,
+      minimum_rating: minimumRating.toString(),
+      maximum_rating: maximumRating.toString(),
     };
     applyFilters(params);
   };
@@ -43,6 +48,8 @@ const Filter = () => {
   const clearFilters = () => {
     setSearchValue('');
     setActiveCategories([]);
+    setMinimumRating(0);
+    setMaximumRating(0);
   };
 
   const updateActiveCategories = (category: string) => {
@@ -82,6 +89,24 @@ const Filter = () => {
             {category.label}
           </button>
         ))}
+      </div>
+      <span className="text-base">Filter by Rating</span>
+      <div className="flex h-7 items-center gap-2">
+        <SelectRating
+          onChangeFunction={(value) => {
+            setMinimumRating(value);
+          }}
+          value={minimumRating}
+          maximumValue={maximumRating}
+        />
+        <div className="my-2 h-[2px] w-5 self-center bg-black" />
+        <SelectRating
+          onChangeFunction={(value) => {
+            setMaximumRating(value);
+          }}
+          value={maximumRating}
+          minimumValue={minimumRating}
+        />
       </div>
       <div className="ml-auto flex gap-4">
         <Button
