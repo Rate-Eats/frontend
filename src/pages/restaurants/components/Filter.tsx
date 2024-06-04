@@ -4,7 +4,26 @@ import { categories } from '@shared/data/categories.ts';
 import { useSearchParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@shared/ui/button.tsx';
-import Loader from '@shared/ui/loader.tsx';
+
+import PizzaIcon from '@/assets/svgs/icons/categories/pizza.svg?react';
+import BurgerIcon from '@/assets/svgs/icons/categories/burger.svg?react';
+import KebabIcon from '@/assets/svgs/icons/categories/kebab.svg?react';
+import SushiIcon from '@/assets/svgs/icons/categories/sushi.svg?react';
+import PastaIcon from '@/assets/svgs/icons/categories/pasta.svg?react';
+import ChineseIcon from '@/assets/svgs/icons/categories/sticks.svg?react';
+import FriesIcon from '@/assets/svgs/icons/categories/fries.svg?react';
+import SoupIcon from '@/assets/svgs/icons/categories/soup.svg?react';
+
+const categoriesAssets = {
+  pizza: <PizzaIcon />,
+  burger: <BurgerIcon />,
+  kebab: <KebabIcon />,
+  sushi: <SushiIcon />,
+  pasta: <PastaIcon />,
+  chinese: <ChineseIcon />,
+  fastFood: <FriesIcon />,
+  soups: <SoupIcon />,
+};
 
 type QueryParams = { [key: string]: string | string[] };
 
@@ -14,7 +33,6 @@ const Filter = () => {
   const [minimumRating, setMinimumRating] = useState<number>(0);
   const [maximumRating, setMaximumRating] = useState<number>(0);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const urlSearchValue = searchParams.get('search_query');
@@ -63,7 +81,7 @@ const Filter = () => {
   return (
     <form className="mx-auto flex w-full flex-col gap-5 bg-white px-6 py-5" onSubmit={(e) => handleOnSubmit(e)}>
       <span className="text-[24px]">Filter</span>
-      <div className="relative order-first w-full rounded-md border bg-[#F5F6F7] px-4 py-2 lg:order-none lg:w-auto">
+      <div className="relative w-full rounded-md border bg-[#F5F6F7] px-4 py-2">
         <input
           placeholder="Search restaurant"
           className="w-full bg-transparent pl-5 text-sm outline-none"
@@ -75,17 +93,19 @@ const Filter = () => {
         </div>
       </div>
       <span className="text-base">Filter by Type</span>
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-5 overflow-scroll">
         {categories.map((category) => (
           <button
             onClick={(e) => {
               e.preventDefault();
               updateActiveCategories(category.value);
             }}
-            className={`flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-gray-200 px-6 py-1 transition duration-200 hover:bg-gray-300 ${
-              activeCategories.includes(category.value) && 'bg-gray-300'
+            className={`flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#818181]/15 px-6 py-2 transition duration-200 hover:bg-[#818181]/50 ${
+              activeCategories.includes(category.value) && 'bg-[#818181]/40'
             }`}
+            key={category.value}
           >
+            {categoriesAssets[category.value]}
             {category.label}
           </button>
         ))}
@@ -111,17 +131,16 @@ const Filter = () => {
       <div className="ml-auto flex gap-4">
         <Button
           type="submit"
-          disabled={loading}
           className="ml-auto w-28 border border-gray-200 bg-transparent text-black hover:bg-gray-50"
           onClick={(e) => {
             e.preventDefault();
             clearFilters();
           }}
         >
-          {loading ? <Loader /> : 'Clear all'}
+          Clear all
         </Button>
-        <Button type="submit" disabled={loading} className=" w-36">
-          {loading ? <Loader /> : 'Search'}
+        <Button type="submit" className=" w-36">
+          Search
         </Button>
       </div>
     </form>

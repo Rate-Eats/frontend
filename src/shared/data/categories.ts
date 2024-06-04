@@ -1,10 +1,10 @@
 export const categories = [
-  { label: 'Burger', value: 'burger' },
-  { label: 'Fast food', value: 'fastFood' },
   { label: 'Pizza', value: 'pizza' },
+  { label: 'Burger', value: 'burger' },
+  { label: 'kebab', value: 'kebab' },
   { label: 'Sushi', value: 'sushi' },
-  { label: 'Mexican', value: 'mexican' },
-  { label: 'Italian', value: 'italian' },
-  { label: 'Indian', value: 'indian' },
+  { label: 'Pasta', value: 'pasta' },
   { label: 'Chinese', value: 'chinese' },
+  { label: 'Fast food', value: 'fastFood' },
+  { label: 'Soups', value: 'soups' },
 ] as const;
