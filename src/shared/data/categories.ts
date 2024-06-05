@@ -1,7 +1,7 @@
 export const categories = [
   { label: 'Pizza', value: 'pizza' },
   { label: 'Burger', value: 'burger' },
-  { label: 'kebab', value: 'kebab' },
+  { label: 'Kebab', value: 'kebab' },
   { label: 'Sushi', value: 'sushi' },
   { label: 'Pasta', value: 'pasta' },
   { label: 'Chinese', value: 'chinese' },
