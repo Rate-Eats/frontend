@@ -9,7 +9,7 @@ interface ParamsInterface {
   minimum_rating: string | null;
   maximum_rating: string | null;
 }
-export const getRestaurants = async (params: ParamsInterface): Promise<RestaurantData> => {
+export const getRestaurants = async (params: ParamsInterface): Promise<RestaurantData[]> => {
   const { search_query, categories, minimum_rating, maximum_rating } = params;
 
   const { data } = await axios.get(`${API_URL}/restaurants?populate=categories`, {

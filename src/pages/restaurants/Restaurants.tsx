@@ -4,6 +4,7 @@ import { getRestaurants } from '@pages/restaurants/utils/getRestaurants.ts';
 import Filter from '@pages/restaurants/components/Filter.tsx';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import RestaurantList from '@pages/restaurants/components/RestaurantList.tsx';
 
 const Restaurants = () => {
   const [searchParams] = useSearchParams();
@@ -25,6 +26,7 @@ const Restaurants = () => {
   return (
     <div className="mx-auto max-w-screen-xl gap-5 py-6">
       <Filter />
+      <RestaurantList data={data}  />
     </div>
   );
 };
