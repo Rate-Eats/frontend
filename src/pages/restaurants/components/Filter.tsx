@@ -1,33 +1,16 @@
 import SelectRating from '@pages/restaurants/components/SelectRating.tsx';
 import SearchIcon from '@/assets/svgs/icons/search.svg?react';
-import { categories } from '@shared/data/categories.ts';
+import useCategories from '@/hooks/useCategories.tsx';
 import { useSearchParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@shared/ui/button.tsx';
 
-import PizzaIcon from '@/assets/svgs/icons/categories/pizza.svg?react';
-import BurgerIcon from '@/assets/svgs/icons/categories/burger.svg?react';
-import KebabIcon from '@/assets/svgs/icons/categories/kebab.svg?react';
-import SushiIcon from '@/assets/svgs/icons/categories/sushi.svg?react';
-import PastaIcon from '@/assets/svgs/icons/categories/pasta.svg?react';
-import ChineseIcon from '@/assets/svgs/icons/categories/sticks.svg?react';
-import FriesIcon from '@/assets/svgs/icons/categories/fries.svg?react';
-import SoupIcon from '@/assets/svgs/icons/categories/soup.svg?react';
-
-const categoriesAssets = {
-  pizza: <PizzaIcon />,
-  burger: <BurgerIcon />,
-  kebab: <KebabIcon />,
-  sushi: <SushiIcon />,
-  pasta: <PastaIcon />,
-  chinese: <ChineseIcon />,
-  fastFood: <FriesIcon />,
-  soups: <SoupIcon />,
-};
+const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
 type QueryParams = { [key: string]: string | string[] };
 
 const Filter = () => {
+  const { categories, isCategoriesFetching, categoriesError } = useCategories();
   const [searchValue, setSearchValue] = useState<string>('');
   const [activeCategories, setActiveCategories] = useState<string[]>([]);
   const [minimumRating, setMinimumRating] = useState<number>(0);
@@ -39,15 +22,15 @@ const Filter = () => {
     if (urlSearchValue) {
       setSearchValue(urlSearchValue);
     }
-  }, []);
+  }, [searchParams]);
 
   const applyFilters = (params: QueryParams) => {
     const queryParams: QueryParams = {};
-    Object.keys(params).forEach((key) => {
+    for (const key in params) {
       if (params[key] !== '' && params[key] !== '0') {
         queryParams[key] = params[key];
       }
-    });
+    }
 
     setSearchParams(queryParams);
   };
@@ -78,6 +61,39 @@ const Filter = () => {
     setActiveCategories(categoriesToUpdate);
   };
 
+  const renderCategories = () => {
+    if (isCategoriesFetching) {
+      return Array.from({ length: 8 }).map((_, idx) => (
+        <div
+          key={idx}
+          className="flex h-10 w-36 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#818181]/15 px-6 py-2 transition duration-200 hover:bg-[#818181]/5"
+        />
+      ));
+    }
+
+    if (categories) {
+      return categories.map((category) => {
+        const { name, value, icon } = category.attributes;
+        return (
+          <button
+            onClick={() => updateActiveCategories(value)}
+            className={`flex h-10 w-36 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#818181]/15 px-6 py-2 transition duration-200 hover:bg-[#818181]/50 ${
+              activeCategories.includes(value) && 'bg-[#818181]/40'
+            }`}
+            key={value}
+          >
+            <img src={`${baseUploadsUrl}${icon.data.attributes.url}`} alt={`${icon.data.attributes.name}-icon`} />
+            {name}
+          </button>
+        );
+      });
+    }
+
+    if (categoriesError) return <div className="font-medium text-red-600">There was an error fetching categories</div>;
+
+    return <div>No categories</div>;
+  };
+
   return (
     <form className="mx-auto flex w-full flex-col gap-5 bg-white px-6 py-5" onSubmit={(e) => handleOnSubmit(e)}>
       <span className="text-[24px]">Filter</span>
@@ -93,23 +109,7 @@ const Filter = () => {
         </div>
       </div>
       <span className="text-base">Filter by Type</span>
-      <div className="flex items-center gap-5 overflow-scroll">
-        {categories.map((category) => (
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              updateActiveCategories(category.value);
-            }}
-            className={`flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#818181]/15 px-6 py-2 transition duration-200 hover:bg-[#818181]/50 ${
-              activeCategories.includes(category.value) && 'bg-[#818181]/40'
-            }`}
-            key={category.value}
-          >
-            {categoriesAssets[category.value]}
-            {category.label}
-          </button>
-        ))}
-      </div>
+      <div className="flex items-center gap-5 overflow-scroll">{renderCategories()}</div>
       <span className="text-base">Filter by Rating</span>
       <div className="flex h-7 items-center gap-2">
         <SelectRating
