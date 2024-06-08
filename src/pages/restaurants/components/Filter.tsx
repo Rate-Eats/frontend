@@ -76,7 +76,10 @@ const Filter = () => {
         const { name, value, icon } = category.attributes;
         return (
           <button
-            onClick={() => updateActiveCategories(value)}
+            onClick={(e) => {
+              e.preventDefault()
+              updateActiveCategories(value)
+            }}
             className={`flex h-10 w-36 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#818181]/15 px-6 py-2 transition duration-200 hover:bg-[#818181]/50 ${
               activeCategories.includes(value) && 'bg-[#818181]/40'
             }`}
