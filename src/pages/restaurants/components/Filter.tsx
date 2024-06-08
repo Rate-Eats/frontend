@@ -19,8 +19,21 @@ const Filter = () => {
 
   useEffect(() => {
     const urlSearchValue = searchParams.get('search_query');
+    const activeCategories = searchParams.getAll('category');
+    const maximumRatingValue = searchParams.getAll('maximum_rating');
+    const minimumRatingValue = searchParams.getAll('minimum_rating');
+
     if (urlSearchValue) {
       setSearchValue(urlSearchValue);
+    }
+    if (activeCategories) {
+      setActiveCategories(activeCategories);
+    }
+    if (maximumRatingValue) {
+      setMaximumRating(Number(maximumRatingValue));
+    }
+    if (minimumRatingValue) {
+      setMinimumRating(Number(minimumRatingValue));
     }
   }, [searchParams]);
 
@@ -77,8 +90,8 @@ const Filter = () => {
         return (
           <button
             onClick={(e) => {
-              e.preventDefault()
-              updateActiveCategories(value)
+              e.preventDefault();
+              updateActiveCategories(value);
             }}
             className={`flex h-10 w-36 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#818181]/15 px-6 py-2 transition duration-200 hover:bg-[#818181]/50 ${
               activeCategories.includes(value) && 'bg-[#818181]/40'
