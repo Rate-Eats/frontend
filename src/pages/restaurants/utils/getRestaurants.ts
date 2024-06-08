@@ -16,6 +16,8 @@ export const getRestaurants = async (params: ParamsInterface): Promise<Restauran
     params: {
       'filters[categories][value][$in]': categories,
       'filters[name][$contains]': search_query,
+      'filters[median_rating][$gte]': minimum_rating,
+      'filters[median_rating][$lte]': maximum_rating,
     },
     headers: {
       Authorization: `Bearer ${import.meta.env.VITE_GET_RESTAURANT_TOKEN}`,
