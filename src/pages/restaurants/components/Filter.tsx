@@ -16,14 +16,15 @@ const Filter = () => {
   const [activeCategories, setActiveCategories] = useState<string[]>([]);
   const [minimumRating, setMinimumRating] = useState<number>(0);
   const [maximumRating, setMaximumRating] = useState<number>(0);
-  const [sortBy, setSortBy] = useState<string>('');
+  const [order, setOrder] = useState<string>('');
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const urlSearchValue = searchParams.get('search_query');
     const activeCategories = searchParams.getAll('category');
-    const maximumRatingValue = searchParams.getAll('maximum_rating');
-    const minimumRatingValue = searchParams.getAll('minimum_rating');
+    const maximumRatingValue = searchParams.get('maximum_rating');
+    const minimumRatingValue = searchParams.get('minimum_rating');
+    const orderValue = searchParams.get('order');
 
     if (urlSearchValue) {
       setSearchValue(urlSearchValue);
@@ -36,6 +37,9 @@ const Filter = () => {
     }
     if (minimumRatingValue) {
       setMinimumRating(Number(minimumRatingValue));
+    }
+    if (orderValue) {
+      setOrder(orderValue);
     }
   }, [searchParams]);
 
@@ -57,13 +61,13 @@ const Filter = () => {
       category: activeCategories,
       minimum_rating: minimumRating.toString(),
       maximum_rating: maximumRating.toString(),
-      order: sortBy,
+      order: order,
     };
     applyFilters(params);
   };
 
   const onSelect = (value: string) => {
-    setSortBy(value);
+    setOrder(value);
     const params = {
       search_query: searchValue,
       category: activeCategories,
@@ -179,7 +183,7 @@ const Filter = () => {
         </div>
       </form>
       <div className="ml-auto">
-        <Select onValueChange={(value) => onSelect(value)}>
+        <Select onValueChange={(value) => onSelect(value)} value={order}>
           <SelectTrigger className="w-[180px] bg-white outline-none">
             <SelectValue placeholder="Sort by:" />
           </SelectTrigger>
