@@ -12,6 +12,7 @@ const Restaurants = () => {
     categories: searchParams.getAll('category'),
     minimum_rating: searchParams.get('minimum_rating'),
     maximum_rating: searchParams.get('maximum_rating'),
+    order: searchParams.get('order'),
   };
 
   const { error, data, isFetching } = useQuery({
@@ -22,7 +23,7 @@ const Restaurants = () => {
   if (error) return <ErrorFetching errorText={'There was an error loading this restaurant'} />;
 
   return (
-    <div className="mx-auto max-w-screen-xl gap-5 py-6">
+    <div className="mx-auto flex max-w-screen-xl flex-col gap-3 py-6">
       <Filter />
       <RestaurantList data={data} isFetching={isFetching} />
     </div>

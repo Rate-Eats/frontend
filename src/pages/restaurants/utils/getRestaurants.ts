@@ -8,9 +8,10 @@ interface ParamsInterface {
   categories: string[];
   minimum_rating: string | null;
   maximum_rating: string | null;
+  order: string | null;
 }
 export const getRestaurants = async (params: ParamsInterface): Promise<RestaurantData[]> => {
-  const { search_query, categories, minimum_rating, maximum_rating } = params;
+  const { search_query, categories, minimum_rating, maximum_rating, order } = params;
 
   const { data } = await axios.get(`${API_URL}/restaurants?populate=categories`, {
     params: {
@@ -18,6 +19,7 @@ export const getRestaurants = async (params: ParamsInterface): Promise<Restauran
       'filters[name][$contains]': search_query,
       'filters[median_rating][$gte]': minimum_rating,
       'filters[median_rating][$lte]': maximum_rating,
+      sort: order,
     },
     headers: {
       Authorization: `Bearer ${import.meta.env.VITE_GET_RESTAURANT_TOKEN}`,
