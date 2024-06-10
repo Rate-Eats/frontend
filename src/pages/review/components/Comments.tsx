@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
 import { ReviewCommentsData } from '@pages/review/interfaces/review.ts';
 import CommentInput from '@pages/review/components/CommentInput.tsx';
-import { formatDate } from '@/utils/formatDate.ts';
+import { formatDate } from '@shared/utils/formatDate.ts';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@shared/ui/button.tsx';
 import { useState } from 'react';
