@@ -1,4 +1,4 @@
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@shared/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@shared/ui/carousel.tsx';
 import { RestaurantImages } from '@pages/restaurant/interfaces/restaurant.ts';
 import { Dialog, DialogContent, DialogTrigger } from '@shared/ui/dialog.tsx';
 import React from 'react';
@@ -15,7 +15,7 @@ const ImageSlider = ({ images }: ImageSliderProps) => {
   };
 
   return (
-    <Carousel className="h-[350px] w-full">
+    <Carousel className="h-full w-full">
       <CarouselContent>
         {images.sort(compareImages).map((image, index) => (
           <CarouselItem key={index}>
