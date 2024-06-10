@@ -13,7 +13,7 @@ interface ParamsInterface {
 export const getRestaurants = async (params: ParamsInterface): Promise<RestaurantData[]> => {
   const { search_query, categories, minimum_rating, maximum_rating, order } = params;
 
-  const { data } = await axios.get(`${API_URL}/restaurants?populate=categories`, {
+  const { data } = await axios.get(`${API_URL}/restaurants?populate=images&populate=categories`, {
     params: {
       'filters[categories][value][$in]': categories,
       'filters[name][$contains]': search_query,
