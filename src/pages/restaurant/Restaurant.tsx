@@ -5,7 +5,7 @@ import AddReviewModal from '@pages/restaurant/components/AddReviewModal.tsx';
 import ReviewRatings from '@pages/restaurant/components/ReviewRatings.tsx';
 import RestaurantSkeleton from '@pages/restaurant/RestaurantSkeleton.tsx';
 import { getRestaurant } from '@pages/restaurant/utils/getRestaurant.ts';
-import ImageSlider from '@pages/restaurant/components/ImageSlider.tsx';
+import ImageSlider from '@shared/components/ImageSlider.tsx';
 import ReviewsList from '@pages/restaurant/components/ReviewsList.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
@@ -30,7 +30,9 @@ const Restaurant = () => {
 
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col justify-center gap-5 py-6">
-      <ImageSlider images={data.attributes.images.filter((image) => !image.menu)} />
+      <div className="h-[450px] w-full">
+        <ImageSlider images={data.attributes.images.filter((image) => !image.menu)} />
+      </div>
       <RestaurantDetails restaurantData={data} />
       <RestaurantMenus images={data.attributes.images.filter((image) => image.menu)} />
       <ReviewRatings restaurantData={data} handleModalVisibility={handleModalVisibility} />
