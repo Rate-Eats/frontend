@@ -70,6 +70,7 @@ export interface RestaurantData {
     name: string;
     description: string;
     address: string;
+    median_rating: number;
     images: RestaurantImages[];
     reviews: Reviews;
     categories: Categories;
