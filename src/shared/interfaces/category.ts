@@ -1,6 +1,8 @@
 interface Icon {
   data: {
     attributes: {
+      height: number;
+      width: number;
       url: string;
       name: string;
     };

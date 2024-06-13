@@ -117,7 +117,7 @@ const Filter = () => {
             }`}
             key={value}
           >
-            <img src={`${baseUploadsUrl}${icon.data.attributes.url}`} alt={`${icon.data.attributes.name}-icon`} />
+            <img src={`${baseUploadsUrl}${icon.data.attributes.url}`} alt={`${icon.data.attributes.name}-icon`}  height={icon.data.attributes.height} width={icon.data.attributes.width} />
             {name}
           </button>
         );
