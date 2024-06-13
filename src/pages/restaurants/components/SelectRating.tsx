@@ -49,6 +49,7 @@ const SelectRating = ({ onChangeFunction, value, maximumValue, minimumValue }: S
               onChangeFunction(value);
               setHoverIndex(value);
             }}
+            aria-label={`rating value: ${value} `}
           >
             <HalfStarIcon className={`transition  ${hoverIndex >= value ? 'text-primary' : 'text-blue-200'}`} />
           </button>

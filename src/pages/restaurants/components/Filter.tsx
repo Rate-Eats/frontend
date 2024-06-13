@@ -184,7 +184,7 @@ const Filter = () => {
       </form>
       <div className="ml-auto">
         <Select onValueChange={(value) => onSelect(value)} value={order}>
-          <SelectTrigger className="w-[180px] bg-white outline-none">
+          <SelectTrigger className="w-[180px] bg-white outline-none" aria-label={'Sort by'}>
             <SelectValue placeholder="Sort by:" />
           </SelectTrigger>
           <SelectContent className="bg-white outline-none">
