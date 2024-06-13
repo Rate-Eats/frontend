@@ -164,7 +164,7 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
             <ImageField form={form} additionalImages={currentImages} removeAdditionalItems={removeAdditionalItems} />
             {errorMessage && <span className="mx-auto font-medium text-red-500">{errorMessage}</span>}
             <Button type="submit" disabled={loading}>
-              {loading ? <Loader /> : 'Add review'}
+              {loading ? <Loader /> : existingReviewId ? 'Update review' : 'Add review'}
             </Button>
           </form>
         </Form>
