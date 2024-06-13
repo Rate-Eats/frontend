@@ -5,7 +5,7 @@ const RestaurantsSkeleton = () => {
   return (
     <div className="flex flex-col gap-8 py-4">
       {new Array(4).fill(0).map((_, index) => (
-        <div className="flex w-full gap-5 bg-white p-14">
+        <div className="flex w-full gap-5 bg-white p-14" key={index}>
           <Skeleton
             className={`h-[350px] flex-1 items-center justify-center text-center ${index % 2 === 1 && 'order-last'} rounded-xl`}
           />
