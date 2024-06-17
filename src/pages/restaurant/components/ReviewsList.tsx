@@ -5,7 +5,7 @@ import Arrow from '@assets/svgs/icons/arrowDown.svg?react';
 import Comment from '@assets/svgs/icons/comment.svg?react';
 import Dislike from '@assets/svgs/icons/dislike.svg?react';
 import Like from '@assets/svgs/icons/like.svg?react';
-import { formatDate } from '@/utils/formatDate.ts';
+import { formatDate } from '@shared/utils/formatDate.ts';
 import Stars from '@components/rating/Stars.tsx';
 import { useNavigate } from 'react-router-dom';
 

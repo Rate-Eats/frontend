@@ -75,7 +75,7 @@ const User = () => {
 
         <ul
           ref={ulRef}
-          className={`absolute right-0 top-12 w-44 rounded-sm bg-white p-3 shadow lg:left-0 lg:w-auto ${
+          className={`absolute right-0 top-12 w-44 rounded-sm bg-white p-3 shadow lg:left-0 lg:w-auto z-10 ${
             !open && 'hidden'
           }`}
         >

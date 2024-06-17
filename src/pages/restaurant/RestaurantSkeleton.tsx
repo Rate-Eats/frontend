@@ -54,8 +54,8 @@ const RestaurantSkeleton = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {new Array(2).fill(0).map(() => (
-          <div className="flex flex-col gap-4 rounded-lg bg-white p-5">
+        {new Array(2).fill(0).map((_,index) => (
+          <div className="flex flex-col gap-4 rounded-lg bg-white p-5" key={index}>
             <div className="flex justify-between">
               <div className="flex items-center gap-3">
                 <Skeleton className="size-10 rounded-full" />

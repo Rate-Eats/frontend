@@ -47,13 +47,32 @@ export interface Reviews {
   data: ReviewAttributesData[];
 }
 
+export interface CategoriesAttributes {
+  createdAt: string;
+  name: string;
+  publishedAt: string;
+  updatedAt: string;
+  value: string;
+}
+
+export interface CategoriesAttributesData {
+  id: string;
+  attributes: CategoriesAttributes;
+}
+
+export interface Categories {
+  data: CategoriesAttributesData[];
+}
+
 export interface RestaurantData {
   id: number;
   attributes: {
     name: string;
     description: string;
     address: string;
+    median_rating: number;
     images: RestaurantImages[];
     reviews: Reviews;
+    categories: Categories;
   };
 }
