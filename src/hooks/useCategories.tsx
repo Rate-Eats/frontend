@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
 import { getCategories } from '@shared/utils/getCategories.tsx';
+import { useQuery } from '@tanstack/react-query';
 
 const UseCategories = () => {
   const { data, isFetching, error } = useQuery({

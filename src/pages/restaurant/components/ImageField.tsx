@@ -5,36 +5,17 @@ import TrashIcon from '@assets/svgs/icons/trash.svg?react';
 import { UseFormReturn } from 'react-hook-form';
 import { Input } from '@shared/ui/input.tsx';
 import React from 'react';
+import { useImageField } from '@/hooks/useImageField.tsx';
 
 interface ImageFieldProps {
   form: UseFormReturn<{
-    food: number;
-    service: number;
-    price: number;
-    ambience: number;
     image: File[];
-    description: string;
   }>;
   additionalImages: RestaurantImages[];
   removeAdditionalItems: (id: string) => void;
 }
 const ImageField = ({ form, additionalImages, removeAdditionalItems }: ImageFieldProps) => {
-  const imagesToDisplay = form.watch('image');
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { image } = form.getValues();
-    const files = e.target.files;
-    if (files) {
-      const fileArray = Array.from(files).map((file) => file);
-      form.setValue('image', [...image, ...fileArray]);
-      form.clearErrors('image');
-    }
-  };
-
-  const removeImage = (name: string) => {
-    const filteredImages = form.getValues('image').filter((item) => item.name !== name);
-    form.setValue('image', filteredImages);
-  };
+  const { imagesToDisplay, handleFileChange, removeImage } = useImageField(form);
 
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
@@ -55,7 +36,7 @@ const ImageField = ({ form, additionalImages, removeAdditionalItems }: ImageFiel
           </FormItem>
         )}
       />
-      {imagesToDisplay.map((item) => {
+      {imagesToDisplay.map((item: File) => {
         const imageUrl = URL.createObjectURL(item);
         return (
           <div

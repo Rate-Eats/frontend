@@ -1,27 +1,19 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@shared/ui/form.tsx';
-import { FormProps } from '@pages/addRestaurant/interfaces/formProps.ts';
 import UploadIcon from '@assets/svgs/icons/upload.svg?react';
 import TrashIcon from '@assets/svgs/icons/trash.svg?react';
+import { useImageField } from '@/hooks/useImageField.tsx';
+import { UseFormReturn } from 'react-hook-form';
 import { Input } from '@shared/ui/input.tsx';
 import React from 'react';
 
+export interface FormProps {
+  form: UseFormReturn<{
+    image: File[];
+  }>;
+}
+
 const ImageField = ({ form }: FormProps) => {
-  const imagesToDisplay = form.watch('image');
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { image } = form.getValues();
-    const files = e.target.files;
-    if (files) {
-      const fileArray = Array.from(files).map((file) => file);
-      form.setValue('image', [...image, ...fileArray]);
-      form.clearErrors('image');
-    }
-  };
-
-  const removeImage = (name: string) => {
-    const filteredImages = form.getValues('image').filter((item) => item.name !== name);
-    form.setValue('image', filteredImages);
-  };
+  const { imagesToDisplay, handleFileChange, removeImage } = useImageField(form);
 
   return (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ">
