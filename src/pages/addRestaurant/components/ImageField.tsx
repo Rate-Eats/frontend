@@ -8,12 +8,17 @@ import React from 'react';
 
 export interface FormProps {
   form: UseFormReturn<{
+    name: string;
+    description: string;
+    category: string[];
+    address: string;
     image: File[];
   }>;
 }
 
 const ImageField = ({ form }: FormProps) => {
-  const { imagesToDisplay, handleFileChange, removeImage } = useImageField(form);
+  const { setValue, clearErrors, getValues, watch } = form;
+  const { imagesToDisplay, handleFileChange, removeImage } = useImageField({ setValue, clearErrors, getValues, watch });
 
   return (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ">
@@ -34,7 +39,7 @@ const ImageField = ({ form }: FormProps) => {
           </FormItem>
         )}
       />
-      {imagesToDisplay.map((item) => {
+      {imagesToDisplay.map((item: File) => {
         const imageUrl = URL.createObjectURL(item);
         return (
           <div

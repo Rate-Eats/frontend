@@ -2,20 +2,26 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@share
 import { RestaurantImages } from '@pages/restaurant/interfaces/restaurant.ts';
 import UploadIcon from '@assets/svgs/icons/upload.svg?react';
 import TrashIcon from '@assets/svgs/icons/trash.svg?react';
+import { useImageField } from '@/hooks/useImageField.tsx';
 import { UseFormReturn } from 'react-hook-form';
 import { Input } from '@shared/ui/input.tsx';
 import React from 'react';
-import { useImageField } from '@/hooks/useImageField.tsx';
 
 interface ImageFieldProps {
   form: UseFormReturn<{
     image: File[];
+    description: string;
+    food: number;
+    service: number;
+    price: number;
+    ambience: number;
   }>;
   additionalImages: RestaurantImages[];
   removeAdditionalItems: (id: string) => void;
 }
 const ImageField = ({ form, additionalImages, removeAdditionalItems }: ImageFieldProps) => {
-  const { imagesToDisplay, handleFileChange, removeImage } = useImageField(form);
+  const { setValue, clearErrors, getValues, watch } = form;
+  const { imagesToDisplay, handleFileChange, removeImage } = useImageField({ setValue, clearErrors, getValues, watch });
 
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
