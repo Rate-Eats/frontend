@@ -1,6 +1,6 @@
+import { createRestaurantObject } from '@pages/addRestaurant/utils/createRestaurantObject.ts';
 import DescriptionField from '@pages/addRestaurant/components/DescriptionField.tsx';
 import CategoryField from '@pages/addRestaurant/components/CategoryField.tsx';
-import { ImageInterface, RestaurantData } from '@shared/interfaces/forms.ts';
 import AddressField from '@pages/addRestaurant/components/AddressField.tsx';
 import ImageField from '@pages/addRestaurant/components/ImageField.tsx';
 import { addRestaurantSchema } from '@/schemas/addRestaurantSchema.ts';
@@ -17,8 +17,8 @@ import { z } from 'zod';
 
 interface ErrorsProps {
   path: string[];
-  message: 'This attribute must be unique';
-  name: 'ValidationError';
+  message: string;
+  name: string;
 }
 
 const AddRestaurant = () => {
@@ -51,25 +51,8 @@ const AddRestaurant = () => {
     });
 
     await uploadImages.mutateAsync(formData, {
-      onSuccess: ({ data }) => {
-        const imagesArray = data.map((image: ImageInterface, index: number) => ({
-          main: false,
-          path: image.hash + image.ext,
-          hash: image.hash,
-          name: image.name,
-          extension: image.ext,
-          __temp_key__: index,
-        }));
-        const addRestaurantObject: RestaurantData = {
-          name: restaurantData.name,
-          description: restaurantData.description,
-          address: restaurantData.address,
-          images: imagesArray,
-          ratings: {
-            disconnect: [],
-            connect: [],
-          },
-        };
+      onSuccess: async ({ data }) => {
+        const addRestaurantObject = createRestaurantObject(restaurantData, data);
         addRestaurant.mutate(addRestaurantObject, {
           onSuccess: (data) => navigate(`/restaurant/${data.data.data.id}`),
           onError: (error) => {

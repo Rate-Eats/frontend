@@ -1,5 +1,6 @@
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@shared/ui/command.tsx';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@shared/ui/form.tsx';
+import CategoryDisplay from '@pages/addRestaurant/components/CategoryDisplay.tsx';
 import { Popover, PopoverContent, PopoverTrigger } from '@shared/ui/popover.tsx';
 import { FormProps } from '@pages/addRestaurant/interfaces/formProps.ts';
 import { categories } from '@shared/data/categories.ts';
@@ -10,28 +11,16 @@ import React from 'react';
 const CategoryField = ({ form }: FormProps) => {
   const categoriesToDisplay = form.watch('category');
 
-  const handleShowCategories = () => {
-    return categoriesToDisplay.length > 0 ? (
-      categoriesToDisplay.map((categoryValue) => {
-        const category = categories.find((cat) => cat.value === categoryValue);
-        return (
-          category && (
-            <div
-              key={category.label}
-              className="rounded-sm bg-[#F0F0F0] p-1.5 text-[#6E7072] transition hover:bg-gray-200"
-              onClick={(e) => {
-                e.preventDefault();
-                handleCategoryChange(category);
-              }}
-            >
-              {category.label}
-            </div>
-          )
-        );
-      })
+  const handleShowCategories = () =>
+    categoriesToDisplay.length > 0 ? (
+      categoriesToDisplay.map(getCategoryDisplay)
     ) : (
       <span className="text-gray-400">Select category</span>
     );
+
+  const getCategoryDisplay = (categoryValue: string) => {
+    const category = categories.find((cat) => cat.value === categoryValue);
+    return category && <CategoryDisplay category={category} onCategoryChange={handleCategoryChange} />;
   };
 
   const handleCategoryChange = (category: { value: string }) => {
