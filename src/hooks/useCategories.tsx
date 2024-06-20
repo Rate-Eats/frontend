@@ -5,6 +5,7 @@ const UseCategories = () => {
   const { data, isFetching, error } = useQuery({
     queryKey: ['categories'],
     queryFn: () => getCategories(),
+    refetchOnWindowFocus: false,
   });
 
   return {
