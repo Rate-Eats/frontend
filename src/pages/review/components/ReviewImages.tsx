@@ -23,7 +23,7 @@ const ReviewImages = ({ reviewImages }: { reviewImages: ReviewImageData[] }) => 
         {reviewImages.slice(0, loadMore).map((image, index) => (
           <Dialog key={index}>
             <DialogTrigger className="group relative mt-auto flex h-[300px] w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-gray-300 bg-white text-gray-400 transition">
-              <img src={`${baseUploadsUrl}${image.path}`} alt={image.name} className="size-full object-cover" />
+              <img src={`${baseUploadsUrl}medium_${image.hash}.avif`} alt={image.name} className="size-full object-cover" />
               <div className="absolute z-10 size-full bg-black opacity-0 transition group-hover:opacity-50" />
               <div className="absolute z-10 flex size-full items-center justify-center opacity-0 transition group-hover:opacity-100">
                 <ExpandIcon />

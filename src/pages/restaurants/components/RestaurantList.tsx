@@ -29,7 +29,7 @@ const RestaurantList = ({ data, isFetching }: RestaurantListProps) => {
         return (
           <div className="flex gap-5 bg-white p-14" key={id}>
             <div className={`flex-1 ${index % 2 === 1 && 'order-last'}`}>
-              <ImageSlider images={images} />
+              <ImageSlider images={images} size={'medium'} />
             </div>
             <div className={`flex flex-1 flex-col ${index % 2 === 1 && 'items-end'} mt-8 gap-3`}>
               <span className="cursor-pointer text-2xl" onClick={() => redirectToRestaurant(id)}>

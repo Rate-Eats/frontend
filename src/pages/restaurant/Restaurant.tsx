@@ -31,7 +31,7 @@ const Restaurant = () => {
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col justify-center gap-5 py-6">
       <div className="h-[450px] w-full">
-        <ImageSlider images={data.attributes.images.filter((image) => !image.menu)} />
+        <ImageSlider images={data.attributes.images.filter((image) => !image.menu)} size={'large'} />
       </div>
       <RestaurantDetails restaurantData={data} />
       <RestaurantMenus images={data.attributes.images.filter((image) => image.menu)} />

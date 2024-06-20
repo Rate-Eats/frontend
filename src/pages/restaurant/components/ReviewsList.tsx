@@ -76,7 +76,7 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
             <div className="flex gap-3">
               {reviewImages.map((image) => (
                 <img
-                  src={`${baseUploadsUrl}${image.path}`}
+                  src={`${baseUploadsUrl}small_${image.hash}.avif`}
                   alt={image.name}
                   className="size-[70px] rounded-md"
                   key={image.hash}
