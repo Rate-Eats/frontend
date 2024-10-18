@@ -31,14 +31,14 @@ const Restaurant = () => {
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col justify-center gap-5 py-6">
       <div className="h-[450px] w-full">
-        <ImageSlider images={data.attributes.images.filter((image) => !image.menu)} size={'large'} />
+        <ImageSlider images={data.images.filter((image) => !image.menu)} size={'large'} />
       </div>
       <RestaurantDetails restaurantData={data} />
-      <RestaurantMenus images={data.attributes.images.filter((image) => image.menu)} />
+      <RestaurantMenus images={data.images.filter((image) => image.menu)} />
       <ReviewRatings restaurantData={data} handleModalVisibility={handleModalVisibility} />
-      <ReviewsList reviews={data.attributes.reviews} handleModalVisibility={handleModalVisibility} />
+      <ReviewsList reviews={data.reviews} handleModalVisibility={handleModalVisibility} />
       <AddReviewModal
-        reviews={data.attributes.reviews}
+        reviews={data.reviews}
         isModalOpen={isModalOpen}
         handleModalVisibility={handleModalVisibility}
       />

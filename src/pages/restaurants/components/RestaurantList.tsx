@@ -18,13 +18,12 @@ const RestaurantList = ({ data, isFetching }: RestaurantListProps) => {
   if (isFetching) return <RestaurantsSkeleton />;
   if (!data) return <ErrorFetching errorText="There was an error loading this restaurant" />;
 
-  const redirectToRestaurant = (id: number) => navigate(`/restaurant/${id}`);
+  const redirectToRestaurant = (id: string) => navigate(`/restaurant/${id}`);
 
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col gap-8 py-4">
       {data.map((restaurant, index) => {
-        const { id, attributes } = restaurant;
-        const { name, description, address, images, median_rating, categories } = attributes;
+        const { id,documentId, name, description, address, images, median_rating, categories } = restaurant;
 
         return (
           <div className="flex gap-5 bg-white p-14" key={id}>
@@ -32,15 +31,15 @@ const RestaurantList = ({ data, isFetching }: RestaurantListProps) => {
               <ImageSlider images={images} size={'medium'} />
             </div>
             <div className={`flex flex-1 flex-col ${index % 2 === 1 && 'items-end'} mt-8 gap-3`}>
-              <span className="cursor-pointer text-2xl" onClick={() => redirectToRestaurant(id)}>
+              <span className="cursor-pointer text-2xl" onClick={() => redirectToRestaurant(documentId)}>
                 {name}
               </span>
               <Stars rating={median_rating} />
               <span className="cursor-pointer underline">{address}</span>
               <div className="flex gap-2">
-                {categories.data.map((category) => (
+                {categories.map((category) => (
                   <Badge variant="secondary" className="h-[24px] cursor-pointer px-3" key={category.id}>
-                    {category.attributes.name}
+                    {category.name}
                   </Badge>
                 ))}
               </div>

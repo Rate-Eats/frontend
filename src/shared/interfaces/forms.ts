@@ -10,10 +10,6 @@ export interface RestaurantData {
     extension: string;
     __temp_key__: number;
   }[];
-  ratings: {
-    disconnect: [];
-    connect: [];
-  };
 }
 
 export interface ReviewData {

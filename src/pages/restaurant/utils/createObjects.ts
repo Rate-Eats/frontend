@@ -8,13 +8,14 @@ export const createImageObject = (image: ImageInterface) => ({
   hash: image.hash,
   name: image.name,
   extension: image.ext,
+  menu: false,
 });
 
 export const createReviewObject = (
   reviewData: z.infer<typeof addReviewSchema>,
   imagesArray: PayloadImageInterface[],
   restaurantId: string,
-  userId: number,
+  userId: string,
 ) => ({
   rating_food: reviewData.food,
   rating_service: reviewData.service,
@@ -26,7 +27,7 @@ export const createReviewObject = (
     disconnect: [],
     connect: [
       {
-        id: Number(restaurantId),
+        documentId: restaurantId,
         position: {
           end: true,
         },
@@ -37,11 +38,15 @@ export const createReviewObject = (
     disconnect: [],
     connect: [
       {
-        id: userId,
+        documentId: userId,
         position: {
           end: true,
         },
       },
     ],
+  },
+  comments: {
+    connect: [],
+    disconnect: [],
   },
 });

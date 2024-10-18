@@ -4,10 +4,11 @@ import { Dialog, DialogContent, DialogTrigger } from '@shared/ui/dialog.tsx';
 
 interface ImageSliderProps {
   images: RestaurantImages[];
-  size: 'small' | 'medium' | 'large';
+  size: '' | 'small' | 'medium' | 'large';
 }
 
 const ImageSlider = ({ images, size }: ImageSliderProps) => {
+  size = '';
   const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
   const compareImages = (imageA: RestaurantImages) => {
@@ -22,7 +23,7 @@ const ImageSlider = ({ images, size }: ImageSliderProps) => {
             <Dialog>
               <DialogTrigger className="group relative mt-auto flex size-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-none border-gray-300 bg-white text-gray-400 transition">
                 <img
-                  src={`${baseUploadsUrl}${size}_${image.hash}.avif`}
+                  src={`${baseUploadsUrl}${image.hash}${size}${image.extension}`}
                   className=" h-[350px] w-full cursor-pointer rounded-xl object-cover text-4xl font-semibold "
                   alt={index.toString()}
                   loading="lazy"

@@ -52,26 +52,21 @@ const AddRestaurant = () => {
 
     await uploadImages.mutateAsync(formData, {
       onSuccess: ({ data }) => {
-        const imagesArray = data.map((image: ImageInterface, index: number) => ({
+        const imagesArray = data.map((image: ImageInterface) => ({
           main: false,
           path: image.hash + image.ext,
           hash: image.hash,
           name: image.name,
           extension: image.ext,
-          __temp_key__: index,
         }));
         const addRestaurantObject: RestaurantData = {
           name: restaurantData.name,
           description: restaurantData.description,
           address: restaurantData.address,
           images: imagesArray,
-          ratings: {
-            disconnect: [],
-            connect: [],
-          },
         };
         addRestaurant.mutate(addRestaurantObject, {
-          onSuccess: (data) => navigate(`/restaurant/${data.data.data.id}`),
+          onSuccess: (data) => navigate(`/restaurant/${data.data.data.documentId}`),
           onError: (error) => {
             if (axios.isAxiosError(error) && error.response) {
               const errors = error?.response?.data?.error?.details?.errors;

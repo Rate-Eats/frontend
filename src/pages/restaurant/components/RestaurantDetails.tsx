@@ -10,9 +10,7 @@ interface RestaurantDetailsProps {
 
 const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
   const [showMoreDescription, setShowMoreDescription] = useState(false);
-  const {
-    attributes: { name, description, address, reviews },
-  } = restaurantData;
+  const { name, description, address, reviews } = restaurantData;
 
   const rating = calculateRating(reviews);
   const price = '₹ 2,000 for 2 | North Indian';
@@ -23,7 +21,7 @@ const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
         <span className="text-2xl font-medium text-primary">{name}</span>
         <div className="flex gap-2 font-medium">
           {rating.rating.rating.toFixed(1)} Stars |{' '}
-          <span className="text-primary underline">{reviews.data.length} Reviews</span>
+          <span className="text-primary underline">{reviews.length} Reviews</span>
         </div>
       </div>
       <div

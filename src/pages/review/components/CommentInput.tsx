@@ -20,7 +20,7 @@ const CommentInput = () => {
 
   const addCommentFunc = async() => {
     if (!id || !userData) return;
-    const data = createCommentObject(comment, id, userData.id);
+    const data = createCommentObject(comment, id, userData.documentId);
     await addComment.mutateAsync(data);
     await queryClient.invalidateQueries({ queryKey: ['review'] })
   };

@@ -14,9 +14,7 @@ const ReviewRatings = ({ restaurantData, handleModalVisibility }: ReviewRatingsP
   const userData = useAuth();
   const navigate = useNavigate();
 
-  const {
-    attributes: { reviews },
-  } = restaurantData;
+  const { reviews } = restaurantData;
 
   const rating = calculateRating(reviews);
 

@@ -1,11 +1,11 @@
-export const createCommentObject = (text: string, reviewId: string, userId: number) => {
+export const createCommentObject = (text: string, reviewId: string, userId: string) => {
   return {
     text: text,
     review: {
       disconnect: [],
       connect: [
         {
-          id: Number(reviewId),
+          documentId: reviewId,
           position: {
             end: true,
           },
@@ -16,7 +16,7 @@ export const createCommentObject = (text: string, reviewId: string, userId: numb
       disconnect: [],
       connect: [
         {
-          id: userId,
+          documentId: userId,
           position: {
             end: true,
           },
