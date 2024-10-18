@@ -7,7 +7,7 @@ interface RatingsProps {
   reviewData: ReviewData;
 }
 const Ratings = ({ reviewData }: RatingsProps) => {
-  const { rating_ambience, rating_food, rating_service, rating_price } = reviewData.attributes;
+  const { rating_ambience, rating_food, rating_service, rating_price } = reviewData;
   const ratingSum = (rating_ambience + rating_food + rating_service + rating_price) / 4;
 
   return (

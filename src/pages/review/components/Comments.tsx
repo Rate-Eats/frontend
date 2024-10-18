@@ -7,7 +7,7 @@ import { Button } from '@shared/ui/button.tsx';
 import { useState } from 'react';
 
 interface CommentsProps {
-  commentList: ReviewCommentsData;
+  commentList: ReviewCommentsData[];
 }
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
@@ -19,8 +19,8 @@ const Comments = ({ commentList }: CommentsProps) => {
     navigate(`/user/${id}`);
   };
 
-  commentList.data.sort((a, b) => {
-    return new Date(b.attributes.createdAt).getTime() - new Date(a.attributes.createdAt).getTime();
+  commentList.sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 
   return (
@@ -28,26 +28,26 @@ const Comments = ({ commentList }: CommentsProps) => {
       <span className="text-2xl font-medium text-primary">Comments</span>
       <div className="my-5 h-px w-full bg-gray-200" />
       <CommentInput />
-      {commentList.data.slice(0, commentsLoad).map((comment) => {
-        const userData = comment.attributes.users.data;
+      {commentList.slice(0, commentsLoad).map((comment) => {
+        const userData = comment.users;
         return (
           <div key={comment.id}>
             <div className="my-5 h-px w-full bg-gray-200" />
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-2">
                 <Avatar className="cursor-pointer" onClick={() => redirectToUserProfile(userData.id)}>
-                  <AvatarImage src={`${baseUploadsUrl}${userData.attributes.avatar}`} />
-                  <AvatarFallback>{userData.attributes.username.slice(0, 1)}</AvatarFallback>
+                  <AvatarImage src={`${baseUploadsUrl}${userData.avatar}`} />
+                  <AvatarFallback>{userData.username.slice(0, 1)}</AvatarFallback>
                 </Avatar>
-                {userData.attributes.username}
+                {userData.username}
               </div>
-              {comment.attributes.text}
+              {comment.text}
             </div>
-            <div className="mt-2 text-gray-500">{formatDate(comment.attributes.createdAt)}</div>
+            <div className="mt-2 text-gray-500">{formatDate(comment.createdAt)}</div>
           </div>
         );
       })}
-      {commentList.data.length >= commentsLoad && (
+      {commentList.length >= commentsLoad && (
         <>
           <div className="my-5 h-px w-full bg-gray-200" />
           <Button className="mx-auto mt-4 w-40" onClick={() => setCommentsLoad(commentsLoad + 5)}>

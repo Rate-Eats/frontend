@@ -105,7 +105,7 @@ const Filter = () => {
 
     if (categories) {
       return categories.map((category) => {
-        const { name, value, icon } = category.attributes;
+        const { name, value, icon } = category;
         return (
           <button
             onClick={(e) => {
@@ -117,7 +117,8 @@ const Filter = () => {
             }`}
             key={value}
           >
-            <img src={`${baseUploadsUrl}${icon.data.attributes.url}`} alt={`${icon.data.attributes.name}-icon`}  height={icon.data.attributes.height} width={icon.data.attributes.width} />
+
+            <img src={`${baseUploadsUrl}${icon.url}`} alt={`${icon.name}-icon`}  height={icon.height} width={icon.width} />
             {name}
           </button>
         );

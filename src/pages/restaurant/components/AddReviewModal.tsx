@@ -1,7 +1,7 @@
-import { RestaurantImages, ReviewAttributesData, Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import { createImageObject, createReviewObject } from '@pages/restaurant/utils/createObjects.ts';
 import { ImageInterface, PayloadImageInterface, ReviewData } from '@shared/interfaces/forms.ts';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog.tsx';
+import { RestaurantImages, Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx';
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
 import ImageField from '@pages/restaurant/components/ImageField.tsx';
@@ -19,7 +19,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 interface AddReviewModalProps {
-  reviews: Reviews;
+  reviews: Reviews[];
   isModalOpen: boolean;
   handleModalVisibility: (value?: boolean) => void;
 }
@@ -54,19 +54,24 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
   }, []);
 
   const getReviews = async () => {
-    const reviewsData = reviews.data;
-
-    const existingReview = reviewsData.find(
-      (review: ReviewAttributesData) => review.attributes.users.data.id === userData?.id,
-    );
+    const existingReview = reviews.find((review) => review.users.documentId === userData?.documentId);
     if (existingReview) {
-      form.setValue('food', existingReview.attributes.rating_food);
-      form.setValue('service', existingReview.attributes.rating_service);
-      form.setValue('price', existingReview.attributes.rating_price);
-      form.setValue('ambience', existingReview.attributes.rating_ambience);
-      form.setValue('description', existingReview.attributes.description);
-      setCurrentImages(existingReview.attributes.images);
-      setExistingReview(existingReview.id);
+      form.setValue('food', existingReview.rating_food);
+      form.setValue('service', existingReview.rating_service);
+      form.setValue('price', existingReview.rating_price);
+      form.setValue('ambience', existingReview.rating_ambience);
+      form.setValue('description', existingReview.description);
+      const existingImages = existingReview.images.map((image) => ({
+        extension: image.extension,
+        hash: image.hash,
+        main: image.main,
+        menu: image.menu,
+        name: image.name,
+        path: image.path,
+      }));
+
+      setCurrentImages(existingImages);
+      setExistingReview(existingReview.documentId);
     }
   };
 
@@ -102,7 +107,12 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
       onSuccess: ({ data }) => {
         const imagesArray: PayloadImageInterface[] = data.map((image: ImageInterface) => createImageObject(image));
         if (userData && id) {
-          const addReviewObject = createReviewObject(reviewData, [...imagesArray, ...currentImages], id, userData.id);
+          const addReviewObject = createReviewObject(
+            reviewData,
+            [...imagesArray, ...currentImages],
+            id,
+            userData.documentId,
+          );
           existingReviewId ? updateReviewAndInvalidate(addReviewObject) : addReviewAndInvalidate(addReviewObject);
         }
       },
@@ -115,7 +125,7 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
 
   const onSubmit = async (reviewData: z.infer<typeof addReviewSchema>) => {
     if (reviewData.image.length < 1 && userData && id) {
-      const addReviewObject = createReviewObject(reviewData, currentImages, id, userData.id);
+      const addReviewObject = createReviewObject(reviewData, currentImages, id, userData.documentId);
       existingReviewId ? updateReviewAndInvalidate(addReviewObject) : addReviewAndInvalidate(addReviewObject);
       return;
     }

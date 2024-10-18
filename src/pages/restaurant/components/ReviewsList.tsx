@@ -1,16 +1,16 @@
-import { ReviewAttributes, Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
+import { Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import NoReviews from '@components/states/noReviews/noReviews.tsx';
 import Arrow from '@assets/svgs/icons/arrowDown.svg?react';
 import Comment from '@assets/svgs/icons/comment.svg?react';
 import Dislike from '@assets/svgs/icons/dislike.svg?react';
-import Like from '@assets/svgs/icons/like.svg?react';
 import { formatDate } from '@shared/utils/formatDate.ts';
+import Like from '@assets/svgs/icons/like.svg?react';
 import Stars from '@components/rating/Stars.tsx';
 import { useNavigate } from 'react-router-dom';
 
 interface ReviewsListProps {
-  reviews: Reviews;
+  reviews: Reviews[];
   handleModalVisibility: () => void;
 }
 
@@ -19,7 +19,7 @@ const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
   const navigate = useNavigate();
 
-  const calculateRating = (review: ReviewAttributes) => {
+  const calculateRating = (review: Reviews) => {
     const ratings = [review.rating_price, review.rating_ambience, review.rating_food, review.rating_service].filter(
       (rating) => rating !== 0,
     );
@@ -36,7 +36,7 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
     navigate(`/user/${id}`);
   };
 
-  if (reviews.data.length === 0)
+  if (reviews.length === 0)
     return (
       <div className="flex flex-col gap-4 rounded-lg bg-white px-5 pb-6 pt-8">
         <NoReviews handleModalVisibility={handleModalVisibility} />
@@ -45,12 +45,12 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-      {reviews.data.map((review) => {
-        const rating = calculateRating(review.attributes);
-        const userData = review.attributes.users.data;
+      {reviews.map((review) => {
+        const rating = calculateRating(review);
+        const userData = review.users;
         if (!userData) return;
-        const userDataAttributes = userData.attributes;
-        const reviewImages = review.attributes.images.slice(0, 3);
+        const userDataAttributes = userData;
+        const reviewImages = review.images.slice(0, 3);
 
         return (
           <div className="flex flex-col gap-4 rounded-lg bg-white p-5" key={review.id}>
@@ -72,11 +72,11 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
               </div>
               <Stars rating={rating} />
             </div>
-            <div className="line-clamp-2">{review.attributes.description}</div>
+            <div className="line-clamp-2">{review.description}</div>
             <div className="flex gap-3">
               {reviewImages.map((image) => (
                 <img
-                  src={`${baseUploadsUrl}small_${image.hash}.avif`}
+                  src={`${baseUploadsUrl}${image.hash}${image.extension}`}
                   alt={image.name}
                   className="size-[70px] rounded-md"
                   key={image.hash}
@@ -99,7 +99,7 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
               </div>
               <button
                 className="flex cursor-pointer items-center text-primary hover:underline"
-                onClick={() => redirectToReview(review.id)}
+                onClick={() => redirectToReview(review.documentId)}
               >
                 Learn more
                 <Arrow className="mt-px -rotate-90 scale-75 text-primary" />

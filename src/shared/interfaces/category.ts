@@ -1,20 +1,34 @@
 interface Icon {
-  data: {
-    attributes: {
-      height: number;
-      width: number;
-      url: string;
-      name: string;
-    };
-  };
+  height: number;
+  width: number;
+  url: string;
+  name: string;
+  formats:Formats
 }
 
-interface CategoryAttributes {
+
+export interface Category {
   name: string;
   value: string;
   icon: Icon;
 }
 
-export interface Category {
-  attributes: CategoryAttributes;
+export interface FormatAttributes {
+  name: string,
+  hash: string,
+  ext: string,
+  mime: string,
+  path: string,
+  width: number,
+  height: number,
+  size: number,
+  sizeInBytes: number,
+  url: string
+}
+
+export interface Formats {
+  thumbnail: FormatAttributes,
+  small:FormatAttributes,
+  medium:FormatAttributes,
+  large:FormatAttributes,
 }
