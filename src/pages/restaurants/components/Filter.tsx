@@ -117,8 +117,12 @@ const Filter = () => {
             }`}
             key={value}
           >
-
-            <img src={`${baseUploadsUrl}${icon.url}`} alt={`${icon.name}-icon`}  height={icon.height} width={icon.width} />
+            <img
+              src={`${baseUploadsUrl}${icon.url}`}
+              alt={`${icon.name}-icon`}
+              height={icon.height}
+              width={icon.width}
+            />
             {name}
           </button>
         );
@@ -132,7 +136,16 @@ const Filter = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      <form className="mx-auto flex w-full flex-col gap-5 bg-white px-6 py-5" onSubmit={(e) => handleOnSubmit(e)}>
+      <form
+        className="mx-auto flex w-full flex-col gap-5 bg-white px-6 py-5"
+        onSubmit={(e) => handleOnSubmit(e)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            handleOnSubmit(e);
+          }
+        }}
+      >
         <span className="text-[24px]">Filter</span>
         <div className="relative w-full rounded-md border bg-[#F5F6F7] px-4 py-2">
           <input
