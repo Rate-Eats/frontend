@@ -1,5 +1,6 @@
 import ErrorFetching from '@components/states/errorFetching/ErrorFetching.tsx';
 import RestaurantsSkeleton from '@pages/restaurants/RestaurantsSkeleton.tsx';
+import { openGoogleMapAddress } from '@shared/utils/openGoogleMapAddress.ts';
 import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
 import ImageSlider from '@shared/components/ImageSlider.tsx';
 import Stars from '@components/rating/Stars.tsx';
@@ -23,7 +24,7 @@ const RestaurantList = ({ data, isFetching }: RestaurantListProps) => {
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col gap-8 py-4">
       {data.map((restaurant, index) => {
-        const { id,documentId, name, description, address, images, median_rating, categories } = restaurant;
+        const { id, documentId, name, description, address, images, median_rating, categories } = restaurant;
 
         return (
           <div className="flex gap-5 bg-white p-14" key={id}>
@@ -35,7 +36,12 @@ const RestaurantList = ({ data, isFetching }: RestaurantListProps) => {
                 {name}
               </span>
               <Stars rating={median_rating} />
-              <span className="cursor-pointer underline">{address}</span>
+              <span
+                className="cursor-pointer underline transition hover:text-blue-700"
+                onClick={() => openGoogleMapAddress(address)}
+              >
+                {address}
+              </span>
               <div className="flex gap-2">
                 {categories.map((category) => (
                   <Badge variant="secondary" className="h-[24px] cursor-pointer px-3" key={category.id}>

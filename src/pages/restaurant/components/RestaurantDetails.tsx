@@ -1,3 +1,4 @@
+import { openGoogleMapAddress } from '@shared/utils/openGoogleMapAddress.ts';
 import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
 import { calculateRating } from '@pages/restaurant/utils/rating.ts';
 import LocationIcon from '@assets/svgs/icons/location.svg?react';
@@ -39,7 +40,12 @@ const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
           </div>
           <div className="flex flex-1 gap-3">
             <LocationIcon />
-            <span className="cursor-pointer">{address}</span>
+            <span
+              className="cursor-pointer underline hover:text-blue-700 transition"
+              onClick={() => openGoogleMapAddress(address)}
+            >
+              {address}
+            </span>
           </div>
         </div>
       </div>
