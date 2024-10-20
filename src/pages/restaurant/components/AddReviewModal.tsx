@@ -146,27 +146,27 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
 
   return (
     <Dialog open={isModalOpen} onOpenChange={() => handleModalVisibility(false)}>
-      <DialogContent className="shadow-no w-full max-w-3xl border-none bg-transparent bg-white">
+      <DialogContent className="shadow-no w-full max-w-lg border-none bg-transparent bg-white">
         <DialogHeader>
           <DialogTitle className="w-[400px] text-[22px]">Rating & Feedback form</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col gap-6">
-            <div className="flex h-40 min-w-[90px] flex-col gap-5">
-              <div className="flex">
-                <span className="w-40">Food</span>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col gap-8">
+            <div className="flex min-w-[90px] flex-col gap-5">
+              <div className="flex items-center justify-between">
+                <span className="w-40 text-lg">Food</span>
                 <SelectRating form={form} ratingType="food" />
               </div>
-              <div className="flex">
-                <span className="w-40">Service</span>
+              <div className="flex items-center justify-between">
+                <span className="w-40 text-lg">Service</span>
                 <SelectRating form={form} ratingType="service" />
               </div>
-              <div className="flex">
-                <span className="w-40">Price</span>
+              <div className="flex items-center justify-between">
+                <span className="w-40 text-lg">Price</span>
                 <SelectRating form={form} ratingType="price" />
               </div>
-              <div className="flex">
-                <span className="w-40">Ambience</span>
+              <div className="flex items-center justify-between">
+                <span className="w-40 text-lg">Ambience</span>
                 <SelectRating form={form} ratingType="ambience" />
               </div>
             </div>

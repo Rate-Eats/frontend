@@ -42,7 +42,7 @@ const SelectRating = ({ form, ratingType }: SelectRatingProps) => {
           <button
             type="button"
             key={value}
-            className={`${value % 1 === 0 && '-scale-x-100'} group h-5`}
+            className={`${value % 1 === 0 && '-scale-x-100'} group`}
             onMouseEnter={() => handleStarHover(value)}
             onMouseLeave={handleStarLeave}
             onClick={() => {

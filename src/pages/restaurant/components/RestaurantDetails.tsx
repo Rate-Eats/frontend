@@ -14,8 +14,7 @@ const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
   const { name, description, address, reviews } = restaurantData;
 
   const rating = calculateRating(reviews);
-  const price = '₹ 2,000 for 2 | North Indian';
-
+  const price = '$$$'
   return (
     <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8">
       <div className="flex items-center justify-between">
