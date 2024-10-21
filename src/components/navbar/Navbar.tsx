@@ -8,7 +8,7 @@ const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState(true);
 
   return (
-    <header className="border-gray-200 bg-white px-2 py-4 dark:bg-gray-800 md:px-4 lg:px-10">
+    <header className="border-gray-200 bg-white px-2 py-4 dark:bg-gray-800 md:px-4 lg:px-10 shadow-lg z-10">
       <div className="mx-auto flex  flex-wrap items-center justify-between gap-4 lg:gap-10">
         <Logo />
         <Navigation openDropdown={openDropdown} />
