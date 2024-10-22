@@ -4,7 +4,9 @@ import { ProtectedRoute } from '@/routes/protectedRoute.tsx';
 import { AuthProvider } from '@/auth/authProvider.tsx';
 import Navbar from '@components/navbar/Navbar.tsx';
 import PrivateRoutes from '@/routes/private.tsx';
+import 'simplebar-react/dist/simplebar.min.css';
 import PublicRoutes from '@/routes/public.tsx';
+import SimpleBar from 'simplebar-react';
 import { lazy, Suspense } from 'react';
 
 const Toaster = lazy(() => import('@shared/ui/sonner.tsx'));
@@ -16,7 +18,7 @@ const App = () => {
     <AuthProvider>
       <Suspense>
         {!headerExcludedRoutes.includes(pathname) && <Navbar />}
-        <div className="h-full w-full overflow-y-scroll">
+        <SimpleBar style={{ maxHeight: 'calc(100vh - 72px)' }}>
           <Routes>
             {PrivateRoutes.map((route, index) => (
               <Route key={index} path={route.path} element={<ProtectedRoute>{route.element}</ProtectedRoute>} />
@@ -25,7 +27,7 @@ const App = () => {
               <Route key={index} {...route} />
             ))}
           </Routes>
-        </div>
+        </SimpleBar>
         <Toaster />
       </Suspense>
     </AuthProvider>
