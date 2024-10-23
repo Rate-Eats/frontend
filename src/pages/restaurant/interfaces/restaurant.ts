@@ -1,11 +1,22 @@
 export interface RestaurantImages {
+  image: {
+    id: number;
+    name: string;
+    width: number;
+    height: number;
+    hash: string;
+    ext: string;
+    mime: string;
+    size: number;
+    url: string;
+    createdAt: string;
+    updatedAt: string;
+    documentId: string;
+    publishedAt: string;
+  };
   main: boolean;
-  path: string;
-  hash: string;
-  name: string;
-  extension: string;
   menu: boolean;
-  id?: number;
+  id: number;
 }
 
 export interface ReviewAttributesUserRelation {
