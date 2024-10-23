@@ -13,7 +13,7 @@ export const HomepageHeader = ({ isFetching, data }: HomepageHeaderProps) => {
   if (!data) return null;
 
   return (
-    <div className="flex w-full justify-center overflow-hidden bg-white py-20">
+    <div className="flex w-full justify-center overflow-hidden py-14">
       <div className="mx-8 flex w-full max-w-7xl gap-8">
         <div className="flex flex-1 flex-col justify-center">
           <span className="mb-3 text-4xl text-black max-xl:text-2xl">{data.homepage_section_1_header_title}</span>
