@@ -14,7 +14,7 @@ interface ReviewsListProps {
   handleModalVisibility: () => void;
 }
 
-const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
+const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
 const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
   const navigate = useNavigate();
@@ -74,12 +74,12 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
             </div>
             <div className="line-clamp-2">{review.description}</div>
             <div className="flex gap-3">
-              {reviewImages.map((image) => (
+              {reviewImages.map((item) => (
                 <img
-                  src={`${baseUploadsUrl}${image.hash}${image.extension}`}
-                  alt={image.name}
+                  src={`${baseUploadsUrl}${item.image.url}`}
+                  alt={item.image.name}
                   className="size-[70px] rounded-md"
-                  key={image.hash}
+                  key={item.image.hash}
                 />
               ))}
             </div>

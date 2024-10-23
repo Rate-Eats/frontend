@@ -1,9 +1,19 @@
 export interface ReviewImageData {
-  id: number;
-  path: string;
-  name: string;
-  hash: string;
-  extension: string;
+  image: {
+    id: number;
+    name: string;
+    width: number;
+    height: number;
+    hash: string;
+    ext: string;
+    mime: string;
+    size: number;
+    url: string;
+    createdAt: string;
+    updatedAt: string;
+    documentId: string;
+    publishedAt: string;
+  };
   main: boolean;
   menu: boolean;
 }

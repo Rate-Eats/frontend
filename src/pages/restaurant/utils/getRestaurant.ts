@@ -5,7 +5,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export const getRestaurant = async (id: string = 'x'): Promise<RestaurantData> => {
   const { data } = await axios.get(
-    `${API_URL}/restaurants/${id}?populate[reviews][populate][1]=users&populate[reviews][populate][2]=images&populate[images][populate][1]=image`,
+    `${API_URL}/restaurants/${id}?populate[reviews][populate][0]=users&populate[reviews][populate][1]=images.image&populate[images][populate][1]=image`,
     {
       headers: {
         Authorization: `Bearer ${import.meta.env.VITE_GET_RESTAURANT_TOKEN}`,
