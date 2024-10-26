@@ -104,5 +104,11 @@
   background-color: #a8bbbf;
 }
 .simplebar-content {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 72px);
+}
+
+.simplebar-content:has(.noNav) {
+  height: calc(100vh);
 }

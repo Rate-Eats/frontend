@@ -6,32 +6,30 @@ import Navbar from '@components/navbar/Navbar.tsx';
 import PrivateRoutes from '@/routes/private.tsx';
 import 'simplebar-react/dist/simplebar.min.css';
 import PublicRoutes from '@/routes/public.tsx';
+import React, { lazy, Suspense } from 'react';
 import SimpleBar from 'simplebar-react';
-import { lazy, Suspense } from 'react';
 
 const Toaster = lazy(() => import('@shared/ui/sonner.tsx'));
 
 const App = () => {
   const { pathname } = useLocation();
+  const showNavbar = !headerExcludedRoutes.includes(pathname);
 
   return (
     <AuthProvider>
       <Suspense>
-        {!headerExcludedRoutes.includes(pathname) && <Navbar />}
-        <SimpleBar
-          style={{
-            maxHeight: !headerExcludedRoutes.includes(pathname) ? 'calc(100vh - 72px)' : '100vh',
-            height: '100%',
-          }}
-        >
-          <Routes>
-            {PrivateRoutes.map((route, index) => (
-              <Route key={index} path={route.path} element={<ProtectedRoute>{route.element}</ProtectedRoute>} />
-            ))}
-            {PublicRoutes.map((route, index) => (
-              <Route key={index} {...route} />
-            ))}
-          </Routes>
+        {showNavbar && <Navbar />}
+        <SimpleBar style={{ maxHeight: showNavbar ? 'calc(100vh - 72px)' : '100vh' }}>
+          <div className={`flex-1 ${!showNavbar && 'noNav'}`}>
+            <Routes>
+              {PrivateRoutes.map((route, index) => (
+                <Route key={index} path={route.path} element={<ProtectedRoute>{route.element}</ProtectedRoute>} />
+              ))}
+              {PublicRoutes.map((route, index) => (
+                <Route key={index} {...route} />
+              ))}
+            </Routes>
+          </div>
         </SimpleBar>
         <Toaster />
       </Suspense>
