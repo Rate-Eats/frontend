@@ -1,23 +1,19 @@
 import axios from 'axios';
 
 interface ImageData {
-  image: {
-    id: number;
-    name: string;
-    width: number;
-    height: number;
-    hash: string;
-    ext: string;
-    mime: string;
-    size: number;
-    url: string;
-    createdAt: string;
-    updatedAt: string;
-    documentId: string;
-    publishedAt: string;
-  };
-  main: boolean;
-  menu: boolean;
+  id: number;
+  name: string;
+  width: number;
+  height: number;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  createdAt: string;
+  updatedAt: string;
+  documentId: string;
+  publishedAt: string;
 }
 
 interface GalleryItem {
@@ -32,7 +28,7 @@ interface GalleryItem {
 
 export const fetchLastAddedRestaurants = async (): Promise<GalleryItem> => {
   const { data } = await axios.get(
-    `${import.meta.env.VITE_API_URL}/restaurants?populate[images][populate][1]=image&pagination[page]=1&pagination[pageSize]=2&sort=publishedAt:desc`,
+    `${import.meta.env.VITE_API_URL}/restaurants?populate=images&pagination[page]=1&pagination[pageSize]=2&sort=publishedAt:desc`,
     {
       headers: {
         Authorization: ` 'Bearer ${import.meta.env.VITE_GET_RESTAURANT_TOKEN}'`,

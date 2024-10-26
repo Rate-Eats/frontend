@@ -18,7 +18,7 @@ const LastAddedRestaurants = () => {
     <div className="flex w-full justify-center overflow-hidden bg-white py-14">
       <div className="mx-8 flex w-full max-w-7xl gap-8">
         <div className="flex flex-1 flex-col gap-4">
-          <span className="text-4xl">Last added restaurants</span>
+          <span className="text-4xl">Last added restaurant</span>
           <span className="text-lg text-gray-600">
             This latest spot is now available for you to explore and rate. Discover what makes it special and share your
             thoughts with the community. Your review can help others decide if this restaurant is worth a visit!
@@ -26,8 +26,8 @@ const LastAddedRestaurants = () => {
           <div className="mt-auto grid grid-cols-2 gap-4">
             {data.images.map((item, index) => (
               <img
-                src={`${baseUploadsUrl}/${item.image.url}`}
-                className="h-[150px] w-[250px]"
+                src={`${baseUploadsUrl}/${item.url}`}
+                className="h-[150px] w-[250px] object-cover"
                 alt="thumbnail"
                 key={index}
               />
@@ -36,9 +36,9 @@ const LastAddedRestaurants = () => {
         </div>
         <div className="flex h-full flex-1 flex-col border">
           <img
-            src={`${baseUploadsUrl}/${data.images[0].image.url}`}
+            src={`${baseUploadsUrl}/${data.images[0].url}`}
             alt="main image"
-            className="w-full h-full max-h-[330px] object-cover"
+            className="h-full max-h-[330px] min-h-[250px] w-full  "
           />
           <div className="flex flex-col gap-4 p-6">
             <span className="text-2xl">{data.name}</span>

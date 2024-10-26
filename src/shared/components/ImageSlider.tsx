@@ -14,6 +14,7 @@ const ImageSlider = ({ images, size }: ImageSliderProps) => {
     return imageA.alternativeText?.split(' ').includes('main') ? 1 : 1;
   };
 
+  console.log(images)
   return (
     <Carousel className="h-full w-full">
       <CarouselContent>
