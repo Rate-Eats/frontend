@@ -18,7 +18,12 @@ const App = () => {
     <AuthProvider>
       <Suspense>
         {!headerExcludedRoutes.includes(pathname) && <Navbar />}
-        <SimpleBar style={{ maxHeight: 'calc(100vh - 72px)' }}>
+        <SimpleBar
+          style={{
+            maxHeight: !headerExcludedRoutes.includes(pathname) ? 'calc(100vh - 72px)' : '100vh',
+            height: '100%',
+          }}
+        >
           <Routes>
             {PrivateRoutes.map((route, index) => (
               <Route key={index} path={route.path} element={<ProtectedRoute>{route.element}</ProtectedRoute>} />

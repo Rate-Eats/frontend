@@ -1,5 +1,5 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@shared/ui/form.tsx';
-import { RestaurantImages } from '@pages/restaurant/interfaces/restaurant.ts';
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import UploadIcon from '@assets/svgs/icons/upload.svg?react';
 import TrashIcon from '@assets/svgs/icons/trash.svg?react';
 import { UseFormReturn } from 'react-hook-form';
@@ -15,7 +15,7 @@ interface ImageFieldProps {
     image: File[];
     description: string;
   }>;
-  previousExistingImages: RestaurantImages[];
+  previousExistingImages: ImageDataInterface[];
   handleAdditionalItems: (action: 'delete' | 'update', documentId: string) => void;
 }
 const ImageField = ({ form, previousExistingImages, handleAdditionalItems }: ImageFieldProps) => {

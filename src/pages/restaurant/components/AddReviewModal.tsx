@@ -1,13 +1,14 @@
 import { createUpdateReviewObjects } from '@pages/restaurant/utils/createUpdateReviewObjects.ts';
-import { ImageInterface, PayloadImageInterface, ReviewData } from '@shared/interfaces/forms.ts';
 import { createAddReviewObjects } from '@pages/restaurant/utils/createAddReviewObjects.ts';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog.tsx';
-import { RestaurantImages, Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import { createNewImagesFormData } from '@pages/restaurant/utils/createFormData.ts';
 import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx';
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
+import { Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import ImageField from '@pages/restaurant/components/ImageField.tsx';
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import { addReviewSchema } from '@/schemas/addReviewSchema.ts';
+import { ReviewData } from '@shared/interfaces/forms.ts';
 import { useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react';
@@ -32,7 +33,7 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
   const queryClient = useQueryClient();
   const { id } = useParams();
 
-  const [previousExistingImages, setPreviousExistingImages] = useState<RestaurantImages[]>([]);
+  const [previousExistingImages, setPreviousExistingImages] = useState<ImageDataInterface[]>([]);
   const [existingReviewId, setExistingReview] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);

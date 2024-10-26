@@ -1,25 +1,4 @@
-export interface RestaurantImages {
-  alternativeText: string | null;
-  caption: string | null;
-  createdAt: string;
-  documentId: string;
-  ext: string;
-  provider: string;
-  provider_metadata: string | null;
-  previewUrl: string;
-  id: number;
-  name: string;
-  width: number;
-  height: number;
-  hash: string;
-  mime: string;
-  size: number;
-  url: string;
-  updatedAt: string;
-  publishedAt: string;
-  type: string;
-  action?: 'delete' | 'update' | null;
-}
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
 
 export interface ReviewAttributesUserRelation {
   documentId: string;
@@ -35,7 +14,7 @@ export interface ReviewAttributesUserRelation {
 }
 
 export interface Reviews {
-  images: RestaurantImages[];
+  images: ImageDataInterface[];
   rating_food: number;
   rating_service: number;
   rating_ambience: number;
@@ -65,7 +44,7 @@ export interface RestaurantData {
   description: string;
   address: string;
   median_rating: number;
-  images: RestaurantImages[];
+  images: ImageDataInterface[];
   reviews: Reviews[];
   categories: Categories[];
 }

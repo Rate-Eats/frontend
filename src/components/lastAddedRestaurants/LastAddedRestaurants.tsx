@@ -1,10 +1,13 @@
 import SkeletonLastAddedRestaurants from '@components/lastAddedRestaurants/SkeletonLastAddedRestaurants.tsx';
 import { fetchLastAddedRestaurants } from '@components/lastAddedRestaurants/getRestaurants.ts';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
 const LastAddedRestaurants = () => {
+  const navigate = useNavigate();
+
   const { error, data, isFetching } = useQuery({
     queryKey: ['LastAddedRestaurants'],
     queryFn: () => fetchLastAddedRestaurants(),
@@ -13,6 +16,8 @@ const LastAddedRestaurants = () => {
 
   if (isFetching) return <SkeletonLastAddedRestaurants />;
   if (error || !data) return null;
+
+  const redirectToRestaurant = (id: string) => navigate(`/restaurant/${id}`);
 
   return (
     <div className="flex w-full justify-center overflow-hidden bg-white py-14">
@@ -26,15 +31,18 @@ const LastAddedRestaurants = () => {
           <div className="mt-auto grid grid-cols-2 gap-4">
             {data.images.map((item, index) => (
               <img
-                src={`${baseUploadsUrl}/${item.url}`}
-                className="h-[150px] w-[250px] object-cover"
+                src={`${baseUploadsUrl}/${item?.format?.small?.url || item.url}`}
+                className="h-[150px] w-full object-cover"
                 alt="thumbnail"
                 key={index}
               />
             ))}
           </div>
         </div>
-        <div className="flex h-full flex-1 flex-col border">
+        <div
+          className="flex h-full flex-1 cursor-pointer flex-col border"
+          onClick={() => redirectToRestaurant(data.documentId)}
+        >
           <img
             src={`${baseUploadsUrl}/${data.images[0].url}`}
             alt="main image"

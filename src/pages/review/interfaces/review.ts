@@ -1,18 +1,4 @@
-export interface ReviewImageData {
-  id: number;
-  name: string;
-  width: number;
-  height: number;
-  hash: string;
-  ext: string;
-  mime: string;
-  size: number;
-  url: string;
-  createdAt: string;
-  updatedAt: string;
-  documentId: string;
-  publishedAt: string;
-}
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
 
 interface ReviewUserData {
   id: number;
@@ -68,7 +54,7 @@ export interface ReviewData {
   publishedAt: string;
   rating_service: number;
   comments: ReviewCommentsData[];
-  images: ReviewImageData[];
+  images: ImageDataInterface[];
   users: ReviewUserData;
   restaurant: ReviewRestaurantData;
 }

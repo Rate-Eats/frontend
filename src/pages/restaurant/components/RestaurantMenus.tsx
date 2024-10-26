@@ -1,10 +1,10 @@
-import { RestaurantImages } from '@pages/restaurant/interfaces/restaurant.ts';
 import { Dialog, DialogContent, DialogTrigger } from '@/shared/ui/dialog';
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import ExpandIcon from '@assets/svgs/icons/expand.svg?react';
 import React from 'react';
 
 interface RestaurantMenusProps {
-  images: RestaurantImages[];
+  images: ImageDataInterface[];
 }
 
 const RestaurantMenus = ({ images }: RestaurantMenusProps) => {

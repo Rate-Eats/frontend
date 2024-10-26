@@ -1,3 +1,5 @@
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
+
 export interface HomepageData {
   id: number;
   documentId: string;
@@ -9,23 +11,7 @@ export interface HomepageData {
   homepage_section_2_register_text: string;
   homepage_section_2_register_join_button: string;
   homepage_section_2_register_explore_button: string;
-  homepage_section_1_left_image: HomepageImageData;
-  homepage_section_1_middle_image: HomepageImageData;
-  homepage_section_1_right_image: HomepageImageData;
-}
-
-export interface HomepageImageData {
-  id: number;
-  name: string;
-  alternativeText: null | string;
-  hash: string;
-  ext: string;
-  mime: string;
-  size: number;
-  url: string;
-  provider: string;
-  createdAt: string;
-  updatedAt: string;
-  documentId: string;
-  publishedAt: string;
+  homepage_section_1_left_image: ImageDataInterface;
+  homepage_section_1_middle_image: ImageDataInterface;
+  homepage_section_1_right_image: ImageDataInterface;
 }

@@ -1,32 +1,7 @@
 import axios from 'axios';
+import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
 
-interface ImageData {
-  id: number;
-  name: string;
-  width: number;
-  height: number;
-  hash: string;
-  ext: string;
-  mime: string;
-  size: number;
-  url: string;
-  createdAt: string;
-  updatedAt: string;
-  documentId: string;
-  publishedAt: string;
-}
-
-interface GalleryItem {
-  id: number;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  description: string;
-  publishedAt: string;
-  images: ImageData[];
-}
-
-export const fetchLastAddedRestaurants = async (): Promise<GalleryItem> => {
+export const fetchLastAddedRestaurants = async (): Promise<RestaurantData> => {
   const { data } = await axios.get(
     `${import.meta.env.VITE_API_URL}/restaurants?populate=images&pagination[page]=1&pagination[pageSize]=2&sort=publishedAt:desc`,
     {

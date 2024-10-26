@@ -1,20 +1,19 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@shared/ui/carousel.tsx';
-import { RestaurantImages } from '@pages/restaurant/interfaces/restaurant.ts';
 import { Dialog, DialogContent, DialogTrigger } from '@shared/ui/dialog.tsx';
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
 
 interface ImageSliderProps {
-  images: RestaurantImages[];
+  images: ImageDataInterface[];
   size: '' | 'small' | 'medium' | 'large';
 }
 
 const ImageSlider = ({ images, size }: ImageSliderProps) => {
   const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
-  const compareImages = (imageA: RestaurantImages) => {
+  const compareImages = (imageA: ImageDataInterface) => {
     return imageA.alternativeText?.split(' ').includes('main') ? 1 : 1;
   };
 
-  console.log(images)
   return (
     <Carousel className="h-full w-full">
       <CarouselContent>

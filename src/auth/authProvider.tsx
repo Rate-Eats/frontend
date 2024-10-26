@@ -30,6 +30,7 @@ export const AuthContext = createContext<AuthContext>({
 
 const templateData = {
   id: 0,
+  documentId:'',
   username: '',
   email: '',
   provider: '',
