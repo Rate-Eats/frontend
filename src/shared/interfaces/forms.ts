@@ -18,7 +18,7 @@ export interface ReviewData {
   rating_ambience: number;
   rating_price: number;
   description: string;
-  images: PayloadImageInterface[];
+  images?: null
 }
 
 export interface CommentData {

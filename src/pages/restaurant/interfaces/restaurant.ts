@@ -1,22 +1,24 @@
 export interface RestaurantImages {
-  image: {
-    id: number;
-    name: string;
-    width: number;
-    height: number;
-    hash: string;
-    ext: string;
-    mime: string;
-    size: number;
-    url: string;
-    createdAt: string;
-    updatedAt: string;
-    documentId: string;
-    publishedAt: string;
-  };
-  main: boolean;
-  menu: boolean;
+  alternativeText: string | null;
+  caption: string | null;
+  createdAt: string;
+  documentId: string;
+  ext: string;
+  provider: string;
+  provider_metadata: string | null;
+  previewUrl: string;
   id: number;
+  name: string;
+  width: number;
+  height: number;
+  hash: string;
+  mime: string;
+  size: number;
+  url: string;
+  updatedAt: string;
+  publishedAt: string;
+  type: string;
+  action?: 'delete' | 'update' | null;
 }
 
 export interface ReviewAttributesUserRelation {

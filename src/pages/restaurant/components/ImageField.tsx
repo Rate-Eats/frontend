@@ -15,10 +15,10 @@ interface ImageFieldProps {
     image: File[];
     description: string;
   }>;
-  additionalImages: RestaurantImages[];
-  removeAdditionalItems: (id: string) => void;
+  previousExistingImages: RestaurantImages[];
+  handleAdditionalItems: (action: 'delete' | 'update', documentId: string) => void;
 }
-const ImageField = ({ form, additionalImages, removeAdditionalItems }: ImageFieldProps) => {
+const ImageField = ({ form, previousExistingImages, handleAdditionalItems }: ImageFieldProps) => {
   const imagesToDisplay = form.watch('image');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,16 +76,17 @@ const ImageField = ({ form, additionalImages, removeAdditionalItems }: ImageFiel
           </div>
         );
       })}
-      {additionalImages.map((item) => {
+      {previousExistingImages.map((item) => {
+        if (item.action === 'delete') return null;
         return (
           <div
-            key={item.name}
+            key={item.documentId}
             className="group relative mt-auto flex h-[130px] w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-gray-300 bg-white text-gray-400 transition"
-            onClick={() => removeAdditionalItems(item.hash)}
+            onClick={() => handleAdditionalItems('delete', item.documentId)}
           >
             <img
               key={item.name}
-              src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${item.hash + item.extension}`}
+              src={`${import.meta.env.VITE_BACKEND_URL}${item.url}`}
               className="h-full w-full object-cover transition group-hover:blur-[2px]"
               alt={'restaurant image'}
             />

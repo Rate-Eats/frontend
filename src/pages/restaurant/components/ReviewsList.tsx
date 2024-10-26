@@ -50,7 +50,7 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
         const userData = review.users;
         if (!userData) return;
         const userDataAttributes = userData;
-        const reviewImages = review.images.slice(0, 3);
+        const reviewImages = review.images && review.images.slice(0, 3);
 
         return (
           <div className="flex flex-col gap-4 rounded-lg bg-white p-5" key={review.id}>
@@ -74,14 +74,17 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
             </div>
             <div className="line-clamp-2">{review.description}</div>
             <div className="flex gap-3">
-              {reviewImages.map((item) => (
-                <img
-                  src={`${baseUploadsUrl}${item.image.url}`}
-                  alt={item.image.name}
-                  className="size-[70px] rounded-md"
-                  key={item.image.hash}
-                />
-              ))}
+              {reviewImages &&
+                reviewImages.map((item) => {
+                  return (
+                    <img
+                      src={`${baseUploadsUrl}${item.url}`}
+                      alt={item.name}
+                      className="size-[70px] rounded-md"
+                      key={item.hash}
+                    />
+                  );
+                })}
             </div>
             <div className="flex w-full justify-between">
               <div className="flex items-center gap-3">
