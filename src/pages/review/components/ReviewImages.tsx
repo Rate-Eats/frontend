@@ -1,12 +1,12 @@
 import { Dialog, DialogContent, DialogTrigger } from '@shared/ui/dialog.tsx';
-import { ReviewImageData } from '@pages/review/interfaces/review.ts';
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import ExpandIcon from '@assets/svgs/icons/expand.svg?react';
 import { Button } from '@shared/ui/button.tsx';
 import React, { useState } from 'react';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
-const ReviewImages = ({ reviewImages }: { reviewImages: ReviewImageData[] }) => {
+const ReviewImages = ({ reviewImages }: { reviewImages: ImageDataInterface[] }) => {
   const [loadMore, setLoadMore] = useState(3);
 
   const handleLoadMore = () => {
