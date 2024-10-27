@@ -15,10 +15,14 @@ const RestaurantMenus = ({ images }: RestaurantMenusProps) => {
       <span className="text-2xl font-medium text-primary">Restaurant menus</span>
       <div className="my-5 h-px w-full bg-gray-200" />
       <div className="flex gap-4">
-        {images.map((image) => (
-          <Dialog key={image.name}>
+        {images.map((item) => (
+          <Dialog key={item.name}>
             <DialogTrigger className="group relative mt-auto flex size-[140px] cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-gray-300 bg-white text-gray-400 transition">
-              <img src={`${baseUploadsUrl}${image.url}`} alt={image.name} className="size-full object-cover" />
+              <img
+                src={`${baseUploadsUrl}${item?.formats?.medium?.url || item.url}`}
+                alt={item.name}
+                className="size-full object-cover"
+              />
               <div className="absolute z-10 size-full bg-black opacity-0 transition group-hover:opacity-50" />
               <div className="absolute z-10 flex size-full items-center justify-center opacity-0 transition group-hover:opacity-100">
                 <ExpandIcon />
@@ -26,8 +30,8 @@ const RestaurantMenus = ({ images }: RestaurantMenusProps) => {
             </DialogTrigger>
             <DialogContent className="shadow-no border-none bg-transparent p-0">
               <img
-                src={`${baseUploadsUrl}${image.url}`}
-                alt={image.name}
+                src={`${baseUploadsUrl}${item.url}`}
+                alt={item.name}
                 className="max-h-[calc(100vh_-_100px)] max-w-[calc(100vw_-_100px)] object-cover"
               />
             </DialogContent>

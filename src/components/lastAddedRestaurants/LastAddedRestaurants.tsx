@@ -31,7 +31,7 @@ const LastAddedRestaurants = () => {
           <div className="mt-auto grid grid-cols-2 gap-4">
             {data.images.map((item, index) => (
               <img
-                src={`${baseUploadsUrl}/${item?.format?.small?.url || item.url}`}
+                src={`${baseUploadsUrl}/${item?.formats?.small?.url || item.url}`}
                 className="h-[150px] w-full object-cover"
                 alt="thumbnail"
                 key={index}
@@ -44,9 +44,9 @@ const LastAddedRestaurants = () => {
           onClick={() => redirectToRestaurant(data.documentId)}
         >
           <img
-            src={`${baseUploadsUrl}/${data.images[0].url}`}
+            src={`${baseUploadsUrl}/${data?.images[0]?.formats?.large?.url || data.images[0].url}`}
             alt="main image"
-            className="h-full max-h-[330px] min-h-[250px] w-full  "
+            className="h-full max-h-[330px] min-h-[250px] w-full object-cover"
           />
           <div className="flex flex-col gap-4 p-6">
             <span className="text-2xl">{data.name}</span>

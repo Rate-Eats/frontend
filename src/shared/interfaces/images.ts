@@ -18,7 +18,7 @@ interface ImageFormats {
 }
 
 export interface ImageDataInterface {
-  format: ImageFormats;
+  formats: ImageFormats;
   alternativeText: string | null;
   caption: string | null;
   createdAt: string;

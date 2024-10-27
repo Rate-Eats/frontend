@@ -51,7 +51,7 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
   });
 
   useEffect(() => {
-    getReviews();
+    (async () => await getReviews())();
   }, []);
 
   const getReviews = async () => {
@@ -76,10 +76,10 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
     );
   };
 
-  const uploadImagesToReview = (images: File[], id: number) => {
+  const uploadImagesToReview = async (images: File[], id: number) => {
     const formData = createNewImagesFormData(images, id);
 
-    uploadImages.mutateAsync(formData, {
+    await uploadImages.mutateAsync(formData, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['restaurant'] });
         setLoading(false);
@@ -96,13 +96,13 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
     });
   };
 
-  const handleSuccess = (images: File[], reviewId: number) => {
+  const handleSuccess = async (images: File[], reviewId: number) => {
     if (images.length > 0) {
-      uploadImagesToReview(images, reviewId);
+      await uploadImagesToReview(images, reviewId);
     } else {
       setLoading(false);
       handleModalVisibility(false);
-      queryClient.invalidateQueries({ queryKey: ['restaurant'] });
+      await queryClient.invalidateQueries({ queryKey: ['restaurant'] });
     }
   };
 

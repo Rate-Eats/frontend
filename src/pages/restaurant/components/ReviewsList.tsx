@@ -78,9 +78,9 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
                 reviewImages.map((item) => {
                   return (
                     <img
-                      src={`${baseUploadsUrl}${item.url}`}
+                      src={`${baseUploadsUrl}${item?.formats.thumbnail?.url || item.url}`}
                       alt={item.name}
-                      className="size-[70px] rounded-md"
+                      className="size-[70px] rounded-md object-cover"
                       key={item.hash}
                     />
                   );
