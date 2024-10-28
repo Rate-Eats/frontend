@@ -19,17 +19,3 @@ export interface ReviewData {
 export interface CommentData {
   text: string;
 }
-
-export interface ImageInterface {
-  ext: string;
-  hash: string;
-  name: string;
-}
-
-export interface PayloadImageInterface {
-  main: boolean;
-  path: string;
-  hash: string;
-  name: string;
-  extension: string;
-}

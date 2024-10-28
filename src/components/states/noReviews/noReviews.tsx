@@ -1,10 +1,16 @@
 import NoReviewsIcon from '@assets/svgs/states/noReviews.svg?react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@auth/useAuth.ts';
+import { toast } from 'sonner';
 
 interface NoReviewsProps {
   handleModalVisibility: (value?: boolean) => void;
 }
 
 const NoReviews = ({ handleModalVisibility }: NoReviewsProps) => {
+  const userData = useAuth();
+  const navigate = useNavigate();
+
   return (
     <div className="mx-auto flex h-full w-72 flex-col items-center justify-center gap-8">
       <NoReviewsIcon />
@@ -16,7 +22,19 @@ const NoReviews = ({ handleModalVisibility }: NoReviewsProps) => {
       </div>
       <button
         className="h-14 w-full rounded-full bg-primary text-xl font-medium text-white"
-        onClick={() => handleModalVisibility(true)}
+        onClick={() => {
+          if (!userData.jwtToken) {
+            toast('Account Required', {
+              description: 'Please log in to add a review.',
+              action: {
+                label: 'Login',
+                onClick: () => navigate('/login'),
+              },
+            });
+          } else {
+            handleModalVisibility(true);
+          }
+        }}
       >
         Add review
       </button>

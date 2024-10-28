@@ -53,7 +53,7 @@ const App = () => {
             </Routes>
           </div>
         </SimpleBar>
-        <Toaster />
+        <Toaster theme={'light'} />
       </Suspense>
     </AuthProvider>
   );

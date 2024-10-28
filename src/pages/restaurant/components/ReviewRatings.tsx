@@ -33,7 +33,7 @@ const ReviewRatings = ({ restaurantData, handleModalVisibility }: ReviewRatingsP
               <button
                 className="text-primary underline"
                 onClick={() => {
-                  if (!userData) {
+                  if (!userData.jwtToken) {
                     toast('Account Required', {
                       description: 'Please log in to add a review.',
                       action: {

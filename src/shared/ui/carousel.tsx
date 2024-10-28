@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react';
+import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/button';
@@ -185,7 +185,7 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
         onClick={scrollPrev}
         {...props}
       >
-        <ChevronLeftIcon className="h-6 w-6" />
+        <ArrowLeftIcon className="size-6" />
         <span className="sr-only">Previous slide</span>
       </Button>
     );
@@ -213,7 +213,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
         onClick={scrollNext}
         {...props}
       >
-        <ChevronRightIcon className="h-6 w-6" />
+        <ArrowRightIcon className="size-6" />
         <span className="sr-only">Next slide</span>
       </Button>
     );
