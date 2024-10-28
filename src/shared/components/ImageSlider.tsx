@@ -30,7 +30,7 @@ const ImageSlider = ({ images, size }: ImageSliderProps) => {
               </DialogTrigger>
               <DialogContent className="shadow-no border-none bg-transparent p-0">
                 <img
-                  src={`${baseUploadsUrl}${size ? item?.formats[size]?.url || item.url : item.url}`}
+                  src={`${baseUploadsUrl}${item.url}`}
                   alt={item.name}
                   className="max-h-[calc(100vh_-_100px)] max-w-[calc(100vw_-_100px)] object-cover"
                   loading="lazy"
