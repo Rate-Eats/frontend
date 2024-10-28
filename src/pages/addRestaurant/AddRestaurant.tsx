@@ -1,10 +1,11 @@
+import { createUploadImagesFormData } from '@shared/utils/createUploadImagesFormData.ts';
 import DescriptionField from '@pages/addRestaurant/components/DescriptionField.tsx';
 import CategoryField from '@pages/addRestaurant/components/CategoryField.tsx';
-import { ImageInterface, RestaurantData } from '@shared/interfaces/forms.ts';
 import AddressField from '@pages/addRestaurant/components/AddressField.tsx';
 import ImageField from '@pages/addRestaurant/components/ImageField.tsx';
 import { addRestaurantSchema } from '@/schemas/addRestaurantSchema.ts';
 import NameField from '@pages/addRestaurant/components/NameField.tsx';
+import { RestaurantData } from '@shared/interfaces/forms.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
@@ -50,32 +51,38 @@ const AddRestaurant = () => {
       formData.append('files', file);
     });
 
+    const addRestaurantObject: RestaurantData = {
+      name: restaurantData.name,
+      description: restaurantData.description,
+      address: restaurantData.address,
+      images: null,
+    };
+
+    addRestaurant.mutate(addRestaurantObject, {
+      onSuccess: (data) => uploadImagesToRestaurant(restaurantData.image, data.data.data.id, data.data.data.documentId),
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const errors = error?.response?.data?.error?.details?.errors;
+          if (errors) setErrors(errors);
+        } else {
+          console.log('An error occurred:' + error.message);
+        }
+      },
+    });
+  };
+
+  const uploadImagesToRestaurant = async (images: File[], id: number, documentId: string) => {
+    const formData = createUploadImagesFormData(images, id, 'api::restaurant.restaurant');
+
     await uploadImages.mutateAsync(formData, {
-      onSuccess: ({ data }) => {
-        const imagesArray = data.map((image: ImageInterface) => ({
-          main: false,
-          path: image.hash + image.ext,
-          hash: image.hash,
-          name: image.name,
-          extension: image.ext,
-        }));
-        const addRestaurantObject: RestaurantData = {
-          name: restaurantData.name,
-          description: restaurantData.description,
-          address: restaurantData.address,
-          images: imagesArray,
-        };
-        addRestaurant.mutate(addRestaurantObject, {
-          onSuccess: (data) => navigate(`/restaurant/${data.data.data.documentId}`),
-          onError: (error) => {
-            if (axios.isAxiosError(error) && error.response) {
-              const errors = error?.response?.data?.error?.details?.errors;
-              if (errors) setErrors(errors);
-            } else {
-              console.log('An error occurred:' + error.message);
-            }
-          },
-        });
+      onSuccess: () => navigate(`/restaurant/${documentId}`),
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const errors = error?.response?.data?.error?.details?.errors;
+          if (errors) setErrors(errors);
+        } else {
+          console.log('An error occurred:' + error.message);
+        }
       },
     });
   };

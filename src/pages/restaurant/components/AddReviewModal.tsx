@@ -1,7 +1,7 @@
 import { createUpdateReviewObjects } from '@pages/restaurant/utils/createUpdateReviewObjects.ts';
 import { createAddReviewObjects } from '@pages/restaurant/utils/createAddReviewObjects.ts';
+import { createUploadImagesFormData } from '@shared/utils/createUploadImagesFormData.ts';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog.tsx';
-import { createNewImagesFormData } from '@pages/restaurant/utils/createFormData.ts';
 import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx';
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
 import { Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
@@ -77,7 +77,7 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
   };
 
   const uploadImagesToReview = async (images: File[], id: number) => {
-    const formData = createNewImagesFormData(images, id);
+    const formData = createUploadImagesFormData(images, id, 'api::review.review');
 
     await uploadImages.mutateAsync(formData, {
       onSuccess: () => {

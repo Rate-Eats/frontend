@@ -35,7 +35,7 @@ const Restaurant = () => {
 
   return (
     <div className="flex h-full w-full justify-center">
-      <div className="mx-4 flex max-w-screen-xl flex-col justify-center gap-5 py-6">
+      <div className="mx-4 flex w-full max-w-screen-xl flex-col justify-center gap-5 py-6">
         {images.length > 0 && (
           <div className="h-[350px] w-full ">
             <ImageSlider images={images} size={'large'} />
