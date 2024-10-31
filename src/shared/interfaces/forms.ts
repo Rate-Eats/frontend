@@ -19,3 +19,8 @@ export interface ReviewData {
 export interface CommentData {
   text: string;
 }
+
+export interface reactionData {
+  reviewDocumentId: string;
+  type: string;
+}

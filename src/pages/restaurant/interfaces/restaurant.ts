@@ -25,6 +25,8 @@ export interface Reviews {
   description: string;
   id: number;
   documentId: string;
+  likeCount: number;
+  dislikeCount: number;
   users: ReviewAttributesUserRelation;
 }
 

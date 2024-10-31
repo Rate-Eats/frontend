@@ -1,4 +1,4 @@
-import { CommentData, RestaurantData, ReviewData } from '@shared/interfaces/forms.ts';
+import { CommentData, reactionData, RestaurantData, ReviewData } from '@shared/interfaces/forms.ts';
 import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '@auth/useAuth.ts';
 import axios from 'axios';
@@ -87,7 +87,17 @@ const useDatabase = () => {
     },
   });
 
-  return { uploadImages, deleteImage, addRestaurant, addReview, updateReview, addComment };
+  const toggleReaction = useMutation({
+    mutationFn: (data: reactionData) => {
+      return axios.post(`${import.meta.env.VITE_API_URL}/toggle-reaction`, data, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+    },
+  });
+
+  return { uploadImages, deleteImage, addRestaurant, addReview, updateReview, addComment, toggleReaction };
 };
 
 export default useDatabase;
