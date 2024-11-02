@@ -17,7 +17,7 @@ const Restaurant = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { error, data, isFetching } = useQuery({
-    queryKey: ['restaurant', id],
+    queryKey: ['restaurant', { type: 'done' }, id],
     queryFn: () => getRestaurant(id),
     refetchOnWindowFocus: false,
   });

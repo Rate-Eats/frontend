@@ -136,7 +136,7 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
                   onClick={() => toggleReactionButton(review.documentId, 'like')}
                 >
                   <Like className="mb-1 text-gray-500 group-hover:text-primary" />
-                  <span className="group-hover:text-primary">
+                  <span className="w-2 group-hover:text-primary">
                     {reactionCounts[review.documentId]?.likeCount ?? review.likeCount}
                   </span>
                 </button>
@@ -145,12 +145,13 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
                   onClick={() => toggleReactionButton(review.documentId, 'dislike')}
                 >
                   <Dislike className="mt-1 text-gray-500 group-hover:text-primary" />
-                  <span className="group-hover:text-primary">
+                  <span className="w-2 group-hover:text-primary">
                     {reactionCounts[review.documentId]?.dislikeCount ?? review.dislikeCount}
                   </span>
                 </button>
                 <div className="flex items-center gap-1 pl-2">
-                  <Comment className="text-gray-500" />0
+                  <Comment className="text-gray-500" />
+                  {review.commentCount}
                 </div>
               </div>
               <button

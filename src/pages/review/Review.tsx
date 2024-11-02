@@ -1,8 +1,8 @@
 import ReviewDescription from '@pages/review/components/ReviewDescription.tsx';
 import ErrorFetching from '@components/states/errorFetching/ErrorFetching.tsx';
 import ReviewImages from '@pages/review/components/ReviewImages.tsx';
-import { getReview } from '@pages/review/utils/getReview.tsx';
 import ReviewSkeleton from '@pages/review/ReviewSkeleton.tsx';
+import { getReview } from '@pages/review/utils/getReview.ts';
 import Comments from '@pages/review/components/Comments.tsx';
 import Ratings from '@pages/review/components/Ratings.tsx';
 import { useQuery } from '@tanstack/react-query';
@@ -25,7 +25,7 @@ const Review = () => {
       <ReviewDescription reviewDescription={data.description} restaurantName={data.restaurant.name} />
       {data?.images?.length > 0 && <ReviewImages reviewImages={data.images} />}
       <Ratings reviewData={data} />
-      <Comments commentList={data.comments} />
+      <Comments />
     </div>
   );
 };

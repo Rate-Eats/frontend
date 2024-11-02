@@ -13,6 +13,16 @@ export interface ReviewAttributesUserRelation {
   avatar: null;
 }
 
+export interface CommentData {
+  id: number;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  documentId: string;
+  users: ReviewAttributesUserRelation;
+}
+
 export interface Reviews {
   images: ImageDataInterface[];
   rating_food: number;
@@ -27,7 +37,9 @@ export interface Reviews {
   documentId: string;
   likeCount: number;
   dislikeCount: number;
+  commentCount: number;
   users: ReviewAttributesUserRelation;
+  comments: CommentData[];
 }
 
 export interface Categories {

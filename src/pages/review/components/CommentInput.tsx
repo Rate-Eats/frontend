@@ -17,12 +17,12 @@ const CommentInput = () => {
 
   const { addComment } = useDatabase();
   const { id } = useParams();
-
-  const addCommentFunc = async() => {
+  const addCommentFunc = async () => {
     if (!id || !userData) return;
     const data = createCommentObject(comment, id, userData.documentId);
     await addComment.mutateAsync(data);
-    await queryClient.invalidateQueries({ queryKey: ['review'] })
+    await queryClient.invalidateQueries({ queryKey: ['comments'] });
+    await queryClient.invalidateQueries({ queryKey: ['restaurant'] });
   };
 
   if (!userData) return null;
