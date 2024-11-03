@@ -1,12 +1,12 @@
 import { Dialog, DialogContent, DialogTrigger } from '@shared/ui/dialog.tsx';
-import { ReviewImageData } from '@pages/review/interfaces/review.ts';
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import ExpandIcon from '@assets/svgs/icons/expand.svg?react';
 import { Button } from '@shared/ui/button.tsx';
 import React, { useState } from 'react';
 
-const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
+const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
-const ReviewImages = ({ reviewImages }: { reviewImages: ReviewImageData[] }) => {
+const ReviewImages = ({ reviewImages }: { reviewImages: ImageDataInterface[] }) => {
   const [loadMore, setLoadMore] = useState(3);
 
   const handleLoadMore = () => {
@@ -20,12 +20,12 @@ const ReviewImages = ({ reviewImages }: { reviewImages: ReviewImageData[] }) => 
       <h2 className="text-2xl font-medium text-primary">Images</h2>
       <div className="my-5 h-px w-full bg-gray-200" />
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {reviewImages.slice(0, loadMore).map((image, index) => (
+        {reviewImages.slice(0, loadMore).map((item, index) => (
           <Dialog key={index}>
             <DialogTrigger className="group relative mt-auto flex h-[300px] w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-gray-300 bg-white text-gray-400 transition">
               <img
-                src={`${baseUploadsUrl}${image.hash}${image.extension}`}
-                alt={image.name}
+                src={`${baseUploadsUrl}${item?.formats?.medium?.url || item.url}`}
+                alt={item.name}
                 className="size-full object-cover"
               />
               <div className="absolute z-10 size-full bg-black opacity-0 transition group-hover:opacity-50" />
@@ -35,8 +35,8 @@ const ReviewImages = ({ reviewImages }: { reviewImages: ReviewImageData[] }) => 
             </DialogTrigger>
             <DialogContent className="shadow-no border-none bg-transparent p-0">
               <img
-                src={`${baseUploadsUrl}${image.path}`}
-                alt={image.name}
+                src={`${baseUploadsUrl}${item.url}`}
+                alt={item.name}
                 className="max-h-[calc(100vh_-_100px)] max-w-[calc(100vw_-_100px)] object-cover"
               />
             </DialogContent>

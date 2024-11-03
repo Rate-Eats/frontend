@@ -1,15 +1,10 @@
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
+
 export interface RestaurantData {
   name: string;
   description: string;
   address: string;
-  images: {
-    main: boolean;
-    path: string;
-    hash: string;
-    name: string;
-    extension: string;
-    __temp_key__: number;
-  }[];
+  images: ImageDataInterface | null;
 }
 
 export interface ReviewData {
@@ -18,23 +13,14 @@ export interface ReviewData {
   rating_ambience: number;
   rating_price: number;
   description: string;
-  images: PayloadImageInterface[];
+  images?: null;
 }
 
 export interface CommentData {
   text: string;
 }
 
-export interface ImageInterface {
-  ext: string;
-  hash: string;
-  name: string;
-}
-
-export interface PayloadImageInterface {
-  main: boolean;
-  path: string;
-  hash: string;
-  name: string;
-  extension: string;
+export interface reactionData {
+  reviewDocumentId: string;
+  type: string;
 }

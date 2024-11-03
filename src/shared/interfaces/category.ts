@@ -3,9 +3,8 @@ interface Icon {
   width: number;
   url: string;
   name: string;
-  formats:Formats
+  formats: Formats;
 }
-
 
 export interface Category {
   name: string;
@@ -14,21 +13,21 @@ export interface Category {
 }
 
 export interface FormatAttributes {
-  name: string,
-  hash: string,
-  ext: string,
-  mime: string,
-  path: string,
-  width: number,
-  height: number,
-  size: number,
-  sizeInBytes: number,
-  url: string
+  name: string;
+  hash: string;
+  ext: string;
+  mime: string;
+  path: string;
+  width: number;
+  height: number;
+  size: number;
+  sizeInBytes: number;
+  url: string;
 }
 
 export interface Formats {
-  thumbnail: FormatAttributes,
-  small:FormatAttributes,
-  medium:FormatAttributes,
-  large:FormatAttributes,
+  thumbnail: FormatAttributes;
+  small: FormatAttributes;
+  medium: FormatAttributes;
+  large: FormatAttributes;
 }

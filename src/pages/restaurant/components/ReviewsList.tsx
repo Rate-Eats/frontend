@@ -7,17 +7,41 @@ import Dislike from '@assets/svgs/icons/dislike.svg?react';
 import { formatDate } from '@shared/utils/formatDate.ts';
 import Like from '@assets/svgs/icons/like.svg?react';
 import Stars from '@components/rating/Stars.tsx';
+import useDatabase from '@/hooks/useDatabase.tsx';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 interface ReviewsListProps {
   reviews: Reviews[];
   handleModalVisibility: () => void;
 }
 
-const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
+interface ReactionCounts {
+  [key: string]: {
+    likeCount: number;
+    dislikeCount: number;
+  };
+}
+
+const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
 const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
+  const { toggleReaction } = useDatabase();
   const navigate = useNavigate();
+
+  const [reactionCounts, setReactionCounts] = useState<ReactionCounts>({});
+
+  useEffect(() => {
+    const initialCounts = reviews.reduce((acc: ReactionCounts, review) => {
+      acc[review.documentId] = {
+        likeCount: review.likeCount,
+        dislikeCount: review.dislikeCount,
+      };
+      return acc;
+    }, {});
+
+    setReactionCounts(initialCounts);
+  }, [reviews]);
 
   const calculateRating = (review: Reviews) => {
     const ratings = [review.rating_price, review.rating_ambience, review.rating_food, review.rating_service].filter(
@@ -43,6 +67,25 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
       </div>
     );
 
+  const toggleReactionButton = (reviewDocumentId: string, type: string) => {
+    const data = {
+      reviewDocumentId: reviewDocumentId,
+      type: type,
+    };
+
+    toggleReaction.mutateAsync(data, {
+      onSuccess: (updatedData) => {
+        setReactionCounts((prevCounts) => ({
+          ...prevCounts,
+          [reviewDocumentId]: {
+            likeCount: updatedData.data.likeCount,
+            dislikeCount: updatedData.data.dislikeCount,
+          },
+        }));
+      },
+    });
+  };
+
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {reviews.map((review) => {
@@ -50,7 +93,7 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
         const userData = review.users;
         if (!userData) return;
         const userDataAttributes = userData;
-        const reviewImages = review.images.slice(0, 3);
+        const reviewImages = review.images && review.images.slice(0, 3);
 
         return (
           <div className="flex flex-col gap-4 rounded-lg bg-white p-5" key={review.id}>
@@ -74,27 +117,41 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
             </div>
             <div className="line-clamp-2">{review.description}</div>
             <div className="flex gap-3">
-              {reviewImages.map((image) => (
-                <img
-                  src={`${baseUploadsUrl}${image.hash}${image.extension}`}
-                  alt={image.name}
-                  className="size-[70px] rounded-md"
-                  key={image.hash}
-                />
-              ))}
+              {reviewImages &&
+                reviewImages.map((item) => {
+                  return (
+                    <img
+                      src={`${baseUploadsUrl}${item?.formats.thumbnail?.url || item.url}`}
+                      alt={item.name}
+                      className="size-[70px] rounded-md object-cover"
+                      key={item.hash}
+                    />
+                  );
+                })}
             </div>
             <div className="flex w-full justify-between">
               <div className="flex items-center gap-3">
-                <button className="group flex items-center gap-1">
+                <button
+                  className="group flex items-center gap-1"
+                  onClick={() => toggleReactionButton(review.documentId, 'like')}
+                >
                   <Like className="mb-1 text-gray-500 group-hover:text-primary" />
-                  <span className="group-hover:text-primary">0</span>
+                  <span className="w-2 group-hover:text-primary">
+                    {reactionCounts[review.documentId]?.likeCount ?? review.likeCount}
+                  </span>
                 </button>
-                <button className="group flex items-center gap-1">
+                <button
+                  className="group flex items-center gap-1"
+                  onClick={() => toggleReactionButton(review.documentId, 'dislike')}
+                >
                   <Dislike className="mt-1 text-gray-500 group-hover:text-primary" />
-                  <span className="group-hover:text-primary">0</span>
+                  <span className="w-2 group-hover:text-primary">
+                    {reactionCounts[review.documentId]?.dislikeCount ?? review.dislikeCount}
+                  </span>
                 </button>
                 <div className="flex items-center gap-1 pl-2">
-                  <Comment className="text-gray-500" />0
+                  <Comment className="text-gray-500" />
+                  {review.commentCount}
                 </div>
               </div>
               <button

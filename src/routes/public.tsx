@@ -1,9 +1,9 @@
 import { lazy } from 'react';
 
 const NotFound = lazy(() => import('@components/states/notFound/NotFound.tsx'));
-const Restaurant = lazy(() => import('@pages/restaurant/Restaurant.tsx'));
 const Restaurants = lazy(() => import('@pages/restaurants/Restaurants.tsx'));
-const Dashboard = lazy(() => import('@pages/dashboard/Dashboard.tsx'));
+const Restaurant = lazy(() => import('@pages/restaurant/Restaurant.tsx'));
+const HomePage = lazy(() => import('@pages/homepage/Homepage.tsx'));
 const Register = lazy(() => import('@pages/register/Register.tsx'));
 const Review = lazy(() => import('@pages/review/Review.tsx'));
 const Login = lazy(() => import('@pages/login/Login.tsx'));
@@ -11,7 +11,7 @@ const Login = lazy(() => import('@pages/login/Login.tsx'));
 const PublicRoutes = [
   {
     path: '/',
-    element: <Dashboard />,
+    element: <HomePage />,
   },
   {
     path: '/register',

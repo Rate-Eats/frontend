@@ -1,11 +1,14 @@
-import { createImageObject, createReviewObject } from '@pages/restaurant/utils/createObjects.ts';
-import { ImageInterface, PayloadImageInterface, ReviewData } from '@shared/interfaces/forms.ts';
+import { createUpdateReviewObjects } from '@pages/restaurant/utils/createUpdateReviewObjects.ts';
+import { createAddReviewObjects } from '@pages/restaurant/utils/createAddReviewObjects.ts';
+import { createUploadImagesFormData } from '@shared/utils/createUploadImagesFormData.ts';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog.tsx';
-import { RestaurantImages, Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx';
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
+import { Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import ImageField from '@pages/restaurant/components/ImageField.tsx';
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import { addReviewSchema } from '@/schemas/addReviewSchema.ts';
+import { ReviewData } from '@shared/interfaces/forms.ts';
 import { useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react';
@@ -25,12 +28,12 @@ interface AddReviewModalProps {
 }
 
 const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddReviewModalProps) => {
-  const { uploadImages, addReview, updateReview } = useDatabase();
-  const [currentImages, setCurrentImages] = useState<RestaurantImages[]>([]);
+  const { uploadImages, addReview, deleteImage, updateReview } = useDatabase();
   const { userData } = useAuth();
   const queryClient = useQueryClient();
   const { id } = useParams();
 
+  const [previousExistingImages, setPreviousExistingImages] = useState<ImageDataInterface[]>([]);
   const [existingReviewId, setExistingReview] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -48,9 +51,7 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
   });
 
   useEffect(() => {
-    getReviews().then(() => {
-      return;
-    });
+    (async () => await getReviews())();
   }, []);
 
   const getReviews = async () => {
@@ -61,87 +62,83 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
       form.setValue('price', existingReview.rating_price);
       form.setValue('ambience', existingReview.rating_ambience);
       form.setValue('description', existingReview.description);
-      const existingImages = existingReview.images.map((image) => ({
-        extension: image.extension,
-        hash: image.hash,
-        main: image.main,
-        menu: image.menu,
-        name: image.name,
-        path: image.path,
-      }));
 
-      setCurrentImages(existingImages);
+      if (existingReview.images) {
+        setPreviousExistingImages(existingReview.images.map((item) => ({ ...item, action: null })));
+      }
       setExistingReview(existingReview.documentId);
     }
   };
 
-  const addReviewAndInvalidate = (addReviewObject: ReviewData) => {
-    addReview.mutate(addReviewObject, {
-      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['restaurant'] }),
-      onError: () => setErrorMessage('An error occurred while uploading your review'),
-    });
-
-    setLoading(false);
-    handleModalVisibility(false);
+  const handleAdditionalItems = (action: 'delete' | 'update', documentId: string) => {
+    setPreviousExistingImages((prevImages) =>
+      prevImages.map((image) => (image.documentId === documentId ? { ...image, action } : image)),
+    );
   };
 
-  const updateReviewAndInvalidate = (addReviewObject: ReviewData) => {
-    const data = addReviewObject;
+  const uploadImagesToReview = async (images: File[], id: number) => {
+    const formData = createUploadImagesFormData(images, id, 'api::review.review');
+
+    await uploadImages.mutateAsync(formData, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['restaurant'] });
+        setLoading(false);
+        handleModalVisibility(false);
+      },
+      onError: () => setErrorMessage('An error occurred while uploading your review'),
+    });
+  };
+
+  const handlePreviewExistingFiles = () => {
+    previousExistingImages.forEach((image) => {
+      if (image.action === 'delete') deleteImage.mutate(image.id);
+      if (image.action === 'update') console.log('');
+    });
+  };
+
+  const handleSuccess = async (images: File[], reviewId: number) => {
+    if (images.length > 0) {
+      await uploadImagesToReview(images, reviewId);
+    } else {
+      setLoading(false);
+      handleModalVisibility(false);
+      await queryClient.invalidateQueries({ queryKey: ['restaurant'] });
+    }
+  };
+
+  const updateReviewFunc = (data: ReviewData, images: File[]) => {
+    handlePreviewExistingFiles();
     updateReview.mutate(
       {
         data,
         id: existingReviewId,
       },
       {
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['restaurant'] }),
+        onSuccess: (data) => handleSuccess(images, data.data.data.id),
         onError: () => setErrorMessage('An error occurred while uploading your review'),
       },
     );
-
-    setLoading(false);
-    handleModalVisibility(false);
   };
 
-  const uploadImagesAndGetReview = async (formData: FormData, reviewData: z.infer<typeof addReviewSchema>) => {
-    await uploadImages.mutateAsync(formData, {
-      onSuccess: ({ data }) => {
-        const imagesArray: PayloadImageInterface[] = data.map((image: ImageInterface) => createImageObject(image));
-        if (userData && id) {
-          const addReviewObject = createReviewObject(
-            reviewData,
-            [...imagesArray, ...currentImages],
-            id,
-            userData.documentId,
-          );
-          existingReviewId ? updateReviewAndInvalidate(addReviewObject) : addReviewAndInvalidate(addReviewObject);
-        }
-      },
-      onError: () => {
-        setErrorMessage('An error occurred while uploading images');
-        setLoading(false);
-      },
+  const addReviewFunc = (addReviewObject: ReviewData, images: File[]) => {
+    addReview.mutate(addReviewObject, {
+      onSuccess: (data) => handleSuccess(images, data.data.data.id),
+      onError: () => setErrorMessage('An error occurred while uploading your review'),
     });
   };
 
   const onSubmit = async (reviewData: z.infer<typeof addReviewSchema>) => {
-    if (reviewData.image.length < 1 && userData && id) {
-      const addReviewObject = createReviewObject(reviewData, currentImages, id, userData.documentId);
-      existingReviewId ? updateReviewAndInvalidate(addReviewObject) : addReviewAndInvalidate(addReviewObject);
-      return;
+    if (userData && id) {
+      if (existingReviewId) {
+        const updateReviewObject = createUpdateReviewObjects(reviewData, id, userData.documentId);
+        updateReviewFunc(updateReviewObject, reviewData.image);
+      } else {
+        const addReviewObject = createAddReviewObjects(reviewData, id, userData.documentId);
+        addReviewFunc(addReviewObject, reviewData.image);
+      }
+    } else {
+      handleModalVisibility(false);
     }
-    setLoading(true);
-    const formData = new FormData();
-    Array.from(reviewData.image).forEach((file) => {
-      formData.append('files', file);
-    });
-
-    await uploadImagesAndGetReview(formData, reviewData);
-    handleModalVisibility(false);
-  };
-
-  const removeAdditionalItems = (id: string) => {
-    const images = currentImages.filter((image) => image.hash !== id);
-    setCurrentImages(images);
   };
 
   return (
@@ -171,7 +168,11 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
               </div>
             </div>
             <DescriptionField form={form} />
-            <ImageField form={form} additionalImages={currentImages} removeAdditionalItems={removeAdditionalItems} />
+            <ImageField
+              form={form}
+              previousExistingImages={previousExistingImages}
+              handleAdditionalItems={handleAdditionalItems}
+            />
             {errorMessage && <span className="mx-auto font-medium text-red-500">{errorMessage}</span>}
             <Button type="submit" disabled={loading}>
               {loading ? <Loader /> : existingReviewId ? 'Update review' : 'Add review'}

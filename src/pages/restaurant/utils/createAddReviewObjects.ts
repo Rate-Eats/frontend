@@ -1,19 +1,8 @@
-import { ImageInterface, PayloadImageInterface } from '@shared/interfaces/forms.ts';
 import { addReviewSchema } from '@/schemas/addReviewSchema.ts';
 import { z } from 'zod';
 
-export const createImageObject = (image: ImageInterface) => ({
-  main: false,
-  path: image.hash + image.ext,
-  hash: image.hash,
-  name: image.name,
-  extension: image.ext,
-  menu: false,
-});
-
-export const createReviewObject = (
+export const createAddReviewObjects = (
   reviewData: z.infer<typeof addReviewSchema>,
-  imagesArray: PayloadImageInterface[],
   restaurantId: string,
   userId: string,
 ) => ({
@@ -22,7 +11,7 @@ export const createReviewObject = (
   rating_ambience: reviewData.ambience,
   rating_price: reviewData.price,
   description: reviewData.description,
-  images: imagesArray,
+  images: null,
   restaurant: {
     disconnect: [],
     connect: [

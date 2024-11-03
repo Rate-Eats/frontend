@@ -1,12 +1,4 @@
-export interface RestaurantImages {
-  main: boolean;
-  path: string;
-  hash: string;
-  name: string;
-  extension: string;
-  menu: boolean;
-  id?: number;
-}
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
 
 export interface ReviewAttributesUserRelation {
   documentId: string;
@@ -21,8 +13,18 @@ export interface ReviewAttributesUserRelation {
   avatar: null;
 }
 
+export interface CommentData {
+  id: number;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  documentId: string;
+  users: ReviewAttributesUserRelation;
+}
+
 export interface Reviews {
-  images: RestaurantImages[];
+  images: ImageDataInterface[];
   rating_food: number;
   rating_service: number;
   rating_ambience: number;
@@ -33,7 +35,11 @@ export interface Reviews {
   description: string;
   id: number;
   documentId: string;
+  likeCount: number;
+  dislikeCount: number;
+  commentCount: number;
   users: ReviewAttributesUserRelation;
+  comments: CommentData[];
 }
 
 export interface Categories {
@@ -52,7 +58,7 @@ export interface RestaurantData {
   description: string;
   address: string;
   median_rating: number;
-  images: RestaurantImages[];
+  images: ImageDataInterface[];
   reviews: Reviews[];
   categories: Categories[];
 }

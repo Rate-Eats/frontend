@@ -1,12 +1,4 @@
-export interface ReviewImageData {
-  id: number;
-  path: string;
-  name: string;
-  hash: string;
-  extension: string;
-  main: boolean;
-  menu: boolean;
-}
+import { ImageDataInterface } from '@shared/interfaces/images.ts';
 
 interface ReviewUserData {
   id: number;
@@ -62,7 +54,7 @@ export interface ReviewData {
   publishedAt: string;
   rating_service: number;
   comments: ReviewCommentsData[];
-  images: ReviewImageData[];
+  images: ImageDataInterface[];
   users: ReviewUserData;
   restaurant: ReviewRestaurantData;
 }
