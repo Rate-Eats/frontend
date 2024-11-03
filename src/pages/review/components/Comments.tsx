@@ -3,10 +3,10 @@ import CommentsSkeleton from '@pages/review/components/CommentSkeleton.tsx';
 import { CommentData } from '@pages/restaurant/interfaces/restaurant.ts';
 import CommentInput from '@pages/review/components/CommentInput.tsx';
 import { getComments } from '@pages/review/utils/getComments.ts';
+import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '@shared/utils/formatDate.ts';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@shared/ui/button.tsx';
-import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
@@ -14,15 +14,17 @@ const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 const Comments = () => {
   const [commentsLoad, setCommentsLoad] = useState(5);
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const { data, isFetching } = useQuery({
+    queryKey: ['comments', id],
+    queryFn: () => getComments(id),
+    refetchOnWindowFocus: false,
+  });
+
   const redirectToUserProfile = (id: number) => {
     navigate(`/user/${id}`);
   };
-
-  const { data, isFetching } = useQuery({
-    queryKey: ['comments'],
-    queryFn: () => getComments(),
-    refetchOnWindowFocus: false,
-  });
 
   return (
     <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8">
