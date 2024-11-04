@@ -3,8 +3,8 @@ import { Skeleton } from '@shared/ui/skeleton.tsx';
 const CommentsSkeleton = ({ commentsLength }: { commentsLength: number }) => {
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col">
-      {new Array(commentsLength).fill(null).map(() => (
-        <>
+      {new Array(commentsLength).fill(null).map((_, i) => (
+        <div key={i}>
           <div className="my-5 h-px w-full divide-x bg-gray-200"></div>
           <div className="flex w-full flex-col rounded-xl bg-white ">
             <div className="flex flex-col gap-5">
@@ -18,7 +18,7 @@ const CommentsSkeleton = ({ commentsLength }: { commentsLength: number }) => {
               <Skeleton className="mt-2 h-[20px] w-24" />
             </div>
           </div>
-        </>
+        </div>
       ))}
       <div className="my-5 h-px w-full divide-x bg-gray-200"></div>
       <div className="flex justify-center">

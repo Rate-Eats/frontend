@@ -1,6 +1,7 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@shared/ui/carousel.tsx';
-import { Dialog, DialogContent, DialogTrigger } from '@shared/ui/dialog.tsx';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@shared/ui/dialog.tsx';
 import { ImageDataInterface } from '@shared/interfaces/images.ts';
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 
 interface ImageSliderProps {
   images: ImageDataInterface[];
@@ -28,13 +29,19 @@ const ImageSlider = ({ images, size }: ImageSliderProps) => {
                   loading="lazy"
                 />
               </DialogTrigger>
-              <DialogContent className="shadow-no border-none bg-transparent p-0">
+              <DialogContent className="shadow-no border-none bg-transparent p-0" aria-description={''}>
+                <VisuallyHidden.Root>
+                  <DialogTitle>{item.name}</DialogTitle>
+                </VisuallyHidden.Root>
                 <img
                   src={`${baseUploadsUrl}${item.url}`}
                   alt={item.name}
                   className="max-h-[calc(100vh_-_100px)] max-w-[calc(100vw_-_100px)] object-cover"
                   loading="lazy"
                 />
+                <VisuallyHidden.Root>
+                  <DialogDescription>{item.alternativeText}</DialogDescription>
+                </VisuallyHidden.Root>
               </DialogContent>
             </Dialog>
           </CarouselItem>

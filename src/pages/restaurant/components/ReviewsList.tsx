@@ -67,13 +67,13 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
       </div>
     );
 
-  const toggleReactionButton = (reviewDocumentId: string, type: string) => {
+  const toggleReactionButton = async (reviewDocumentId: string, type: string) => {
     const data = {
       reviewDocumentId: reviewDocumentId,
       type: type,
     };
 
-    toggleReaction.mutateAsync(data, {
+    await toggleReaction.mutateAsync(data, {
       onSuccess: (updatedData) => {
         setReactionCounts((prevCounts) => ({
           ...prevCounts,

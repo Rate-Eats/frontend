@@ -1,4 +1,5 @@
-import { Dialog, DialogContent, DialogTrigger } from '@shared/ui/dialog.tsx';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@shared/ui/dialog.tsx';
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import ExpandIcon from '@assets/svgs/icons/expand.svg?react';
 import { Button } from '@shared/ui/button.tsx';
@@ -34,11 +35,17 @@ const ReviewImages = ({ reviewImages }: { reviewImages: ImageDataInterface[] }) 
               </div>
             </DialogTrigger>
             <DialogContent className="shadow-no border-none bg-transparent p-0">
+              <VisuallyHidden.Root>
+                <DialogTitle>{item.name}</DialogTitle>
+              </VisuallyHidden.Root>
               <img
                 src={`${baseUploadsUrl}${item.url}`}
                 alt={item.name}
                 className="max-h-[calc(100vh_-_100px)] max-w-[calc(100vw_-_100px)] object-cover"
               />
+              <VisuallyHidden.Root>
+                <DialogDescription>{item.alternativeText}</DialogDescription>
+              </VisuallyHidden.Root>
             </DialogContent>
           </Dialog>
         ))}
