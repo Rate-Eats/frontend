@@ -1,20 +1,20 @@
-import SkeletonLastAddedRestaurants from '@pages/homepage/components/SkeletonLastAddedRestaurants.tsx';
-import { fetchLastAddedRestaurants } from '@pages/homepage/utils/getRestaurants.ts';
+import LastAddedRestaurantSkeleton from '@pages/homepage/components/LastAddedRestaurantSkeleton.tsx';
+import { fetchLastAddedRestaurants } from '@pages/homepage/utils/getLastAddedRestaurant.ts';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
-const LastAddedRestaurants = () => {
+const LastAddedRestaurant = () => {
   const navigate = useNavigate();
 
   const { error, data, isFetching } = useQuery({
-    queryKey: ['LastAddedRestaurants'],
+    queryKey: ['LastAddedRestaurant'],
     queryFn: () => fetchLastAddedRestaurants(),
     refetchOnWindowFocus: false,
   });
 
-  if (isFetching) return <SkeletonLastAddedRestaurants />;
+  if (isFetching) return <LastAddedRestaurantSkeleton />;
   if (error || !data) return null;
 
   const redirectToRestaurant = (id: string) => navigate(`/restaurant/${id}`);
@@ -58,4 +58,4 @@ const LastAddedRestaurants = () => {
   );
 };
 
-export default LastAddedRestaurants;
+export default LastAddedRestaurant;

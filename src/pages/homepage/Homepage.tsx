@@ -1,5 +1,5 @@
-import LastAddedRestaurants from '@pages/homepage/components/LastAddedRestaurants.tsx';
 import JoinCommunitySection from '@pages/homepage/components/JoinCommunitySection.tsx';
+import LastAddedRestaurant from '@pages/homepage/components/LastAddedRestaurant.tsx';
 import { getHomepageData } from '@pages/homepage/utils/getHomepageData.ts';
 import HomepageHeader from '@pages/homepage/components/HomepageHeader.tsx';
 import { useQuery } from '@tanstack/react-query';
@@ -14,7 +14,7 @@ export const Homepage = () => {
   return (
     <div className="flex flex-col items-center">
       <HomepageHeader isFetching={isFetching} data={data} />
-      <LastAddedRestaurants />
+      <LastAddedRestaurant />
       <JoinCommunitySection isFetching={isFetching} data={data} />
     </div>
   );

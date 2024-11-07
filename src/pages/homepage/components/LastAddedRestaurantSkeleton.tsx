@@ -1,6 +1,6 @@
 import { Skeleton } from '@shared/ui/skeleton.tsx';
 
-const SkeletonLastAddedRestaurants = () => {
+const LastAddedRestaurantSkeleton = () => {
   return (
     <div className="flex w-full justify-center overflow-hidden bg-white py-14">
       <div className="mx-8 flex w-full max-w-7xl gap-8">
@@ -21,4 +21,4 @@ const SkeletonLastAddedRestaurants = () => {
   );
 };
 
-export default SkeletonLastAddedRestaurants;
+export default LastAddedRestaurantSkeleton;
