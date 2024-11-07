@@ -1,5 +1,5 @@
-import SkeletonLastAddedRestaurants from '@components/lastAddedRestaurants/SkeletonLastAddedRestaurants.tsx';
-import { fetchLastAddedRestaurants } from '@components/lastAddedRestaurants/getRestaurants.ts';
+import SkeletonLastAddedRestaurants from '@pages/homepage/components/SkeletonLastAddedRestaurants.tsx';
+import { fetchLastAddedRestaurants } from '@pages/homepage/utils/getRestaurants.ts';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 

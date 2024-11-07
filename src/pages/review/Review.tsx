@@ -21,7 +21,7 @@ const Review = () => {
   if (error || !data) return <ErrorFetching errorText="There was an error loading this review" />;
 
   return (
-    <div className="mx-auto flex w-full max-w-screen-xl flex-col justify-center gap-5 py-6">
+    <div className="mx-auto flex w-full max-w-screen-xl flex-col justify-center gap-5 px-4 py-6">
       <ReviewDescription reviewDescription={data.description} restaurantName={data.restaurant.name} />
       {data?.images?.length > 0 && <ReviewImages reviewImages={data.images} />}
       <Ratings reviewData={data} />

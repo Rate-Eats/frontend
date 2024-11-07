@@ -1,4 +1,4 @@
-import LastAddedRestaurants from '@components/lastAddedRestaurants/LastAddedRestaurants.tsx';
+import LastAddedRestaurants from '@pages/homepage/components/LastAddedRestaurants.tsx';
 import JoinCommunitySection from '@pages/homepage/components/JoinCommunitySection.tsx';
 import { getHomepageData } from '@pages/homepage/utils/getHomepageData.ts';
 import HomepageHeader from '@pages/homepage/components/HomepageHeader.tsx';
