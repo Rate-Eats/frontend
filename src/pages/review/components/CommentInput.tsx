@@ -1,16 +1,17 @@
 import { createCommentObject } from '@pages/review/utils/createCommentObject.ts';
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import useDatabase from '@/hooks/useDatabase.tsx';
+import { Textarea } from '@shared/ui/textarea.tsx';
 import { Button } from '@shared/ui/button.tsx';
-import { Input } from '@shared/ui/input.tsx';
 import { useAuth } from '@auth/useAuth.ts';
-import { useState } from 'react';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
 const CommentInput = () => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
   const { userData } = useAuth();
@@ -46,6 +47,30 @@ const CommentInput = () => {
     navigate(`/${path}`);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      addCommentFunc();
+    } else if (e.key === 'Enter' && e.shiftKey) {
+      e.preventDefault();
+      setComment((prev) => prev + '\n');
+    }
+  };
+
+  const autoResize = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    autoResize();
+    if (textareaRef.current) {
+      textareaRef.current.scrollTo({ top: 1000, behavior: 'smooth' });
+    }
+  }, [comment]);
+
   if (!userData) {
     return (
       <div className="flex flex-col items-center rounded-lg border border-primary/50 p-5">
@@ -73,13 +98,16 @@ const CommentInput = () => {
         </Avatar>
         {userData.username}
       </div>
-      <Input
+      <Textarea
+        ref={textareaRef}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        className={`mt-2 rounded-none border-0 border-b px-1 shadow-none outline-none focus-visible:ring-0 ${error && 'border-red-500'}`}
+        className={`m-0 mb-1 mt-3 rounded-none border-0 px-1 shadow-none outline-none focus-visible:ring-0 ${error && 'border-red-500'} max-h-[60px] min-h-6 resize-y overflow-y-scroll p-0`}
         placeholder="write here..."
+        onKeyDown={handleKeyDown}
+        rows={1}
       />
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 border-t">
         {error && <span className="text-sm text-red-500">{error}</span>}
         <Button className="ml-auto mt-3 w-28" onClick={() => addCommentFunc()}>
           Comment

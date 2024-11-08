@@ -39,7 +39,7 @@ const Comments = () => {
               return (
                 <div key={comment.id}>
                   <div className="my-5 h-px w-full bg-gray-200" />
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 whitespace-pre-wrap">
                     <div className="flex items-center gap-2">
                       <Avatar className="cursor-pointer" onClick={() => redirectToUserProfile(userData.id)}>
                         <AvatarImage src={`${baseUploadsUrl}${userData.avatar}`} />
