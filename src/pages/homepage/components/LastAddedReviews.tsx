@@ -40,7 +40,7 @@ export const LastAddedReviews = () => {
             return (
               <div
                 key={item.documentId}
-                className="flex flex-1 cursor-pointer flex-col gap-6 rounded-xl p-6 shadow-[0px_7px_29px_0px_rgba(100,100,111,0.2)]"
+                className="flex flex-1 cursor-pointer flex-col gap-6 rounded-xl p-6 shadow-customReview transition duration-200 hover:scale-[1.02]"
                 onClick={() => redirectToReview(item.documentId)}
               >
                 <div className="flex items-center gap-3">
