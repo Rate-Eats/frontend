@@ -8,7 +8,9 @@ interface RatingsProps {
 }
 const Ratings = ({ reviewData }: RatingsProps) => {
   const { rating_ambience, rating_food, rating_service, rating_price } = reviewData;
-  const ratingSum = (rating_ambience + rating_food + rating_service + rating_price) / 4;
+  const ratings = [rating_ambience, rating_food, rating_service, rating_price];
+  const validRatings = ratings.filter((rating) => rating !== null).length;
+  const ratingSum = ratings.reduce((total, rating) => total + rating, 0);
 
   return (
     <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8">
@@ -18,7 +20,7 @@ const Ratings = ({ reviewData }: RatingsProps) => {
         <div className="flex flex-col items-center justify-center gap-5 px-2 md:px-6 lg:px-10">
           <span className="whitespace-nowrap text-gray-500">Overall Rating</span>
           <span className="text-6xl text-primary">{ratingSum.toFixed(1)}</span>
-          <Stars rating={ratingSum} />
+          <Stars rating={ratingSum / validRatings} />
         </div>
         <div className="flex w-full flex-col gap-8">
           <div className="flex items-center gap-3">
