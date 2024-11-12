@@ -19,7 +19,7 @@ const Ratings = ({ reviewData }: RatingsProps) => {
       <div className="flex gap-8 md:gap-12 lg:gap-20">
         <div className="flex flex-col items-center justify-center gap-5 px-2 md:px-6 lg:px-10">
           <span className="whitespace-nowrap text-gray-500">Overall Rating</span>
-          <span className="text-6xl text-primary">{ratingSum.toFixed(1)}</span>
+          <span className="text-6xl text-primary">{(ratingSum / validRatings).toFixed(1)}</span>
           <Stars rating={ratingSum / validRatings} />
         </div>
         <div className="flex w-full flex-col gap-8">
