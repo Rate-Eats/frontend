@@ -1,10 +1,9 @@
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { Dialog, DialogContent } from '@/shared/ui/dialog';
 import { type DialogProps } from '@radix-ui/react-dialog';
 import { Command as CommandPrimitive } from 'cmdk';
-import * as React from 'react';
-
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent } from '@/shared/ui/dialog';
+import * as React from 'react';
 
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
@@ -21,9 +20,7 @@ const Command = React.forwardRef<
 ));
 Command.displayName = CommandPrimitive.displayName;
 
-interface CommandDialogProps extends DialogProps {}
-
-const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
+const CommandDialog = ({ children, ...props }: DialogProps) => {
   return (
     <Dialog {...props}>
       <DialogContent className="overflow-hidden p-0">
@@ -130,3 +127,15 @@ export {
   CommandShortcut,
   CommandSeparator,
 };
+
+// <CommandDialog>
+//   <CommandInput placeholder="Search category..." className="h-9" />
+//   <CommandList>
+//     <CommandEmpty>No results found.</CommandEmpty>
+//     <CommandGroup heading="Suggestions">
+//       <CommandItem>Calendar</CommandItem>
+//       <CommandItem>Search Emoji</CommandItem>
+//       <CommandItem>Calculator</CommandItem>
+//     </CommandGroup>
+//   </CommandList>
+// </CommandDialog>

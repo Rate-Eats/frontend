@@ -1,4 +1,4 @@
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@shared/ui/command.tsx';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@shared/ui/command.tsx';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@shared/ui/form.tsx';
 import { Popover, PopoverContent, PopoverTrigger } from '@shared/ui/popover.tsx';
 import { FormProps } from '@pages/addRestaurant/interfaces/formProps.ts';
@@ -18,7 +18,7 @@ const CategoryField = ({ form }: FormProps) => {
           category && (
             <div
               key={category.label}
-              className="rounded-sm bg-[#F0F0F0] p-1.5 text-[#6E7072] transition hover:bg-gray-200"
+              className="rounded-sm bg-[#F0F0F0] px-1.5 py-[3px] text-[#6E7072] transition hover:bg-gray-200"
               onClick={(e) => {
                 e.preventDefault();
                 handleCategoryChange(category);
@@ -75,19 +75,21 @@ const CategoryField = ({ form }: FormProps) => {
               }}
             >
               <Command>
-                <CommandInput placeholder="Search category..." className="h-9" />
-                <CommandEmpty>No Category found.</CommandEmpty>
-                <CommandGroup>
-                  {categories.map((category) => (
-                    <CommandItem
-                      value={category.label}
-                      key={category.value}
-                      onSelect={() => handleCategoryChange(category)}
-                    >
-                      {category.label}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
+                <CommandInput placeholder="Type a command or search..." />
+                <CommandList>
+                  <CommandEmpty>No results found.</CommandEmpty>
+                  <CommandGroup heading="Categories">
+                    {categories.map((category) => (
+                      <CommandItem
+                        value={category.label}
+                        key={category.value}
+                        onSelect={() => handleCategoryChange(category)}
+                      >
+                        {category.label}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
               </Command>
             </PopoverContent>
           </Popover>
