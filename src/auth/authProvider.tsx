@@ -1,25 +1,25 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
-import { UserDataInterface } from '@shared/interfaces/user.ts';
 import { useLocalStorage } from '@/hooks/useLocalStorage.tsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
+import { User } from '@shared/types/user.ts';
 import axios from 'axios';
 
-interface LoginResponse {
-  user: UserDataInterface;
+type LoginResponse = {
+  user: User;
   jwt: string;
-}
+};
 
-interface AuthContext {
+type AuthContext = {
   onLogin: (userData: LoginResponse) => void;
   jwtToken: string;
-  userData: UserDataInterface | null;
+  userData: User | null;
   onLogout: () => void;
-}
+};
 
-interface AuthProviderProps {
+type AuthProviderProps = {
   children: ReactNode;
-}
+};
 
 export const AuthContext = createContext<AuthContext>({
   userData: null,
@@ -30,7 +30,7 @@ export const AuthContext = createContext<AuthContext>({
 
 const templateData = {
   id: 0,
-  documentId:'',
+  documentId: '',
   username: '',
   email: '',
   provider: '',
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const location = useLocation();
 
   const [jwtToken, setJwtToken] = useLocalStorage('jwtToken', null);
-  const [userData, setUserData] = useState<UserDataInterface | null>(jwtToken ? templateData : null);
+  const [userData, setUserData] = useState<User | null>(jwtToken ? templateData : null);
 
   const handleLogin = async (loginData: LoginResponse) => {
     setJwtToken(loginData.jwt);

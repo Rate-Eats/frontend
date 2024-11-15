@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import React from 'react';
 
-interface StarProps {
+type StarProps = {
   filledPercent: number;
-}
+};
 
 const StarIcon = ({ filledPercent }: StarProps) => {
   const gradientId = `grad-${uuidv4()}`;

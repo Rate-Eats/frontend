@@ -1,11 +1,12 @@
 import { UseFormReturn } from 'react-hook-form';
 
-export interface FormProps {
+export type AddReviewForm = {
   form: UseFormReturn<{
-    name: string;
-    address: string;
+    food: number;
+    service: number;
+    price: number;
+    ambience: number;
     image: File[];
     description: string;
-    category: string[];
   }>;
-}
+};

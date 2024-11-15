@@ -1,11 +1,11 @@
 import NoPageFound from '@assets/svgs/states/noPageFound.svg?react';
 import { useNavigate } from 'react-router-dom';
 
-interface ErrorFetchingProps {
+type ErrorFetchingProps = {
   errorText: string;
-}
+};
 
-const ErrorFetching = ({ errorText = 'There was an error' }: ErrorFetchingProps) => {
+const ErrorFetching = ({ errorText = 'There was an error.ts' }: ErrorFetchingProps) => {
   const navigate = useNavigate();
 
   return (

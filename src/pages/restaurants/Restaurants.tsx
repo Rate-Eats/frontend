@@ -20,7 +20,7 @@ const Restaurants = () => {
     queryFn: () => getRestaurants(params),
     refetchOnWindowFocus: false,
   });
-  if (error) return <ErrorFetching errorText={'There was an error loading this restaurant'} />;
+  if (error) return <ErrorFetching errorText={'There was an error.ts loading this restaurant'} />;
 
   return (
     <div className="mx-auto flex max-w-screen-xl flex-col gap-3 py-6">

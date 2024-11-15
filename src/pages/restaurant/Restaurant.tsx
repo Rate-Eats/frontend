@@ -6,9 +6,9 @@ import ReviewRatings from '@pages/restaurant/components/ReviewRatings.tsx';
 import RestaurantSkeleton from '@pages/restaurant/RestaurantSkeleton.tsx';
 import { getRestaurant } from '@pages/restaurant/utils/getRestaurant.ts';
 import ReviewsList from '@pages/restaurant/components/ReviewsList.tsx';
-import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import ImageSlider from '@shared/components/ImageSlider.tsx';
 import { useQuery } from '@tanstack/react-query';
+import { Image } from '@shared/types/image.ts';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -25,10 +25,10 @@ const Restaurant = () => {
   const handleModalVisibility = () => setIsModalOpen((prev) => !prev);
 
   if (isFetching) return <RestaurantSkeleton />;
-  if (error || !data) return <ErrorFetching errorText={'There was an error loading this restaurant'} />;
+  if (error || !data) return <ErrorFetching errorText={'There was an error.ts loading this restaurant'} />;
 
-  const menuImages: ImageDataInterface[] = [];
-  const images: ImageDataInterface[] = [];
+  const menuImages: Image[] = [];
+  const images: Image[] = [];
   data?.images?.forEach((image) => {
     image.alternativeText?.includes('menu') ? menuImages.push(image) : images.push(image);
   });
@@ -44,12 +44,8 @@ const Restaurant = () => {
         <RestaurantDetails restaurantData={data} />
         {menuImages.length > 0 && <RestaurantMenus images={menuImages} />}
         <ReviewRatings restaurantData={data} handleModalVisibility={handleModalVisibility} />
-        <ReviewsList reviews={data.reviews} handleModalVisibility={handleModalVisibility} />
-        <AddReviewModal
-          reviews={data.reviews}
-          isModalOpen={isModalOpen}
-          handleModalVisibility={handleModalVisibility}
-        />
+        {data.reviews && <ReviewsList reviews={data.reviews} handleModalVisibility={handleModalVisibility} />}
+        {data.reviews && (<AddReviewModal reviews={data.reviews} isModalOpen={isModalOpen} handleModalVisibility={handleModalVisibility} />)}
       </div>
     </div>
   );

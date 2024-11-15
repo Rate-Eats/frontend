@@ -2,7 +2,7 @@ import HalfStarIcon from '@assets/svgs/icons/halfStar.svg?react';
 import React, { useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
-interface SelectRatingProps {
+type SelectRatingProps = {
   form: UseFormReturn<{
     food: number;
     service: number;
@@ -12,7 +12,7 @@ interface SelectRatingProps {
     description: string;
   }>;
   ratingType: 'food' | 'service' | 'price' | 'ambience';
-}
+};
 
 const SelectRating = ({ form, ratingType }: SelectRatingProps) => {
   const [hoverIndex, setHoverIndex] = useState(-1);
@@ -32,7 +32,7 @@ const SelectRating = ({ form, ratingType }: SelectRatingProps) => {
   const starArray = Array.from({ length: 10 }, (_, index) => (index + 1) / 2);
 
   useEffect(() => {
-    handleStarLeave()
+    handleStarLeave();
   }, []);
 
   return (

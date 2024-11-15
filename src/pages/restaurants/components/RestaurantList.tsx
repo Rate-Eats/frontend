@@ -1,17 +1,17 @@
 import ErrorFetching from '@components/states/errorFetching/ErrorFetching.tsx';
 import RestaurantsSkeleton from '@pages/restaurants/RestaurantsSkeleton.tsx';
 import { openGoogleMapAddress } from '@shared/utils/openGoogleMapAddress.ts';
-import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
 import ImageSlider from '@shared/components/ImageSlider.tsx';
+import { Restaurant } from '@shared/types/restaurant.ts';
 import Stars from '@components/rating/Stars.tsx';
 import { useNavigate } from 'react-router-dom';
 import { Badge } from '@shared/ui/badge.tsx';
 import React from 'react';
 
-interface RestaurantListProps {
-  data: RestaurantData[] | undefined;
+type RestaurantListProps = {
+  data: Restaurant[] | undefined;
   isFetching: boolean;
-}
+};
 
 const RestaurantList = ({ data, isFetching }: RestaurantListProps) => {
   const navigate = useNavigate();
@@ -43,11 +43,12 @@ const RestaurantList = ({ data, isFetching }: RestaurantListProps) => {
                 {address}
               </span>
               <div className="flex gap-2">
-                {categories.map((category) => (
-                  <Badge variant="secondary" className="h-[24px] cursor-pointer px-3" key={category.id}>
-                    {category.name}
-                  </Badge>
-                ))}
+                {categories &&
+                  categories.map((category) => (
+                    <Badge variant="secondary" className="h-[24px] cursor-pointer px-3" key={category.id}>
+                      {category.name}
+                    </Badge>
+                  ))}
               </div>
               <span className="mt-4 line-clamp-4 max-h-24 transition-all">{description}</span>
             </div>

@@ -1,4 +1,4 @@
-export interface UserDataInterface {
+export type User = {
   id: number;
   documentId: string;
   username: string;
@@ -9,4 +9,4 @@ export interface UserDataInterface {
   createdAt: string;
   updatedAt: string;
   avatar: string;
-}
+};

@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
 import CommentsSkeleton from '@pages/review/components/CommentSkeleton.tsx';
-import { CommentData } from '@pages/restaurant/interfaces/restaurant.ts';
 import CommentInput from '@pages/review/components/CommentInput.tsx';
 import { getComments } from '@pages/review/utils/getComments.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '@shared/utils/formatDate.ts';
+import { Comment } from '@shared/types/comment.ts';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@shared/ui/button.tsx';
 import React, { useState } from 'react';
@@ -34,7 +34,7 @@ const Comments = () => {
       {!isFetching ? (
         data && (
           <>
-            {data.slice(0, commentsLoad).map((comment: CommentData) => {
+            {data.slice(0, commentsLoad).map((comment: Comment) => {
               const userData = comment.users;
               return (
                 <div key={comment.id}>

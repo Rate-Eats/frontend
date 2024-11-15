@@ -1,12 +1,12 @@
 import JoinCommunitySectionSkeleton from '@pages/homepage/components/JoinCommunitySectionSkeleton.tsx';
-import { HomepageData } from '@pages/homepage/interfaces/homepage.ts';
+import { Homepage } from '@pages/homepage/types/homepage.ts';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 
-interface JoinCommunitySectionProps {
+type JoinCommunitySectionProps = {
   isFetching: boolean;
-  data?: HomepageData;
-}
+  data?: Homepage;
+};
 const JoinCommunitySection = ({ data, isFetching }: JoinCommunitySectionProps) => {
   const navigate = useNavigate();
 

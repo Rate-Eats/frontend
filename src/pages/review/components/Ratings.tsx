@@ -1,11 +1,12 @@
 import { calculatePercentage } from '@pages/restaurant/utils/rating.ts';
-import { ReviewData } from '@pages/review/interfaces/review.ts';
 import { Progress } from '@shared/ui/progress.tsx';
 import Stars from '@components/rating/Stars.tsx';
+import { Review } from '@shared/types/review.ts';
 
-interface RatingsProps {
-  reviewData: ReviewData;
-}
+type RatingsProps = {
+  reviewData: Review;
+};
+
 const Ratings = ({ reviewData }: RatingsProps) => {
   const { rating_ambience, rating_food, rating_service, rating_price } = reviewData;
   const ratings = [rating_ambience, rating_food, rating_service, rating_price];

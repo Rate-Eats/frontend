@@ -1,13 +1,13 @@
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@shared/ui/command.tsx';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@shared/ui/form.tsx';
 import { Popover, PopoverContent, PopoverTrigger } from '@shared/ui/popover.tsx';
-import { FormProps } from '@pages/addRestaurant/interfaces/formProps.ts';
+import { RestaurantForm } from '@pages/addRestaurant/types/restaurantForm.ts';
 import { categories } from '@shared/data/categories.ts';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import { Button } from '@shared/ui/button.tsx';
 import React from 'react';
 
-const CategoryField = ({ form }: FormProps) => {
+const CategoryField = ({ form }: RestaurantForm) => {
   const categoriesToDisplay = form.watch('category');
 
   const handleShowCategories = () => {

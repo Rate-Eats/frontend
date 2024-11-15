@@ -1,28 +1,29 @@
 import { openGoogleMapAddress } from '@shared/utils/openGoogleMapAddress.ts';
-import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
 import { calculateRating } from '@pages/restaurant/utils/rating.ts';
 import LocationIcon from '@assets/svgs/icons/location.svg?react';
 import PriceIcon from '@assets/svgs/icons/dollar.svg?react';
+import { Restaurant } from '@shared/types/restaurant.ts';
 import { useState } from 'react';
 
-interface RestaurantDetailsProps {
-  restaurantData: RestaurantData;
-}
+type RestaurantDetailsProps = {
+  restaurantData: Restaurant;
+};
 
 const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
   const [showMoreDescription, setShowMoreDescription] = useState(false);
   const { name, description, address, reviews } = restaurantData;
 
-  const rating = calculateRating(reviews);
-  const price = '$$$'
+  const price = '$$$';
   return (
     <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8">
       <div className="flex items-center justify-between">
         <span className="text-2xl font-medium text-primary">{name}</span>
-        <div className="flex gap-2 font-medium">
-          {rating.rating.rating.toFixed(1)} Stars |{' '}
-          <span className="text-primary underline">{reviews.length} Reviews</span>
-        </div>
+        {reviews && (
+          <div className="flex gap-2 font-medium">
+            {calculateRating(reviews).totalRating.rating.toFixed(1)} Stars |{' '}
+            <span className="text-primary underline">{reviews.length} Reviews</span>
+          </div>
+        )}
       </div>
       <div
         className={`mt-4 line-clamp-3 max-h-20 transition-all ${showMoreDescription && 'line-clamp-none max-h-full'}`}
@@ -40,7 +41,7 @@ const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
           <div className="flex flex-1 gap-3">
             <LocationIcon />
             <span
-              className="cursor-pointer underline hover:text-blue-700 transition"
+              className="cursor-pointer underline transition hover:text-blue-700"
               onClick={() => openGoogleMapAddress(address)}
             >
               {address}

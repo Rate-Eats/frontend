@@ -1,11 +1,11 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@shared/ui/form.tsx';
-import { FormProps } from '@pages/addRestaurant/interfaces/formProps.ts';
+import { RestaurantForm } from '@pages/addRestaurant/types/restaurantForm.ts';
 import UploadIcon from '@assets/svgs/icons/upload.svg?react';
 import TrashIcon from '@assets/svgs/icons/trash.svg?react';
 import { Input } from '@shared/ui/input.tsx';
 import React from 'react';
 
-const ImageField = ({ form }: FormProps) => {
+const ImageField = ({ form }: RestaurantForm) => {
   const imagesToDisplay = form.watch('image');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

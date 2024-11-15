@@ -23,7 +23,6 @@ export const createUpdateReviewObjects = (
     ],
   },
   users: {
-    disconnect: [],
     connect: [
       {
         documentId: userId,
@@ -32,9 +31,5 @@ export const createUpdateReviewObjects = (
         },
       },
     ],
-  },
-  comments: {
-    connect: [],
-    disconnect: [],
   },
 });

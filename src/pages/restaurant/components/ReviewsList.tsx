@@ -1,27 +1,27 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
-import { Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import NoReviews from '@components/states/noReviews/noReviews.tsx';
 import Arrow from '@assets/svgs/icons/arrowDown.svg?react';
 import Comment from '@assets/svgs/icons/comment.svg?react';
 import Dislike from '@assets/svgs/icons/dislike.svg?react';
 import { formatDate } from '@shared/utils/formatDate.ts';
 import Like from '@assets/svgs/icons/like.svg?react';
-import Stars from '@components/rating/Stars.tsx';
 import useDatabase from '@/hooks/useDatabase.tsx';
+import Stars from '@components/rating/Stars.tsx';
+import { Review } from '@shared/types/review.ts';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-interface ReviewsListProps {
-  reviews: Reviews[];
+type ReviewsListProps = {
+  reviews: Review[];
   handleModalVisibility: () => void;
-}
+};
 
-interface ReactionCounts {
+type ReactionCounts = {
   [key: string]: {
     likeCount: number;
     dislikeCount: number;
   };
-}
+};
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
@@ -43,7 +43,7 @@ const ReviewsList = ({ reviews, handleModalVisibility }: ReviewsListProps) => {
     setReactionCounts(initialCounts);
   }, [reviews]);
 
-  const calculateRating = (review: Reviews) => {
+  const calculateRating = (review: Review) => {
     const ratings = [review.rating_price, review.rating_ambience, review.rating_food, review.rating_service].filter(
       (rating) => rating !== 0,
     );

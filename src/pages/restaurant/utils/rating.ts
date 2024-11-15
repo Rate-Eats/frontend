@@ -1,10 +1,10 @@
-import { Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
+import { Review } from '@shared/types/review.ts';
 
 type RatingCategory = 'rating_ambience' | 'rating_food' | 'rating_service' | 'rating_price';
 
-const calculateSingleRating = (reviews: Reviews[], category: RatingCategory) => {
+const calculateSingleRating = (reviews: Review[], category: RatingCategory) => {
   const validRatings = reviews.filter((rating) => rating[category] !== 0);
-  const ratingSum = validRatings.reduce((sum,  attributes ) => sum + attributes[category], 0);
+  const ratingSum = validRatings.reduce((sum, attributes) => sum + attributes[category], 0);
   const averageRating = validRatings.length ? ratingSum / validRatings.length : 0;
 
   return {
@@ -17,7 +17,7 @@ export const calculatePercentage = (part: number, whole: number): number => {
   return (part / whole) * 100;
 };
 
-export const calculateRating = (reviews: Reviews[]) => {
+export const calculateRating = (reviews: Review[]) => {
   const ambience = calculateSingleRating(reviews, 'rating_ambience');
   const food = calculateSingleRating(reviews, 'rating_food');
   const service = calculateSingleRating(reviews, 'rating_service');
@@ -46,7 +46,7 @@ export const calculateRating = (reviews: Reviews[]) => {
       percentage: calculatePercentage(price.rating, 5),
       count: price.count,
     },
-    rating: {
+    totalRating: {
       rating: totalRating,
       percentage: calculatePercentage(totalRating, 5),
       count: reviews.length,

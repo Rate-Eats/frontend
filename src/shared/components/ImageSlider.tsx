@@ -1,17 +1,17 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@shared/ui/carousel.tsx';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@shared/ui/dialog.tsx';
-import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
+import { Image } from '@shared/types/image.ts';
 
-interface ImageSliderProps {
-  images: ImageDataInterface[];
+type ImageSliderProps = {
+  images: Image[];
   size?: 'thumbnail' | 'small' | 'medium' | 'large';
-}
+};
 
 const ImageSlider = ({ images, size }: ImageSliderProps) => {
   const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
-  const compareImages = (imageA: ImageDataInterface) => {
+  const compareImages = (imageA: Image) => {
     return imageA.alternativeText?.split(' ').includes('main') ? 1 : 1;
   };
 

@@ -4,16 +4,15 @@ import { createUploadImagesFormData } from '@shared/utils/createUploadImagesForm
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog.tsx';
 import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx';
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
-import { Reviews } from '@pages/restaurant/interfaces/restaurant.ts';
 import ImageField from '@pages/restaurant/components/ImageField.tsx';
-import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import { addReviewSchema } from '@/schemas/addReviewSchema.ts';
-import { ReviewData } from '@shared/interfaces/forms.ts';
 import { useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react';
 import useDatabase from '@/hooks/useDatabase.tsx';
+import { NewReview, Review } from '@shared/types/review.ts';
 import { Button } from '@shared/ui/button.tsx';
+import { Image } from '@shared/types/image.ts';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '@auth/useAuth.ts';
 import { Form } from '@shared/ui/form.tsx';
@@ -21,11 +20,11 @@ import Loader from '@shared/ui/loader.tsx';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-interface AddReviewModalProps {
-  reviews: Reviews[];
+type AddReviewModalProps = {
+  reviews: Review[];
   isModalOpen: boolean;
   handleModalVisibility: (value?: boolean) => void;
-}
+};
 
 const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddReviewModalProps) => {
   const { uploadImages, addReview, deleteImage, updateReview } = useDatabase();
@@ -33,7 +32,7 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
   const queryClient = useQueryClient();
   const { id } = useParams();
 
-  const [previousExistingImages, setPreviousExistingImages] = useState<ImageDataInterface[]>([]);
+  const [previousExistingImages, setPreviousExistingImages] = useState<Image[]>([]);
   const [existingReviewId, setExistingReview] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -85,7 +84,7 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
         setLoading(false);
         handleModalVisibility(false);
       },
-      onError: () => setErrorMessage('An error occurred while uploading your review'),
+      onError: () => setErrorMessage('An error.ts occurred while uploading your review'),
     });
   };
 
@@ -106,7 +105,7 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
     }
   };
 
-  const updateReviewFunc = (data: ReviewData, images: File[]) => {
+  const updateReviewFunc = (data: NewReview, images: File[]) => {
     handlePreviewExistingFiles();
     updateReview.mutate(
       {
@@ -115,15 +114,15 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
       },
       {
         onSuccess: (data) => handleSuccess(images, data.data.data.id),
-        onError: () => setErrorMessage('An error occurred while uploading your review'),
+        onError: () => setErrorMessage('An error.ts occurred while uploading your review'),
       },
     );
   };
 
-  const addReviewFunc = (addReviewObject: ReviewData, images: File[]) => {
+  const addReviewFunc = (addReviewObject: NewReview, images: File[]) => {
     addReview.mutate(addReviewObject, {
       onSuccess: (data) => handleSuccess(images, data.data.data.id),
-      onError: () => setErrorMessage('An error occurred while uploading your review'),
+      onError: () => setErrorMessage('An error.ts occurred while uploading your review'),
     });
   };
 

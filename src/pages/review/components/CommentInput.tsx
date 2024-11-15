@@ -3,8 +3,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import useDatabase from '@/hooks/useDatabase.tsx';
 import { Textarea } from '@shared/ui/textarea.tsx';
+import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
 import { useAuth } from '@auth/useAuth.ts';
 

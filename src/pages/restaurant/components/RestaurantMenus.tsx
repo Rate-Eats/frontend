@@ -1,11 +1,11 @@
 import { Dialog, DialogContent, DialogTrigger } from '@/shared/ui/dialog';
-import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import ExpandIcon from '@assets/svgs/icons/expand.svg?react';
+import { Image } from '@shared/types/image.ts';
 import React from 'react';
 
-interface RestaurantMenusProps {
-  images: ImageDataInterface[];
-}
+type RestaurantMenusProps = {
+  images: Image[];
+};
 
 const RestaurantMenus = ({ images }: RestaurantMenusProps) => {
   const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
