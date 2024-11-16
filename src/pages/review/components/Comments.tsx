@@ -11,19 +11,26 @@ import React, { useState } from 'react';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
+type CommentEditData = { text: string; id: string };
+
 const Comments = () => {
-  const [commentsLoad, setCommentsLoad] = useState(5);
+  const [editData, setEditData] = useState<CommentEditData | null>(null);
+  const [commentsToShow, setCommentsToShow] = useState(5);
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { data, isFetching } = useQuery({
+  const { data: comments, isFetching } = useQuery({
     queryKey: ['comments', id],
     queryFn: () => getComments(id),
     refetchOnWindowFocus: false,
   });
 
-  const redirectToUserProfile = (id: number) => {
-    navigate(`/user/${id}`);
+  const navigateToUserProfile = (userId: number) => {
+    navigate(`/user/${userId}`);
+  };
+
+  const handleEditCommentToggle = (commentData: CommentEditData) => {
+    setEditData(editData?.id === commentData.id ? null : commentData);
   };
 
   return (
@@ -31,40 +38,54 @@ const Comments = () => {
       <span className="text-2xl font-medium text-primary">Comments</span>
       <div className="my-5 h-px w-full bg-gray-200" />
       <CommentInput />
-      {!isFetching ? (
-        data && (
+      {isFetching ? (
+        <CommentsSkeleton commentsLength={Math.max(commentsToShow, 5)} />
+      ) : (
+        comments && (
           <>
-            {data.slice(0, commentsLoad).map((comment: Comment) => {
-              const userData = comment.users;
+            {comments.slice(0, commentsToShow).map((comment: Comment) => {
+              const user = comment.users;
+              const isEditing = editData?.id === comment.documentId;
+
               return (
                 <div key={comment.id}>
                   <div className="my-5 h-px w-full bg-gray-200" />
-                  <div className="flex flex-col gap-4 whitespace-pre-wrap">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="cursor-pointer" onClick={() => redirectToUserProfile(userData.id)}>
-                        <AvatarImage src={`${baseUploadsUrl}${userData.avatar}`} />
-                        <AvatarFallback>{userData.username.slice(0, 1)}</AvatarFallback>
-                      </Avatar>
-                      {userData.username}
+                  {isEditing ? (
+                    <CommentInput editCommentInput={editData} clearEditComment={() => setEditData(null)} />
+                  ) : (
+                    <div className="flex flex-col gap-4 whitespace-pre-wrap">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="cursor-pointer" onClick={() => navigateToUserProfile(user.id)}>
+                          <AvatarImage src={`${baseUploadsUrl}${user.avatar}`} />
+                          <AvatarFallback>{user.username.slice(0, 1)}</AvatarFallback>
+                        </Avatar>
+                        {user.username}
+                      </div>
+                      {comment.text}
                     </div>
-                    {comment.text}
+                  )}
+                  <div className="mt-2 flex justify-between text-gray-500">
+                    {formatDate(comment.createdAt)}
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => handleEditCommentToggle({ text: comment.text, id: comment.documentId })}>
+                        {isEditing ? 'Stop Editing' : 'Edit'}
+                      </button>
+                      <button className="text-red-500">Delete</button>
+                    </div>
                   </div>
-                  <div className="mt-2 text-gray-500">{formatDate(comment.createdAt)}</div>
                 </div>
               );
             })}
-            {data.length >= commentsLoad && (
+            {comments.length >= commentsToShow && (
               <>
                 <div className="my-5 h-px w-full bg-gray-200" />
-                <Button className="mx-auto mt-4 w-40" onClick={() => setCommentsLoad(commentsLoad + 5)}>
+                <Button className="mx-auto mt-4 w-40" onClick={() => setCommentsToShow(commentsToShow + 5)}>
                   Load more...
                 </Button>
               </>
             )}
           </>
         )
-      ) : (
-        <CommentsSkeleton commentsLength={commentsLoad > 5 ? commentsLoad : 5} />
       )}
     </div>
   );
