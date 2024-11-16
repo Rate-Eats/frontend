@@ -13,15 +13,16 @@ const RestaurantDetails = ({ restaurantData }: RestaurantDetailsProps) => {
   const [showMoreDescription, setShowMoreDescription] = useState(false);
   const { name, description, address, reviews } = restaurantData;
 
+  const rating = reviews ? calculateRating(reviews).totalRating.rating : 0;
   const price = '$$$';
+
   return (
     <div className="flex w-full flex-col rounded-xl bg-white px-6 py-8">
       <div className="flex items-center justify-between">
         <span className="text-2xl font-medium text-primary">{name}</span>
         {reviews && (
           <div className="flex gap-2 font-medium">
-            {calculateRating(reviews).totalRating.rating.toFixed(1)} Stars |{' '}
-            <span className="text-primary underline">{reviews.length} Reviews</span>
+            {rating.toFixed(1)} Stars | <span className="text-primary underline">{reviews.length} Reviews</span>
           </div>
         )}
       </div>

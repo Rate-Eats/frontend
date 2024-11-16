@@ -19,8 +19,8 @@ export type Review = {
   commentCount: number;
   images: Image[];
   users: User;
-  comments: Comment[];
-  restaurant: Restaurant;
+  comments?: Comment[];
+  restaurant?: Restaurant;
 };
 
 type UserRelation = {

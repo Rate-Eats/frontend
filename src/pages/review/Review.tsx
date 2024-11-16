@@ -14,7 +14,7 @@ const Review = () => {
   const { data, error, isFetching } = useQuery({
     queryKey: ['review', id],
     queryFn: () => getReview(id),
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: false,  
   });
 
   if (isFetching) return <ReviewSkeleton />;
@@ -22,7 +22,10 @@ const Review = () => {
 
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col justify-center gap-5 px-4 py-6">
-      <ReviewDescription reviewDescription={data.description} restaurantName={data.restaurant.name} />
+      <ReviewDescription
+        reviewDescription={data.description}
+        restaurantName={data.restaurant ? data.restaurant.name : null}
+      />
       {data?.images?.length > 0 && <ReviewImages reviewImages={data.images} />}
       <Ratings reviewData={data} />
       <Comments />

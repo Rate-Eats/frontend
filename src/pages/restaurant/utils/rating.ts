@@ -47,7 +47,7 @@ export const calculateRating = (reviews: Review[]) => {
       count: price.count,
     },
     totalRating: {
-      rating: totalRating,
+      rating: isNaN(totalRating) ? 0.0 : totalRating,
       percentage: calculatePercentage(totalRating, 5),
       count: reviews.length,
     },
