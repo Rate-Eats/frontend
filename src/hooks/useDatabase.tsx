@@ -99,6 +99,16 @@ const useDatabase = () => {
     },
   });
 
+  const deleteComment = useMutation({
+    mutationFn: (id: string) => {
+      return axios.delete(`${import.meta.env.VITE_API_URL}/comments/${id}`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+    },
+  });
+
   const toggleReaction = useMutation({
     mutationFn: (data: Reaction) => {
       return axios.post(`${import.meta.env.VITE_API_URL}/toggle-reaction`, data, {
@@ -117,6 +127,7 @@ const useDatabase = () => {
     updateReview,
     addComment,
     updateComment,
+    deleteComment,
     toggleReaction,
   };
 };

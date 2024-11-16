@@ -1,13 +1,25 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
 import CommentsSkeleton from '@pages/review/components/CommentSkeleton.tsx';
 import CommentInput from '@pages/review/components/CommentInput.tsx';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getComments } from '@pages/review/utils/getComments.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '@shared/utils/formatDate.ts';
 import { Comment } from '@shared/types/comment.ts';
-import { useQuery } from '@tanstack/react-query';
 import { Button } from '@shared/ui/button.tsx';
 import React, { useState } from 'react';
+import {
+  AlertDialogDescription,
+  AlertDialogContent,
+  AlertDialogTrigger,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialog,
+} from '@shared/ui/alert-dialog.tsx';
+import useDatabase from '@/hooks/useDatabase.tsx';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
@@ -18,6 +30,8 @@ const Comments = () => {
   const [commentsToShow, setCommentsToShow] = useState(5);
   const navigate = useNavigate();
   const { id } = useParams();
+  const { deleteComment } = useDatabase();
+  const queryClient = useQueryClient();
 
   const { data: comments, isFetching } = useQuery({
     queryKey: ['comments', id],
@@ -31,6 +45,15 @@ const Comments = () => {
 
   const handleEditCommentToggle = (commentData: CommentEditData) => {
     setEditData(editData?.id === commentData.id ? null : commentData);
+  };
+
+  const onDelete = (documentId: string) => {
+    deleteComment.mutateAsync(documentId, {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ['comments'] });
+        await queryClient.invalidateQueries({ queryKey: ['restaurant'] });
+      },
+    });
   };
 
   return (
@@ -70,7 +93,26 @@ const Comments = () => {
                       <button onClick={() => handleEditCommentToggle({ text: comment.text, id: comment.documentId })}>
                         {isEditing ? 'Stop Editing' : 'Edit'}
                       </button>
-                      <button className="text-red-500">Delete</button>
+                      <AlertDialog>
+                        <AlertDialogTrigger className="text-red-500">Delete </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will permanently delete your comment
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => onDelete(comment.documentId)}
+                              className="bg-red-500 hover:bg-red-600"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </div>
                 </div>
