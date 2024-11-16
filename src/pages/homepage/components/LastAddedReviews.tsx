@@ -75,6 +75,7 @@ export const LastAddedReviews = () => {
                       src={`${baseUploadsUrl}${image.formats.small.url}`}
                       className="size-16 object-cover"
                       alt={image.name}
+                      key={image.documentId}
                     />
                   ))}
                 </div>

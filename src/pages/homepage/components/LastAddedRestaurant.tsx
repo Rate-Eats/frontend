@@ -29,7 +29,7 @@ const LastAddedRestaurant = () => {
             thoughts with the community. Your review can help others decide if this restaurant is worth a visit!
           </span>
           <div className="mt-auto grid grid-cols-2 gap-4">
-            {data.images.map((item, index) => (
+            {data.images.slice(0, 4).map((item, index) => (
               <img
                 src={`${baseUploadsUrl}/${item?.formats?.small?.url || item.url}`}
                 className="h-[150px] w-full object-cover"
