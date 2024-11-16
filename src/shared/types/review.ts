@@ -36,6 +36,9 @@ export type NewReview = {
   rating_ambience: number;
   rating_price: number;
   description: string;
+  likeCount: number;
+  dislikeCount: number;
+  commentCount: number;
   users: {
     connect: UserRelation[];
   };
