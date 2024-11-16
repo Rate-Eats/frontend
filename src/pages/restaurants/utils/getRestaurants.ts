@@ -1,16 +1,17 @@
-import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
+import { Restaurant } from '@shared/types/restaurant.ts';
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-interface ParamsInterface {
+type ParamsInterface = {
   search_query: string | null;
-  categories: string[];
   minimum_rating: string | null;
   maximum_rating: string | null;
   order: string | null;
-}
-export const getRestaurants = async (params: ParamsInterface): Promise<RestaurantData[]> => {
+  categories: string[];
+};
+
+export const getRestaurants = async (params: ParamsInterface): Promise<Restaurant[]> => {
   const { search_query, categories, minimum_rating, maximum_rating, order } = params;
   const { data } = await axios.get(`${API_URL}/restaurants?populate=images&populate=categories`, {
     params: {

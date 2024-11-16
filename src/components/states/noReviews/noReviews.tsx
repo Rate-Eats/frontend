@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@auth/useAuth.ts';
 import { toast } from 'sonner';
 
-interface NoReviewsProps {
+type NoReviewsProps = {
   handleModalVisibility: (value?: boolean) => void;
-}
+};
 
 const NoReviews = ({ handleModalVisibility }: NoReviewsProps) => {
   const userData = useAuth();

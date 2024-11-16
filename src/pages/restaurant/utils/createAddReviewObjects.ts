@@ -24,7 +24,6 @@ export const createAddReviewObjects = (
     ],
   },
   users: {
-    disconnect: [],
     connect: [
       {
         documentId: userId,
@@ -33,9 +32,5 @@ export const createAddReviewObjects = (
         },
       },
     ],
-  },
-  comments: {
-    connect: [],
-    disconnect: [],
   },
 });

@@ -1,12 +1,11 @@
 import { UseFormReturn } from 'react-hook-form';
 
-export interface FormProps {
+export type RestaurantForm = {
   form: UseFormReturn<{
-    food: number;
-    service: number;
-    price: number;
-    ambience: number;
+    name: string;
+    address: string;
     image: File[];
     description: string;
+    category: string[];
   }>;
-}
+};

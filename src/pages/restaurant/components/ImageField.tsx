@@ -1,12 +1,12 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@shared/ui/form.tsx';
-import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import UploadIcon from '@assets/svgs/icons/upload.svg?react';
 import TrashIcon from '@assets/svgs/icons/trash.svg?react';
 import { UseFormReturn } from 'react-hook-form';
+import { Image } from '@shared/types/image.ts';
 import { Input } from '@shared/ui/input.tsx';
 import React from 'react';
 
-interface ImageFieldProps {
+type ImageFieldProps = {
   form: UseFormReturn<{
     food: number;
     service: number;
@@ -15,9 +15,9 @@ interface ImageFieldProps {
     image: File[];
     description: string;
   }>;
-  previousExistingImages: ImageDataInterface[];
+  previousExistingImages: Image[];
   handleAdditionalItems: (action: 'delete' | 'update', documentId: string) => void;
-}
+};
 const ImageField = ({ form, previousExistingImages, handleAdditionalItems }: ImageFieldProps) => {
   const imagesToDisplay = form.watch('image');
 

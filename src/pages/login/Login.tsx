@@ -37,7 +37,7 @@ const Login = () => {
       if (axios.isAxiosError(error) && error.response) {
         setErrorMessage(error.response.data.error.message);
       } else {
-        setErrorMessage('An error occurred:' + error.message);
+        setErrorMessage('An error.ts occurred:' + error.message);
       }
     },
   });

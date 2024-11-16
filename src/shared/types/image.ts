@@ -1,4 +1,4 @@
-interface FormatImage {
+type Format = {
   name: string;
   hash: string;
   ext: string;
@@ -9,15 +9,16 @@ interface FormatImage {
   size: number;
   sizeInBytes: number;
   url: string;
-}
-interface ImageFormats {
-  small: FormatImage;
-  thumbnail: FormatImage;
-  medium: FormatImage;
-  large: FormatImage;
-}
+};
 
-export interface ImageDataInterface {
+type ImageFormats = {
+  small: Format;
+  thumbnail: Format;
+  medium: Format;
+  large: Format;
+};
+
+export type Image = {
   formats: ImageFormats;
   alternativeText: string | null;
   caption: string | null;
@@ -39,4 +40,4 @@ export interface ImageDataInterface {
   publishedAt: string;
   type: string;
   action?: 'delete' | 'update' | null;
-}
+};

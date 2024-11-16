@@ -3,9 +3,9 @@ import { GanttChartSquare } from 'lucide-react';
 import { Utensils } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-interface NavigationProps {
+type NavigationProps = {
   openDropdown: boolean;
-}
+};
 
 const Navigation = ({ openDropdown }: NavigationProps) => {
   return (

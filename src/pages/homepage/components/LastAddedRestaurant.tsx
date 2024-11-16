@@ -15,7 +15,7 @@ const LastAddedRestaurant = () => {
   });
 
   if (isFetching) return <LastAddedRestaurantSkeleton />;
-  if (error || !data) return null;
+  if (error || !data || !data.images) return null;
 
   const redirectToRestaurant = (id: string) => navigate(`/restaurant/${id}`);
 

@@ -1,21 +1,22 @@
-import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
 import { calculateRating } from '@pages/restaurant/utils/rating.ts';
+import { Restaurant } from '@shared/types/restaurant.ts';
 import { Progress } from '@shared/ui/progress.tsx';
 import Stars from '@components/rating/Stars.tsx';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@auth/useAuth.ts';
 import { toast } from 'sonner';
 
-interface ReviewRatingsProps {
-  restaurantData: RestaurantData;
+type ReviewRatingsProps = {
+  restaurantData: Restaurant;
   handleModalVisibility: () => void;
-}
+};
+
 const ReviewRatings = ({ restaurantData, handleModalVisibility }: ReviewRatingsProps) => {
   const userData = useAuth();
   const navigate = useNavigate();
-
   const { reviews } = restaurantData;
 
+  if (!reviews) return null;
   const rating = calculateRating(reviews);
 
   return (
@@ -25,10 +26,10 @@ const ReviewRatings = ({ restaurantData, handleModalVisibility }: ReviewRatingsP
       <div className="flex gap-24">
         <div className="flex flex-col items-center justify-center gap-5">
           <span className="whitespace-nowrap text-gray-500">Overall Rating & Reviews</span>
-          <span className="text-6xl text-primary">{rating.rating.rating.toFixed(1)}</span>
-          <Stars rating={rating.rating.rating} />
+          <span className="text-6xl text-primary">{rating.totalRating.rating.toFixed(1)}</span>
+          <Stars rating={rating.totalRating.rating} />
           <div className="flex gap-1 whitespace-nowrap text-gray-500">
-            Based on {rating.rating.count} reviews
+            Based on {rating.totalRating.count} reviews
             <span className="cursor-pointer whitespace-nowrap text-primary underline">
               <button
                 className="text-primary underline"

@@ -1,9 +1,9 @@
-import { RestaurantData } from '@pages/restaurant/interfaces/restaurant.ts';
+import { Restaurant } from '@shared/types/restaurant.ts';
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const getRestaurant = async (id: string = 'x'): Promise<RestaurantData> => {
+export const getRestaurant = async (id: string = 'x'): Promise<Restaurant> => {
   const { data } = await axios.get(
     `${API_URL}/restaurants/${id}?populate[reviews][populate][0]=users&populate[reviews][populate][1]=images&populate=images`,
     {

@@ -1,5 +1,6 @@
 import NoPageFound from '@assets/svgs/states/noPageFound.svg?react';
 import { useNavigate } from 'react-router-dom';
+
 const NotFound = () => {
   const navigate = useNavigate();
 

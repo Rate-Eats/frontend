@@ -1,7 +1,7 @@
-interface ReviewDescriptionProps {
+type ReviewDescriptionProps = {
   reviewDescription: string;
   restaurantName: string;
-}
+};
 
 const ReviewDescription = ({ reviewDescription, restaurantName }: ReviewDescriptionProps) => {
   return (

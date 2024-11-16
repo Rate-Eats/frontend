@@ -5,22 +5,17 @@ import AddressField from '@pages/addRestaurant/components/AddressField.tsx';
 import ImageField from '@pages/addRestaurant/components/ImageField.tsx';
 import { addRestaurantSchema } from '@/schemas/addRestaurantSchema.ts';
 import NameField from '@pages/addRestaurant/components/NameField.tsx';
-import { RestaurantData } from '@shared/interfaces/forms.ts';
+import { NewRestaurant } from '@shared/types/restaurant.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
+import { Error } from '@shared/types/error.ts';
 import { useNavigate } from 'react-router-dom';
 import { Form } from '@shared/ui/form.tsx';
 import { useForm } from 'react-hook-form';
 import React from 'react';
 import axios from 'axios';
 import { z } from 'zod';
-
-interface ErrorsProps {
-  path: string[];
-  message: 'This attribute must be unique';
-  name: 'ValidationError';
-}
 
 const AddRestaurant = () => {
   const navigate = useNavigate();
@@ -37,8 +32,8 @@ const AddRestaurant = () => {
     },
   });
 
-  const setErrors = (errors: ErrorsProps[]) => {
-    errors.map((error: ErrorsProps) => {
+  const setErrors = (errors: Error[]) => {
+    errors.map((error: Error) => {
       if (error.path[0] === 'name') {
         form.setError('name', { type: 'custom', message: error.message });
       }
@@ -51,7 +46,7 @@ const AddRestaurant = () => {
       formData.append('files', file);
     });
 
-    const addRestaurantObject: RestaurantData = {
+    const addRestaurantObject: NewRestaurant = {
       name: restaurantData.name,
       description: restaurantData.description,
       address: restaurantData.address,
@@ -65,7 +60,7 @@ const AddRestaurant = () => {
           const errors = error?.response?.data?.error?.details?.errors;
           if (errors) setErrors(errors);
         } else {
-          console.log('An error occurred:' + error.message);
+          console.log('An error.ts occurred:' + error.message);
         }
       },
     });
@@ -81,7 +76,7 @@ const AddRestaurant = () => {
           const errors = error?.response?.data?.error?.details?.errors;
           if (errors) setErrors(errors);
         } else {
-          console.log('An error occurred:' + error.message);
+          console.log('An error.ts occurred:' + error.message);
         }
       },
     });

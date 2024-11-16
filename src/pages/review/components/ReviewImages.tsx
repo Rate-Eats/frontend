@@ -1,13 +1,13 @@
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@shared/ui/dialog.tsx';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
-import { ImageDataInterface } from '@shared/interfaces/images.ts';
 import ExpandIcon from '@assets/svgs/icons/expand.svg?react';
+import { Image } from '@shared/types/image.ts';
 import { Button } from '@shared/ui/button.tsx';
 import React, { useState } from 'react';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
-const ReviewImages = ({ reviewImages }: { reviewImages: ImageDataInterface[] }) => {
+const ReviewImages = ({ reviewImages }: { reviewImages: Image[] }) => {
   const [loadMore, setLoadMore] = useState(3);
 
   const handleLoadMore = () => {

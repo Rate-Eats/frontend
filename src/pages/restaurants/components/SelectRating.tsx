@@ -1,12 +1,12 @@
 import HalfStarIcon from '@assets/svgs/icons/halfStar.svg?react';
 import React, { useEffect, useState } from 'react';
 
-interface SelectRatingProps {
+type SelectRatingProps = {
   onChangeFunction: (value: number) => void;
   value: number;
   maximumValue?: number;
   minimumValue?: number;
-}
+};
 
 const SelectRating = ({ onChangeFunction, value, maximumValue, minimumValue }: SelectRatingProps) => {
   const [hoverIndex, setHoverIndex] = useState(-1);

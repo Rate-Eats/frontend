@@ -1,12 +1,12 @@
 import { HomepageHeaderSkeleton } from '@pages/homepage/components/HomepageHeaderSkeleton.tsx';
-import { HomepageData } from '@pages/homepage/interfaces/homepage.ts';
+import { Homepage } from '@pages/homepage/types/homepage.ts';
 
 const baseUploadsUrl = import.meta.env.VITE_BACKEND_URL;
 
-interface HomepageHeaderProps {
+type HomepageHeaderProps = {
   isFetching: boolean;
-  data?: HomepageData;
-}
+  data?: Homepage;
+};
 
 export const HomepageHeader = ({ isFetching, data }: HomepageHeaderProps) => {
   if (isFetching) return <HomepageHeaderSkeleton />;

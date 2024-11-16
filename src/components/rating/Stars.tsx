@@ -1,8 +1,9 @@
 import StarIcon from '@assets/svgs/icons/star.tsx';
 
-interface StarsProps {
+type StarsProps = {
   rating: number;
-}
+};
+
 const Stars = ({ rating }: StarsProps) => {
   rating = Math.round(rating * 100) / 100;
   const decimalPart = (rating % 1) * 100;

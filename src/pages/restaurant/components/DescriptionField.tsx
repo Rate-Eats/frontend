@@ -1,9 +1,9 @@
 import { FormControl, FormField, FormItem, FormMessage } from '@shared/ui/form.tsx';
-import { FormProps } from '@pages/restaurant/interfaces/formProps.ts';
+import { AddReviewForm } from '@pages/restaurant/types/formProps.ts';
 import { Textarea } from '@shared/ui/textarea.tsx';
 import React from 'react';
 
-const DescriptionField = ({ form }: FormProps) => {
+const DescriptionField = ({ form }: AddReviewForm) => {
   return (
     <FormField
       control={form.control}

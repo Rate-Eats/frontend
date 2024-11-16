@@ -1,4 +1,4 @@
-import { Category } from '@shared/interfaces/category.ts';
+import { Category } from '@shared/types/category.ts';
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL;

@@ -1,12 +1,10 @@
-import { CommentData, reactionData, RestaurantData, ReviewData } from '@shared/interfaces/forms.ts';
+import { NewRestaurant } from '@shared/types/restaurant.ts';
+import { NewComment } from '@shared/types/comment.ts';
+import { Reaction } from '@shared/types/reaction.ts';
+import { NewReview } from '@shared/types/review.ts';
 import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '@auth/useAuth.ts';
 import axios from 'axios';
-
-interface UpdateReviewProps {
-  data: ReviewData;
-  id: string;
-}
 
 const useDatabase = () => {
   const { jwtToken } = useAuth();
@@ -22,7 +20,7 @@ const useDatabase = () => {
   });
 
   const addRestaurant = useMutation({
-    mutationFn: (data: RestaurantData) => {
+    mutationFn: (data: NewRestaurant) => {
       return axios.post(
         `${import.meta.env.VITE_API_URL}/restaurants`,
         { data },
@@ -36,7 +34,7 @@ const useDatabase = () => {
   });
 
   const addReview = useMutation({
-    mutationFn: (data: ReviewData) => {
+    mutationFn: (data: NewReview) => {
       return axios.post(
         `${import.meta.env.VITE_API_URL}/reviews`,
         { data },
@@ -50,7 +48,7 @@ const useDatabase = () => {
   });
 
   const updateReview = useMutation({
-    mutationFn: ({ data, id }: UpdateReviewProps) => {
+    mutationFn: ({ data, id }: { data: NewReview; id: string }) => {
       return axios.put(
         `${import.meta.env.VITE_API_URL}/reviews/${id}`,
         { data },
@@ -64,7 +62,7 @@ const useDatabase = () => {
   });
 
   const addComment = useMutation({
-    mutationFn: (data: CommentData) => {
+    mutationFn: (data: NewComment) => {
       return axios.post(
         `${import.meta.env.VITE_API_URL}/comments`,
         { data },
@@ -88,7 +86,7 @@ const useDatabase = () => {
   });
 
   const toggleReaction = useMutation({
-    mutationFn: (data: reactionData) => {
+    mutationFn: (data: Reaction) => {
       return axios.post(`${import.meta.env.VITE_API_URL}/toggle-reaction`, data, {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
