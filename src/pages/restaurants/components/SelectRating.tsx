@@ -12,17 +12,14 @@ const SelectRating = ({ onChangeFunction, value, maximumValue, minimumValue }: S
   const [hoverIndex, setHoverIndex] = useState(-1);
 
   const handleStarHover = (index: number) => {
-    if (minimumValue && minimumValue > index) return;
-    if (maximumValue && maximumValue < index) return;
-    setHoverIndex(index);
+    if (minimumValue && minimumValue > index) setHoverIndex(minimumValue);
+    else if (maximumValue && maximumValue < index) setHoverIndex(maximumValue);
+    else setHoverIndex(index);
   };
 
   const handleStarLeave = () => {
-    if (hoverIndex !== -1) {
-      setHoverIndex(value);
-    } else {
-      setHoverIndex(-1);
-    }
+    if (hoverIndex !== -1) setHoverIndex(value);
+    else setHoverIndex(-1);
   };
 
   useEffect(() => {
@@ -46,8 +43,10 @@ const SelectRating = ({ onChangeFunction, value, maximumValue, minimumValue }: S
             onMouseEnter={() => handleStarHover(value)}
             onMouseLeave={handleStarLeave}
             onClick={() => {
+              if (maximumValue && maximumValue < value) setHoverIndex(maximumValue);
+              else if (minimumValue && minimumValue > value) setHoverIndex(minimumValue);
+              else setHoverIndex(value);
               onChangeFunction(value);
-              setHoverIndex(value);
             }}
             aria-label={`rating value: ${value} `}
           >

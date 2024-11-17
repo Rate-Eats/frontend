@@ -164,8 +164,8 @@ const Filter = () => {
         <div className="flex h-7 items-center gap-2">
           <SelectRating
             onChangeFunction={(value) => {
-              if (value > maximumRating && maximumRating !== 0) return;
-              setMinimumRating(value);
+              if (value > maximumRating && maximumRating !== 0) setMinimumRating(maximumRating);
+              else setMinimumRating(value);
             }}
             value={minimumRating}
             maximumValue={maximumRating}
@@ -173,8 +173,8 @@ const Filter = () => {
           <div className="my-2 h-[2px] w-5 self-center bg-black" />
           <SelectRating
             onChangeFunction={(value) => {
-              if (value < minimumRating && minimumRating !== 0) return;
-              setMaximumRating(value);
+              if (value < minimumRating && minimumRating !== 0) setMaximumRating(minimumRating);
+              else setMaximumRating(value);
             }}
             value={maximumRating}
             minimumValue={minimumRating}
