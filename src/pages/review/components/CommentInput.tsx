@@ -10,15 +10,22 @@ import { useAuth } from '@auth/useAuth.ts';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
-const CommentInput = () => {
+type EditCommentInput = { text: string; id: string };
+
+type CommentInputProps = {
+  editCommentInput?: EditCommentInput;
+  clearEditComment?: () => void;
+};
+
+const CommentInput = ({ editCommentInput, clearEditComment }: CommentInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState(editCommentInput ? editCommentInput.text : '');
   const [error, setError] = useState('');
   const { userData } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { addComment } = useDatabase();
+  const { addComment, updateComment } = useDatabase();
   const { id } = useParams();
 
   const isCommentValid = () => {
@@ -34,6 +41,22 @@ const CommentInput = () => {
     if (!isCommentValid()) return;
     if (!id || !userData) return;
     const data = createCommentObject(comment, id, userData.documentId);
+
+    if (editCommentInput) {
+      await updateComment.mutateAsync(
+        { data, id: editCommentInput.id },
+        {
+          onSuccess: async () => {
+            if (clearEditComment) clearEditComment();
+            setComment('');
+            await queryClient.invalidateQueries({ queryKey: ['comments'] });
+            await queryClient.invalidateQueries({ queryKey: ['restaurant'] });
+          },
+        },
+      );
+      return;
+    }
+
     await addComment.mutateAsync(data, {
       onSuccess: async () => {
         setComment('');
@@ -90,7 +113,9 @@ const CommentInput = () => {
   }
 
   return (
-    <div className={`${error && 'border-red-500'} flex flex-col rounded-lg border border-primary/50 p-5`}>
+    <div
+      className={`${error && 'border-red-500'} ${!editCommentInput && 'border border-primary/50 p-5'} flex flex-col rounded-lg `}
+    >
       <div className="flex items-center gap-2">
         <Avatar>
           <AvatarImage src={`${baseUploadsUrl}${userData.avatar}`} />
@@ -102,15 +127,15 @@ const CommentInput = () => {
         ref={textareaRef}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        className={`m-0 mb-1 mt-3 rounded-none border-0 px-1 shadow-none outline-none focus-visible:ring-0 ${error && 'border-red-500'} max-h-[60px] min-h-6 resize-y overflow-y-scroll p-0`}
+        className={`m-0 mb-1 mt-4 rounded-none border-0 px-1 shadow-none outline-none focus-visible:ring-0 ${error && 'border-red-500'} text-md max-h-[73px] min-h-6 resize-y overflow-y-scroll p-0`}
         placeholder="write here..."
         onKeyDown={handleKeyDown}
         rows={1}
       />
       <div className="flex items-center gap-2 border-t">
         {error && <span className="text-sm text-red-500">{error}</span>}
-        <Button className="ml-auto mt-3 w-28" onClick={() => addCommentFunc()}>
-          Comment
+        <Button className="ml-auto mt-3 w-36" onClick={() => addCommentFunc()}>
+          {editCommentInput ? 'Update comment' : 'Comment'}
         </Button>
       </div>
     </div>

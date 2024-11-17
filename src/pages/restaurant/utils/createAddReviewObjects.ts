@@ -12,6 +12,9 @@ export const createAddReviewObjects = (
   rating_price: reviewData.price,
   description: reviewData.description,
   images: null,
+  likeCount: 0,
+  dislikeCount: 0,
+  commentCount: 0,
   restaurant: {
     disconnect: [],
     connect: [

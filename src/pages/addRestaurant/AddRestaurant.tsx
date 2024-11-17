@@ -19,7 +19,7 @@ import { z } from 'zod';
 
 const AddRestaurant = () => {
   const navigate = useNavigate();
-  const { uploadImages, addRestaurant } = useDatabase();
+  const { uploadImage, addRestaurant } = useDatabase();
 
   const form = useForm<z.infer<typeof addRestaurantSchema>>({
     resolver: zodResolver(addRestaurantSchema),
@@ -69,7 +69,7 @@ const AddRestaurant = () => {
   const uploadImagesToRestaurant = async (images: File[], id: number, documentId: string) => {
     const formData = createUploadImagesFormData(images, id, 'api::restaurant.restaurant');
 
-    await uploadImages.mutateAsync(formData, {
+    await uploadImage.mutateAsync(formData, {
       onSuccess: () => navigate(`/restaurant/${documentId}`),
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {

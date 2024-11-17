@@ -1,29 +1,62 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar.tsx';
 import CommentsSkeleton from '@pages/review/components/CommentSkeleton.tsx';
 import CommentInput from '@pages/review/components/CommentInput.tsx';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getComments } from '@pages/review/utils/getComments.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '@shared/utils/formatDate.ts';
 import { Comment } from '@shared/types/comment.ts';
-import { useQuery } from '@tanstack/react-query';
+import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
+import { useAuth } from '@auth/useAuth.ts';
 import React, { useState } from 'react';
+import {
+  AlertDialogDescription,
+  AlertDialogContent,
+  AlertDialogTrigger,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialog,
+} from '@shared/ui/alert-dialog.tsx';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
+type CommentEditData = { text: string; id: string };
+
 const Comments = () => {
-  const [commentsLoad, setCommentsLoad] = useState(5);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { data, isFetching } = useQuery({
+  const [editData, setEditData] = useState<CommentEditData | null>(null);
+  const [commentsToShow, setCommentsToShow] = useState(5);
+  const { deleteComment } = useDatabase();
+  const { userData } = useAuth();
+
+  const { data: comments, isFetching } = useQuery({
     queryKey: ['comments', id],
     queryFn: () => getComments(id),
     refetchOnWindowFocus: false,
   });
 
-  const redirectToUserProfile = (id: number) => {
-    navigate(`/user/${id}`);
+  const navigateToUserProfile = (userId: number) => {
+    navigate(`/user/${userId}`);
+  };
+
+  const handleEditCommentToggle = (commentData: CommentEditData) => {
+    setEditData(editData?.id === commentData.id ? null : commentData);
+  };
+
+  const onDelete = (documentId: string) => {
+    deleteComment.mutateAsync(documentId, {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ['comments'] });
+        await queryClient.invalidateQueries({ queryKey: ['restaurant'] });
+      },
+    });
   };
 
   return (
@@ -31,40 +64,75 @@ const Comments = () => {
       <span className="text-2xl font-medium text-primary">Comments</span>
       <div className="my-5 h-px w-full bg-gray-200" />
       <CommentInput />
-      {!isFetching ? (
-        data && (
+      {isFetching ? (
+        <CommentsSkeleton commentsLength={Math.max(commentsToShow, 5)} />
+      ) : (
+        comments && (
           <>
-            {data.slice(0, commentsLoad).map((comment: Comment) => {
-              const userData = comment.users;
+            {comments.slice(0, commentsToShow).map((comment: Comment) => {
+              const user = comment.users;
+              const isEditing = editData?.id === comment.documentId;
+
               return (
                 <div key={comment.id}>
                   <div className="my-5 h-px w-full bg-gray-200" />
-                  <div className="flex flex-col gap-4 whitespace-pre-wrap">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="cursor-pointer" onClick={() => redirectToUserProfile(userData.id)}>
-                        <AvatarImage src={`${baseUploadsUrl}${userData.avatar}`} />
-                        <AvatarFallback>{userData.username.slice(0, 1)}</AvatarFallback>
-                      </Avatar>
-                      {userData.username}
+                  {isEditing ? (
+                    <CommentInput editCommentInput={editData} clearEditComment={() => setEditData(null)} />
+                  ) : (
+                    <div className="flex flex-col gap-4 whitespace-pre-wrap">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="cursor-pointer" onClick={() => navigateToUserProfile(user.id)}>
+                          <AvatarImage src={`${baseUploadsUrl}${user.avatar}`} />
+                          <AvatarFallback>{user.username.slice(0, 1)}</AvatarFallback>
+                        </Avatar>
+                        {user.username}
+                      </div>
+                      {comment.text}
                     </div>
-                    {comment.text}
+                  )}
+                  <div className="mt-2 flex justify-between text-gray-500">
+                    {formatDate(comment.createdAt)}
+                    {userData && comment.users.documentId === userData.documentId && (
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => handleEditCommentToggle({ text: comment.text, id: comment.documentId })}>
+                          {isEditing ? 'Stop Editing' : 'Edit'}
+                        </button>
+                        <AlertDialog>
+                          <AlertDialogTrigger className="text-red-500">Delete </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete your comment
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => onDelete(comment.documentId)}
+                                className="bg-red-500 hover:bg-red-600"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    )}
                   </div>
-                  <div className="mt-2 text-gray-500">{formatDate(comment.createdAt)}</div>
                 </div>
               );
             })}
-            {data.length >= commentsLoad && (
+            {comments.length >= commentsToShow && (
               <>
                 <div className="my-5 h-px w-full bg-gray-200" />
-                <Button className="mx-auto mt-4 w-40" onClick={() => setCommentsLoad(commentsLoad + 5)}>
+                <Button className="mx-auto mt-4 w-40" onClick={() => setCommentsToShow(commentsToShow + 5)}>
                   Load more...
                 </Button>
               </>
             )}
           </>
         )
-      ) : (
-        <CommentsSkeleton commentsLength={commentsLoad > 5 ? commentsLoad : 5} />
       )}
     </div>
   );

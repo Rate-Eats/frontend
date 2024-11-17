@@ -6,11 +6,11 @@ import DescriptionField from '@pages/restaurant/components/DescriptionField.tsx'
 import SelectRating from '@pages/restaurant/components/SelectRating.tsx';
 import ImageField from '@pages/restaurant/components/ImageField.tsx';
 import { addReviewSchema } from '@/schemas/addReviewSchema.ts';
+import { NewReview, Review } from '@shared/types/review.ts';
 import { useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react';
 import useDatabase from '@/hooks/useDatabase.tsx';
-import { NewReview, Review } from '@shared/types/review.ts';
 import { Button } from '@shared/ui/button.tsx';
 import { Image } from '@shared/types/image.ts';
 import { useParams } from 'react-router-dom';
@@ -27,7 +27,7 @@ type AddReviewModalProps = {
 };
 
 const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddReviewModalProps) => {
-  const { uploadImages, addReview, deleteImage, updateReview } = useDatabase();
+  const { uploadImage, addReview, deleteImage, updateReview } = useDatabase();
   const { userData } = useAuth();
   const queryClient = useQueryClient();
   const { id } = useParams();
@@ -78,7 +78,7 @@ const AddReviewModal = ({ reviews, isModalOpen, handleModalVisibility }: AddRevi
   const uploadImagesToReview = async (images: File[], id: number) => {
     const formData = createUploadImagesFormData(images, id, 'api::review.review');
 
-    await uploadImages.mutateAsync(formData, {
+    await uploadImage.mutateAsync(formData, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['restaurant'] });
         setLoading(false);

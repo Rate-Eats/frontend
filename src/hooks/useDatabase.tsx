@@ -9,9 +9,19 @@ import axios from 'axios';
 const useDatabase = () => {
   const { jwtToken } = useAuth();
 
-  const uploadImages = useMutation({
+  const uploadImage = useMutation({
     mutationFn: (files: FormData) => {
       return axios.post(`${import.meta.env.VITE_API_URL}/upload`, files, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+    },
+  });
+
+  const deleteImage = useMutation({
+    mutationFn: (id: number) => {
+      return axios.delete(`${import.meta.env.VITE_API_URL}/upload/files/${id}`, {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
         },
@@ -75,9 +85,23 @@ const useDatabase = () => {
     },
   });
 
-  const deleteImage = useMutation({
-    mutationFn: (id: number) => {
-      return axios.delete(`${import.meta.env.VITE_API_URL}/upload/files/${id}`, {
+  const updateComment = useMutation({
+    mutationFn: ({ data, id }: { data: NewComment; id: string }) => {
+      return axios.put(
+        `${import.meta.env.VITE_API_URL}/comments/${id}`,
+        { data },
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        },
+      );
+    },
+  });
+
+  const deleteComment = useMutation({
+    mutationFn: (id: string) => {
+      return axios.delete(`${import.meta.env.VITE_API_URL}/comments/${id}`, {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
         },
@@ -95,7 +119,17 @@ const useDatabase = () => {
     },
   });
 
-  return { uploadImages, deleteImage, addRestaurant, addReview, updateReview, addComment, toggleReaction };
+  return {
+    uploadImage,
+    deleteImage,
+    addRestaurant,
+    addReview,
+    updateReview,
+    addComment,
+    updateComment,
+    deleteComment,
+    toggleReaction,
+  };
 };
 
 export default useDatabase;
