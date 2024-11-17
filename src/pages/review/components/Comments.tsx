@@ -6,7 +6,9 @@ import { getComments } from '@pages/review/utils/getComments.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '@shared/utils/formatDate.ts';
 import { Comment } from '@shared/types/comment.ts';
+import useDatabase from '@/hooks/useDatabase.tsx';
 import { Button } from '@shared/ui/button.tsx';
+import { useAuth } from '@auth/useAuth.ts';
 import React, { useState } from 'react';
 import {
   AlertDialogDescription,
@@ -19,19 +21,20 @@ import {
   AlertDialogTitle,
   AlertDialog,
 } from '@shared/ui/alert-dialog.tsx';
-import useDatabase from '@/hooks/useDatabase.tsx';
 
 const baseUploadsUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
 type CommentEditData = { text: string; id: string };
 
 const Comments = () => {
-  const [editData, setEditData] = useState<CommentEditData | null>(null);
-  const [commentsToShow, setCommentsToShow] = useState(5);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const [editData, setEditData] = useState<CommentEditData | null>(null);
+  const [commentsToShow, setCommentsToShow] = useState(5);
   const { deleteComment } = useDatabase();
-  const queryClient = useQueryClient();
+  const { userData } = useAuth();
 
   const { data: comments, isFetching } = useQuery({
     queryKey: ['comments', id],
@@ -89,31 +92,33 @@ const Comments = () => {
                   )}
                   <div className="mt-2 flex justify-between text-gray-500">
                     {formatDate(comment.createdAt)}
-                    <div className="flex items-center gap-2">
-                      <button onClick={() => handleEditCommentToggle({ text: comment.text, id: comment.documentId })}>
-                        {isEditing ? 'Stop Editing' : 'Edit'}
-                      </button>
-                      <AlertDialog>
-                        <AlertDialogTrigger className="text-red-500">Delete </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will permanently delete your comment
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => onDelete(comment.documentId)}
-                              className="bg-red-500 hover:bg-red-600"
-                            >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
+                    {userData && comment.users.documentId === userData.documentId && (
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => handleEditCommentToggle({ text: comment.text, id: comment.documentId })}>
+                          {isEditing ? 'Stop Editing' : 'Edit'}
+                        </button>
+                        <AlertDialog>
+                          <AlertDialogTrigger className="text-red-500">Delete </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete your comment
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => onDelete(comment.documentId)}
+                                className="bg-red-500 hover:bg-red-600"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
