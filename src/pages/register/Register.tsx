@@ -60,13 +60,13 @@ const Register = () => {
 
   if (success) {
     return (
-      <div className="m-auto flex flex-col justify-center gap-6">
+      <div className="m-auto flex flex-col justify-center gap-6 h-full sm:max-w-lg">
         <div className="flex flex-col gap-1 text-center ">
           <span className="text-2xl font-semibold">Thank you for your registration!</span>
           <span>Your account is already activated. You can now log in. </span>
         </div>
         <Link to="/login" className="flex justify-center">
-          <Button className="w-1/2">Log in</Button>
+          <Button className="w-60">Log in</Button>
         </Link>
       </div>
     );
@@ -77,7 +77,7 @@ const Register = () => {
       <div className="m-auto flex w-full flex-col gap-6 rounded-lg bg-white p-8 shadow sm:max-w-lg">
         <span className="text-2xl font-bold tracking-normal">Create your Free Account</span>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col gap-6     ">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col gap-6">
             <Socials />
             <div className="flex items-center gap-6">
               <div className="divide h-[1px] w-full bg-gray-400" />
