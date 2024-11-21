@@ -70,10 +70,10 @@ const CommentInput = ({ editCommentInput, clearEditComment }: CommentInputProps)
     navigate(`/${path}`);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      addCommentFunc();
+      await addCommentFunc();
     } else if (e.key === 'Enter' && e.shiftKey) {
       e.preventDefault();
       setComment((prev) => prev + '\n');

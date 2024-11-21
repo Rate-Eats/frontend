@@ -50,8 +50,8 @@ const Comments = () => {
     setEditData(editData?.id === commentData.id ? null : commentData);
   };
 
-  const onDelete = (documentId: string) => {
-    deleteComment.mutateAsync(documentId, {
+  const onDelete = async (documentId: string) => {
+    await deleteComment.mutateAsync(documentId, {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: ['comments'] });
         await queryClient.invalidateQueries({ queryKey: ['restaurant'] });
