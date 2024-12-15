@@ -35,7 +35,7 @@ const LastAddedRestaurant = () => {
           <div className="mt-auto grid grid-cols-2 gap-4">
             {data.images.slice(0, 4).map((item, index) => (
               <img
-                src={`${baseUploadsUrl}/${item?.formats?.small?.url || item.url}`}
+                src={`${baseUploadsUrl}${item?.formats?.small?.url || item.url}`}
                 className="h-[150px] w-full object-cover"
                 alt="thumbnail"
                 key={index}
@@ -47,7 +47,7 @@ const LastAddedRestaurant = () => {
           <div className="flex h-full flex-col overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60">
             <img
               className="max-h-64 w-full cursor-pointer object-cover object-center"
-              src={`${baseUploadsUrl}/${data?.images[0]?.formats?.large?.url || data.images[0].url}`}
+              src={`${baseUploadsUrl}${data?.images[0]?.formats?.large?.url || data.images[0].url}`}
               alt="main image"
               onClick={() => redirectToRestaurant(data.documentId)}
             />
